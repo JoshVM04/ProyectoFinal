@@ -2,6 +2,9 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "¡Hola Costa Rica!"
+# Configuraciones
+app.config['SECRET_KEY'] = 'tu-clave-secreta-aqui'
+
+from app.routes import main
+
+app.register_blueprint(main.bp)
