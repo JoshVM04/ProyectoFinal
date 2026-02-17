@@ -1,4 +1,4 @@
-// ===== TRIP506 - SISTEMA ULTRA PREMIUM =====
+// ===== NÓMADA - SISTEMA ULTRA PREMIUM =====
 
 // Configuración global
 const CONFIG = {
@@ -20,7 +20,7 @@ const AppState = {
 
 // ===== INICIALIZACIÓN =====
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Trip506 - Sistema premium iniciado');
+    console.log('🌿 Nómada - Sistema premium iniciado');
     
     // Inicializar componentes
     initPreloader();
@@ -83,6 +83,9 @@ function initParticles() {
         
         // Opacidad aleatoria
         particle.style.opacity = Math.random() * 0.5 + 0.2;
+        
+        // Color basado en #1A3B4F (azul Nómada)
+        particle.style.backgroundColor = `rgba(26, 59, 79, ${Math.random() * 0.5 + 0.2})`;
         
         // Delay de animación aleatorio
         particle.style.animationDelay = `${Math.random() * 20}s`;
@@ -153,21 +156,21 @@ function initMobileMenu() {
 function initCategoryInteractions() {
     // Toggle dropdowns de provincias
     document.addEventListener('click', function(e) {
-        const toggleBtn = e.target.closest('.province-toggle-premium');
+        const toggleBtn = e.target.closest('.province-toggle');
         
         if (toggleBtn) {
             e.preventDefault();
             e.stopPropagation();
             
-            const card = toggleBtn.closest('.category-card-premium');
-            const dropdown = card.querySelector('[data-province-dropdown]');
+            const card = toggleBtn.closest('.category-card');
+            const dropdown = card.querySelector('.province-dropdown');
             const icon = toggleBtn.querySelector('i');
             
             // Cerrar otros dropdowns
-            document.querySelectorAll('[data-province-dropdown]').forEach(d => {
+            document.querySelectorAll('.province-dropdown').forEach(d => {
                 if (d !== dropdown) {
                     d.classList.add('hidden');
-                    const otherIcon = d.closest('.category-card-premium')?.querySelector('.province-toggle-premium i');
+                    const otherIcon = d.closest('.category-card')?.querySelector('.province-toggle i');
                     if (otherIcon) {
                         otherIcon.className = 'fas fa-chevron-down';
                     }
@@ -189,15 +192,15 @@ function initCategoryInteractions() {
     
     // Cerrar dropdowns al hacer clic fuera
     document.addEventListener('click', function(e) {
-        if (!e.target.closest('.category-card-premium') && !e.target.closest('[data-province-dropdown]')) {
+        if (!e.target.closest('.category-card') && !e.target.closest('.province-dropdown')) {
             closeAllDropdowns();
         }
     });
     
     function closeAllDropdowns() {
-        document.querySelectorAll('[data-province-dropdown]').forEach(dropdown => {
+        document.querySelectorAll('.province-dropdown').forEach(dropdown => {
             dropdown.classList.add('hidden');
-            const icon = dropdown.closest('.category-card-premium')?.querySelector('.province-toggle-premium i');
+            const icon = dropdown.closest('.category-card')?.querySelector('.province-toggle i');
             if (icon) {
                 icon.className = 'fas fa-chevron-down';
             }
@@ -208,7 +211,7 @@ function initCategoryInteractions() {
 // ===== SELECCIÓN DE PROVINCIAS =====
 function initProvinceSelection() {
     document.addEventListener('click', function(e) {
-        const provinceBtn = e.target.closest('.province-btn-premium');
+        const provinceBtn = e.target.closest('.province-btn');
         
         if (provinceBtn) {
             e.preventDefault();
@@ -235,7 +238,7 @@ function initProvinceSelection() {
 
 // ===== MOSTRAR DESTINOS POR PROVINCIA =====
 function showDestinosForProvince(category, province) {
-    const section = document.querySelector('[data-destinos-section]');
+    const section = document.getElementById('destinos-provincia');
     const grid = document.getElementById('grid-destinos');
     const title = document.getElementById('titulo-provincia');
     const description = document.getElementById('descripcion-provincia');
@@ -254,7 +257,7 @@ function showDestinosForProvince(category, province) {
     
     // Actualizar UI
     title.textContent = `${nombreCategoria} en ${nombreProvincia}`;
-    description.textContent = `${destinos.length} destinos únicos disponibles`;
+    description.textContent = `${destinos.length} experiencias auténticas disponibles`;
     
     // Limpiar grid
     grid.innerHTML = '';
@@ -306,7 +309,7 @@ function createDestinoCard(destino, index) {
                 
                 ${destino.destacado ? `
                 <div class="absolute top-4 left-4">
-                    <span class="px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-bold">
+                    <span class="px-3 py-1 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white text-xs font-medium" style="font-weight: 500;">
                         Destacado
                     </span>
                 </div>
@@ -314,33 +317,33 @@ function createDestinoCard(destino, index) {
                 
                 <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center shadow-sm">
                     <i class="fas fa-star text-amber-400 mr-1"></i>
-                    <span class="text-gray-900 font-bold">${destino.rating}</span>
+                    <span class="text-gray-700 font-bold" style="font-weight: 600;">${destino.rating}</span>
                 </div>
                 
                 <div class="absolute bottom-4 left-4">
-                    <span class="px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-medium">
+                    <span class="px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-medium" style="font-weight: 500;">
                         ${destino.provincia}
                     </span>
                 </div>
             </div>
             
             <div class="p-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-2">${destino.nombre}</h3>
-                <p class="text-gray-600 text-sm mb-4">${destino.descripcion}</p>
+                <h3 class="text-xl font-bold text-gray-700 mb-2" style="font-weight: 600;">${destino.nombre}</h3>
+                <p class="text-gray-500 text-sm mb-4" style="font-weight: 400;">${destino.descripcion}</p>
                 
-                <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div class="flex items-center justify-between pt-4 border-t border-gray-200">
                     <div>
-                        <div class="text-2xl font-bold text-primary-600">${precioFormateado}</div>
-                        <div class="text-xs text-gray-500">por persona</div>
+                        <div class="text-2xl font-bold text-primary-500" style="font-weight: 700;">${precioFormateado}</div>
+                        <div class="text-xs text-gray-500" style="font-weight: 400;">por persona</div>
                     </div>
                     
                     <div class="flex gap-2">
-                        <button class="w-10 h-10 rounded-full bg-gray-100 hover:bg-primary-100 text-gray-600 hover:text-primary-600 flex items-center justify-center transition-colors">
+                        <button class="w-10 h-10 rounded-full bg-gray-100 hover:bg-primary-50 text-gray-600 hover:text-primary-500 flex items-center justify-center transition-colors">
                             <i class="fas fa-heart"></i>
                         </button>
-                        <button class="px-4 py-2 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium hover:from-primary-600 hover:to-primary-700 transition-all duration-300 shadow-md hover:shadow-lg">
-                            Reservar
-                        </button>
+                        <a href="/destino/${destino.categoria || category}/${destino.slug}" class="px-4 py-2 rounded-full bg-primary-500 text-white font-medium hover:bg-primary-700 transition-all duration-300 shadow-md hover:shadow-lg" style="font-weight: 500;">
+                            Ver detalles
+                        </a>
                     </div>
                 </div>
             </div>
@@ -357,11 +360,11 @@ function createEmptyState() {
             <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
                 <i class="fas fa-map-marker-alt text-3xl text-gray-400"></i>
             </div>
-            <h3 class="text-2xl font-bold text-gray-700 mb-3">No hay destinos disponibles</h3>
-            <p class="text-gray-500 max-w-md mx-auto mb-6">
-                Próximamente agregaremos más destinos exclusivos en esta provincia.
+            <h3 class="text-2xl font-bold text-gray-700 mb-3" style="font-weight: 600;">No hay destinos disponibles</h3>
+            <p class="text-gray-500 max-w-md mx-auto mb-6" style="font-weight: 400;">
+                Próximamente agregaremos más experiencias exclusivas en esta provincia.
             </p>
-            <button onclick="closeDestinosSection()" class="px-6 py-3 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium hover:from-primary-600 hover:to-primary-700 transition-all duration-300">
+            <button onclick="closeDestinosSection()" class="px-6 py-3 rounded-full bg-primary-500 text-white font-medium hover:bg-primary-700 transition-all duration-300" style="font-weight: 500;">
                 Volver a categorías
             </button>
         </div>
@@ -378,7 +381,7 @@ function initCloseDestinos() {
 }
 
 function closeDestinosSection() {
-    const section = document.querySelector('[data-destinos-section]');
+    const section = document.getElementById('destinos-provincia');
     if (section) {
         animateElement(section, 'fadeOut', () => {
             section.classList.add('hidden');
@@ -541,13 +544,17 @@ function initCursorEffect() {
         animateCursor();
         
         // Efectos hover
-        const hoverElements = document.querySelectorAll('a, button, .category-card-premium, .province-btn-premium');
+        const hoverElements = document.querySelectorAll('a, button, .category-card, .province-btn');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
+                cursorDot.style.backgroundColor = '#1A3B4F';
+                cursorRing.style.borderColor = '#4A7C59';
                 cursorDot.style.transform = 'scale(1.5)';
                 cursorRing.style.transform = 'scale(1.5)';
             });
             el.addEventListener('mouseleave', () => {
+                cursorDot.style.backgroundColor = '#1A3B4F';
+                cursorRing.style.borderColor = '#1A3B4F';
                 cursorDot.style.transform = 'scale(1)';
                 cursorRing.style.transform = 'scale(1)';
             });
@@ -602,7 +609,9 @@ function initLazyLoading() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const img = entry.target;
-                img.src = img.dataset.src;
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                }
                 img.classList.remove('lazy');
                 lazyLoadObserver.unobserve(img);
             }
@@ -625,7 +634,7 @@ function initNotifications() {
             <div class="flex items-center p-4 rounded-xl bg-white shadow-2xl border-l-4 ${getNotificationBorder(type)}">
                 <i class="${getNotificationIcon(type)} text-xl mr-3"></i>
                 <div class="flex-1">
-                    <p class="text-gray-900 font-medium">${message}</p>
+                    <p class="text-gray-700 font-medium" style="font-weight: 500;">${message}</p>
                 </div>
                 <button class="text-gray-400 hover:text-gray-600 ml-4" onclick="this.parentElement.parentElement.remove()">
                     <i class="fas fa-times"></i>
@@ -654,22 +663,22 @@ function initNotifications() {
     
     function getNotificationBorder(type) {
         const borders = {
-            'info': 'border-blue-500',
-            'success': 'border-green-500',
+            'info': 'border-primary-500',
+            'success': 'border-secondary-500',
             'warning': 'border-amber-500',
             'error': 'border-red-500'
         };
-        return borders[type] || 'border-gray-500';
+        return borders[type] || 'border-primary-500';
     }
     
     function getNotificationIcon(type) {
         const icons = {
-            'info': 'fas fa-info-circle text-blue-500',
-            'success': 'fas fa-check-circle text-green-500',
+            'info': 'fas fa-info-circle text-primary-500',
+            'success': 'fas fa-check-circle text-secondary-500',
             'warning': 'fas fa-exclamation-circle text-amber-500',
             'error': 'fas fa-times-circle text-red-500'
         };
-        return icons[type] || 'fas fa-info-circle text-gray-500';
+        return icons[type] || 'fas fa-info-circle text-primary-500';
     }
 }
 
@@ -705,7 +714,7 @@ function translateCategory(code) {
     const categories = {
         'playas': 'Playas',
         'parques': 'Parques Nacionales',
-        'aventura': 'Aventura & Ecoturismo',
+        'aventura': 'Aventura',
         'termales': 'Aguas Termales'
     };
     return categories[code] || code;
@@ -766,13 +775,13 @@ window.addEventListener('load', function() {
     if ('performance' in window) {
         const perfData = window.performance.timing;
         const loadTime = perfData.loadEventEnd - perfData.navigationStart;
-        console.log(`⏱️  Page loaded in ${loadTime}ms`);
+        console.log(`⏱️  Página cargada en ${loadTime}ms`);
     }
 });
 
 // ===== ERROR HANDLING GLOBAL =====
 window.addEventListener('error', function(e) {
-    console.error('❌ Global error:', e.error);
+    console.error('❌ Error global:', e.error);
     showNotification('Ocurrió un error inesperado', 'error');
 });
 

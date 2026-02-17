@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Trip506 | Descubre la Belleza Auténtica de Costa Rica{% endblock %}
+{% block title %}Nómada | Descubre la Costa Rica Auténtica{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* Hero section premium sin buscador */
+    /* Hero section premium */
     .hero-section {
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 100%),
+        background: linear-gradient(135deg, rgba(26, 59, 79, 0.8) 0%, rgba(26, 59, 79, 0.4) 100%),
                     url("{{ url_for('static', filename='images/hero/foto-hero.jpg') }}") center/cover no-repeat;
         min-height: 100vh;
         display: flex;
@@ -19,8 +19,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at 30% 20%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 70% 80%, rgba(217, 70, 239, 0.08) 0%, transparent 50%);
+        background: radial-gradient(circle at 30% 20%, rgba(74, 124, 89, 0.15) 0%, transparent 50%);
         pointer-events: none;
     }
     
@@ -30,12 +29,12 @@
         bottom: 0;
         left: 0;
         right: 0;
-        height: 100px;
+        height: 150px;
         background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
         pointer-events: none;
     }
     
-    /* Efecto de partículas en el hero */
+    /* Efecto de partículas */
     .hero-particles {
         position: absolute;
         inset: 0;
@@ -44,9 +43,9 @@
     
     .particle {
         position: absolute;
-        width: 2px;
-        height: 2px;
-        background: rgba(255, 255, 255, 0.5);
+        width: 3px;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.6);
         border-radius: 50%;
         animation: floatParticle 20s infinite linear;
     }
@@ -68,103 +67,225 @@
         }
     }
     
-    /* Cards premium con efecto vidrio */
+    /* Glass card */
     .glass-card {
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
-    /* Stats elegantes */
+    /* Stats cards */
     .stat-card {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: white;
+        border: 1px solid #E2E8F0;
+        border-radius: 24px;
+        padding: 2rem;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .stat-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(14, 165, 233, 0.3);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-8px);
+        border-color: #1A3B4F;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
     }
     
-    /* Category cards premium */
-    .category-card-premium {
+    .stat-card .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #1A3B4F;
+        line-height: 1.2;
+    }
+    
+    .stat-card .stat-label {
+        font-size: 1.125rem;
+        color: #718096;
+        font-weight: 500;
+    }
+    
+    /* Category cards */
+    .category-card {
         background: white;
-        border-radius: 24px;
+        border-radius: 32px;
         overflow: hidden;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid #e5e7eb;
+        border: 1px solid #E2E8F0;
         position: relative;
+        height: 100%;
     }
     
-    .category-card-premium::before {
-        content: '';
+    .category-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15);
+        border-color: #1A3B4F;
+    }
+    
+    .category-card .category-image {
+        height: 280px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .category-card .category-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s ease;
+    }
+    
+    .category-card:hover .category-image img {
+        transform: scale(1.1);
+    }
+    
+    .category-card .category-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(14, 165, 233, 0) 0%, rgba(14, 165, 233, 0.1) 100%);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-        pointer-events: none;
+        background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
     }
     
-    .category-card-premium:hover::before {
-        opacity: 1;
-    }
-    
-    .category-card-premium:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
-        border-color: #0ea5e9;
+    .category-card .category-title {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     
     /* Gradient text */
     .gradient-text {
-        background: linear-gradient(135deg, #0ea5e9 0%, #d946ef 50%, #facc15 100%);
+        background: linear-gradient(135deg, #1A3B4F 0%, #4A7C59 100%);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
-        background-size: 200% auto;
-        animation: gradientShift 8s ease infinite;
+        display: inline-block;
     }
     
-    @keyframes gradientShift {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-    
-    /* Province dropdown premium */
-    .province-dropdown-premium {
+    /* Province dropdown */
+    .province-dropdown {
         background: white;
-        border-radius: 16px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        border: 1px solid #e5e7eb;
+        border-radius: 24px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        border: 1px solid #E2E8F0;
         animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
     }
     
-    .province-btn-premium {
+    .province-btn {
         transition: all 0.2s ease;
-        border: 1px solid #f1f5f9;
+        border: 1px solid transparent;
+        background: #F5F7FA;
     }
     
-    .province-btn-premium:hover {
-        background: linear-gradient(135deg, rgba(14, 165, 233, 0.05) 0%, rgba(217, 70, 239, 0.05) 100%);
-        border-color: #0ea5e9;
+    .province-btn:hover {
+        background: white;
+        border-color: #4A7C59;
         transform: translateX(5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
     
-    /* Loading shimmer */
-    .shimmer {
-        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-        background-size: 1000px 100%;
-        animation: shimmer 2s infinite;
+    /* Testimonial cards */
+    .testimonial-card {
+        background: white;
+        border: 1px solid #E2E8F0;
+        border-radius: 32px;
+        padding: 2.5rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.12);
+        border-color: #4A7C59;
+    }
+    
+    .testimonial-avatar {
+        width: 70px;
+        height: 70px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #1A3B4F, #4A7C59);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-right: 1.5rem;
+    }
+    
+    /* IA Chat section */
+    .ia-card {
+        background: linear-gradient(135deg, #1A3B4F 0%, #0F2A38 100%);
+        border-radius: 48px;
+        padding: 4rem;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .ia-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(74,124,89,0.2) 0%, transparent 50%);
+        animation: rotate 30s linear infinite;
+    }
+    
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    .ia-card-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .ia-feature {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .ia-feature-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(74, 124, 89, 0.3);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-section {
+            min-height: 90vh;
+        }
+        
+        .stat-card .stat-number {
+            font-size: 2.5rem;
+        }
+        
+        .category-card .category-title {
+            font-size: 1.5rem;
+        }
+        
+        .ia-card {
+            padding: 2rem;
+            border-radius: 32px;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- HERO SECTION ULTRA PREMIUM -->
+<!-- HERO SECTION - MÁS GRANDE -->
 <section class="hero-section">
     <!-- Efecto partículas -->
     <div class="hero-particles" id="hero-particles"></div>
@@ -172,30 +293,27 @@
     <div class="container mx-auto px-6 relative z-10">
         <div class="max-w-4xl mx-auto text-center">
             
-            <!-- Título principal con efecto -->
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-8 animate-slide-up" data-aos="fade-up">
-                <span class="block">Descubre la belleza</span>
-                <span class="font-script text-primary-500 drop-shadow-sm">auténtica</span>
-                <span class="block">del país 506</span>
+            <!-- Título principal MÁS GRANDE -->
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 animate-slide-up leading-tight" style="font-weight: 700;" data-aos="fade-up">
+                <span class="block">Descubre la</span>
+                <span class="text-secondary-500 drop-shadow-lg">Costa Rica auténtica</span>
             </h1>
             
-            <!-- Descripción elegante -->
-            <p class="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed animate-slide-up" data-aos="fade-up" data-aos-delay="100">
-                Plataforma premium de experiencias turísticas en Costa Rica.<br>
-                Conectamos viajeros exigentes con destinos cuidadosamente seleccionados<br>
-                y experiencias memorables.
+            <!-- Descripción MÁS GRANDE -->
+            <p class="text-xl md:text-2xl lg:text-3xl text-gray-200 mb-12 leading-relaxed animate-slide-up max-w-3xl mx-auto" style="font-weight: 400;" data-aos="fade-up" data-aos-delay="100">
+                Plataforma de experiencias turísticas para viajeros modernos.<br class="hidden md:block">
+                Conectamos con los destinos más auténticos y experiencias memorables.
             </p>
             
-            <!-- CTA premium -->
+            <!-- CTA MÁS GRANDES -->
             <div class="flex flex-col sm:flex-row gap-6 justify-center animate-slide-up" data-aos="fade-up" data-aos-delay="200">
-                <a href="#categorias" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white bg-gradient-to-r from-primary-500 to-primary-600 rounded-full hover:from-primary-600 hover:to-primary-700 transition-all duration-300 shadow-xl hover:shadow-2xl overflow-hidden">
+                <a href="#categorias" class="group relative inline-flex items-center justify-center px-10 py-5 text-xl font-medium text-white bg-primary-500 rounded-full hover:bg-primary-700 transition-all duration-300 shadow-2xl hover:shadow-3xl overflow-hidden" style="font-weight: 500;">
                     <span class="relative z-10">Explorar Experiencias</span>
-                    <i class="fas fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform"></i>
-                    <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <i class="fas fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform text-xl"></i>
                 </a>
                 
-                <a href="#ia-chat" class="group inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-gray-900 bg-white rounded-full hover:bg-gray-50 transition-all duration-300 shadow-xl hover:shadow-2xl">
-                    <i class="fas fa-robot text-primary-600 mr-3 text-xl"></i>
+                <a href="#ia-chat" class="group inline-flex items-center justify-center px-10 py-5 text-xl font-medium text-gray-700 bg-white rounded-full hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-3xl" style="font-weight: 500;">
+                    <i class="fas fa-robot text-primary-500 mr-3 text-2xl"></i>
                     <span>Asistente IA</span>
                 </a>
             </div>
@@ -203,116 +321,112 @@
             <!-- Scroll indicator -->
             <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
                 <a href="#categorias" class="text-white/60 hover:text-white transition-colors">
-                    <i class="fas fa-chevron-down text-2xl"></i>
+                    <i class="fas fa-chevron-down text-3xl"></i>
                 </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- STATS PREMIUM -->
-<section class="py-20 bg-gradient-to-b from-white to-gray-50">
+<!-- STATS - MÁS GRANDES -->
+<section class="py-24 bg-white">
     <div class="container mx-auto px-6">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div class="stat-card rounded-2xl p-8 text-center" data-aos="fade-up">
-                <div class="text-4xl font-bold text-gray-900 mb-2">16</div>
-                <div class="text-gray-600 font-medium">Destinos Únicos</div>
-                <div class="mt-4 text-sm text-gray-500">Experiencias exclusivas</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="stat-card text-center" data-aos="fade-up">
+                <div class="stat-number mb-2">16</div>
+                <div class="stat-label">Destinos Únicos</div>
+                <div class="mt-4 text-sm text-gray-500" style="font-weight: 400;">Experiencias auténticas</div>
             </div>
             
-            <div class="stat-card rounded-2xl p-8 text-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="text-4xl font-bold text-gray-900 mb-2">4.8</div>
-                <div class="text-gray-600 font-medium">Rating Promedio</div>
-                <div class="mt-4 text-sm text-gray-500">Excelencia garantizada</div>
+            <div class="stat-card text-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-number mb-2">4.8</div>
+                <div class="stat-label">Rating Promedio</div>
+                <div class="mt-4 text-sm text-gray-500" style="font-weight: 400;">Viajeros satisfechos</div>
             </div>
             
-            <div class="stat-card rounded-2xl p-8 text-center" data-aos="fade-up" data-aos-delay="200">
-                <div class="text-4xl font-bold text-gray-900 mb-2">100%</div>
-                <div class="text-gray-600 font-medium">Verificadas</div>
-                <div class="mt-4 text-sm text-gray-500">Calidad certificada</div>
+            <div class="stat-card text-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-number mb-2">100%</div>
+                <div class="stat-label">Auténticas</div>
+                <div class="mt-4 text-sm text-gray-500" style="font-weight: 400;">Experiencias reales</div>
             </div>
             
-            <div class="stat-card rounded-2xl p-8 text-center" data-aos="fade-up" data-aos-delay="300">
-                <div class="text-4xl font-bold text-gray-900 mb-2">24/7</div>
-                <div class="text-gray-600 font-medium">Soporte Premium</div>
-                <div class="mt-4 text-sm text-gray-500">Asistencia personal</div>
+            <div class="stat-card text-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-number mb-2">24/7</div>
+                <div class="stat-label">Soporte</div>
+                <div class="mt-4 text-sm text-gray-500" style="font-weight: 400;">Asistencia personal</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CATEGORÍAS PREMIUM -->
-<section id="categorias" class="py-20 bg-white">
+<!-- CATEGORÍAS - MÁS GRANDES -->
+<section id="categorias" class="py-24 bg-gray-50">
     <div class="container mx-auto px-6">
-        <!-- Encabezado premium -->
+        <!-- Encabezado más grande -->
         <div class="text-center mb-16" data-aos="fade-up">
-            <span class="inline-block px-4 py-1 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-4">
-                Descubre
+            <span class="inline-block px-6 py-2 rounded-full bg-primary-50 text-primary-500 text-lg font-medium mb-6" style="font-weight: 500;">
+                Explora
             </span>
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Explorar por <span class="gradient-text">Categoría</span>
+            <h2 class="text-5xl md:text-6xl font-bold text-gray-700 mb-6" style="font-weight: 700;">
+                Categorías
             </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p class="text-xl text-gray-500 max-w-2xl mx-auto" style="font-weight: 400;">
                 Descubre los mejores destinos organizados por tipo de experiencia
             </p>
         </div>
         
-        <!-- Grid de categorías premium -->
+        <!-- Grid de categorías -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Playas -->
-            <div class="category-card-premium group" data-aos="fade-up" data-category="playas">
-                <div class="relative h-64 overflow-hidden">
+            <div class="category-card group" data-aos="fade-up" data-category="playas">
+                <div class="category-image">
                     <img src="{{ url_for('static', filename='images/categorias/imagen-playa.jpg') }}" 
                          alt="Playas de Costa Rica"
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-6 left-6">
-                        <h3 class="text-2xl font-bold text-white">Playas</h3>
-                        <p class="text-white/80 text-sm mt-1">Arenas doradas, aguas cristalinas</p>
-                    </div>
+                    <div class="category-overlay"></div>
+                    <h3 class="category-title">Playas</h3>
                 </div>
-                <div class="p-6">
+                <div class="p-8">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 rounded-full bg-primary-50 text-primary-600 text-sm font-medium">
+                        <span class="px-4 py-2 rounded-full bg-primary-50 text-primary-500 text-base font-medium" style="font-weight: 500;">
                             4 destinos
                         </span>
-                        <button class="province-toggle-premium w-10 h-10 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-600 transition-colors">
-                            <i class="fas fa-chevron-down"></i>
+                        <button class="province-toggle w-12 h-12 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-500 transition-colors">
+                            <i class="fas fa-chevron-down text-xl"></i>
                         </button>
                     </div>
                     
-                    <!-- Dropdown de provincias premium -->
-                    <div class="province-dropdown-premium mt-4 hidden p-4" data-province-dropdown>
-                        <p class="text-sm text-gray-500 mb-3 font-medium">Disponible en:</p>
-                        <div class="space-y-2">
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                    <!-- Dropdown de provincias -->
+                    <div class="province-dropdown mt-4 hidden" data-province-dropdown>
+                        <p class="text-base text-gray-500 mb-4 font-medium px-6 pt-6" style="font-weight: 500;">Disponible en:</p>
+                        <div class="space-y-1">
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="playas" 
                                     data-province="guanacaste">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-sun text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-sun text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Guanacaste</div>
-                                        <div class="text-sm text-gray-500">2 destinos</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Guanacaste</div>
+                                        <div class="text-base text-gray-500">2 destinos</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-primary-500"></i>
                             </button>
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="playas" 
                                     data-province="limon">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-water text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-water text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Limón</div>
-                                        <div class="text-sm text-gray-500">2 destinos</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Limón</div>
+                                        <div class="text-base text-gray-500">2 destinos</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-secondary-500"></i>
                             </button>
                         </div>
                     </div>
@@ -320,87 +434,83 @@
             </div>
             
             <!-- Parques Nacionales -->
-            <div class="category-card-premium group" data-aos="fade-up" data-aos-delay="100" data-category="parques">
-                <div class="relative h-64 overflow-hidden">
+            <div class="category-card group" data-aos="fade-up" data-aos-delay="100" data-category="parques">
+                <div class="category-image">
                     <img src="{{ url_for('static', filename='images/categorias/imagen-parquenacio.png') }}" 
                          alt="Parques Nacionales"
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-6 left-6">
-                        <h3 class="text-2xl font-bold text-white">Parques Nacionales</h3>
-                        <p class="text-white/80 text-sm mt-1">Biodiversidad protegida</p>
-                    </div>
+                    <div class="category-overlay"></div>
+                    <h3 class="category-title">Parques</h3>
                 </div>
-                <div class="p-6">
+                <div class="p-8">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 rounded-full bg-primary-50 text-primary-600 text-sm font-medium">
+                        <span class="px-4 py-2 rounded-full bg-primary-50 text-primary-500 text-base font-medium" style="font-weight: 500;">
                             4 destinos
                         </span>
-                        <button class="province-toggle-premium w-10 h-10 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-600 transition-colors">
-                            <i class="fas fa-chevron-down"></i>
+                        <button class="province-toggle w-12 h-12 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-500 transition-colors">
+                            <i class="fas fa-chevron-down text-xl"></i>
                         </button>
                     </div>
                     
-                    <!-- Dropdown de provincias premium -->
-                    <div class="province-dropdown-premium mt-4 hidden p-4" data-province-dropdown>
-                        <p class="text-sm text-gray-500 mb-3 font-medium">Disponible en:</p>
-                        <div class="space-y-2">
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                    <!-- Dropdown de provincias -->
+                    <div class="province-dropdown mt-4 hidden" data-province-dropdown>
+                        <p class="text-base text-gray-500 mb-4 font-medium px-6 pt-6" style="font-weight: 500;">Disponible en:</p>
+                        <div class="space-y-1">
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="parques" 
                                     data-province="alajuela">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-mountain text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-mountain text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Alajuela</div>
-                                        <div class="text-sm text-gray-500">1 destino</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Alajuela</div>
+                                        <div class="text-base text-gray-500">1 destino</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-secondary-500"></i>
                             </button>
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="parques" 
                                     data-province="guanacaste">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-sun text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-sun text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Guanacaste</div>
-                                        <div class="text-sm text-gray-500">1 destino</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Guanacaste</div>
+                                        <div class="text-base text-gray-500">1 destino</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-primary-500"></i>
                             </button>
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="parques" 
                                     data-province="limon">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-water text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-water text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Limón</div>
-                                        <div class="text-sm text-gray-500">1 destino</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Limón</div>
+                                        <div class="text-base text-gray-500">1 destino</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-secondary-500"></i>
                             </button>
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="parques" 
                                     data-province="puntarenas">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-tree text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-tree text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Puntarenas</div>
-                                        <div class="text-sm text-gray-500">1 destino</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Puntarenas</div>
+                                        <div class="text-base text-gray-500">1 destino</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-secondary-500"></i>
                             </button>
                         </div>
                     </div>
@@ -408,73 +518,69 @@
             </div>
             
             <!-- Aventura -->
-            <div class="category-card-premium group" data-aos="fade-up" data-aos-delay="200" data-category="aventura">
-                <div class="relative h-64 overflow-hidden">
+            <div class="category-card group" data-aos="fade-up" data-aos-delay="200" data-category="aventura">
+                <div class="category-image">
                     <img src="{{ url_for('static', filename='images/categorias/imagen-aventura.jpg') }}" 
-                         alt="Aventura y Ecoturismo"
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                         alt="Aventura"
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1536152471326-6428c2f4e7e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-6 left-6">
-                        <h3 class="text-2xl font-bold text-white">Aventura & Ecoturismo</h3>
-                        <p class="text-white/80 text-sm mt-1">Adrenalina y naturaleza</p>
-                    </div>
+                    <div class="category-overlay"></div>
+                    <h3 class="category-title">Aventura</h3>
                 </div>
-                <div class="p-6">
+                <div class="p-8">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 rounded-full bg-primary-50 text-primary-600 text-sm font-medium">
+                        <span class="px-4 py-2 rounded-full bg-primary-50 text-primary-500 text-base font-medium" style="font-weight: 500;">
                             4 destinos
                         </span>
-                        <button class="province-toggle-premium w-10 h-10 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-600 transition-colors">
-                            <i class="fas fa-chevron-down"></i>
+                        <button class="province-toggle w-12 h-12 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-500 transition-colors">
+                            <i class="fas fa-chevron-down text-xl"></i>
                         </button>
                     </div>
                     
-                    <!-- Dropdown de provincias premium -->
-                    <div class="province-dropdown-premium mt-4 hidden p-4" data-province-dropdown>
-                        <p class="text-sm text-gray-500 mb-3 font-medium">Disponible en:</p>
-                        <div class="space-y-2">
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                    <!-- Dropdown de provincias -->
+                    <div class="province-dropdown mt-4 hidden" data-province-dropdown>
+                        <p class="text-base text-gray-500 mb-4 font-medium px-6 pt-6" style="font-weight: 500;">Disponible en:</p>
+                        <div class="space-y-1">
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="aventura" 
                                     data-province="alajuela">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-mountain text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-mountain text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Alajuela</div>
-                                        <div class="text-sm text-gray-500">1 destino</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Alajuela</div>
+                                        <div class="text-base text-gray-500">1 destino</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-secondary-500"></i>
                             </button>
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="aventura" 
                                     data-province="puntarenas">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-tree text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-tree text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Puntarenas</div>
-                                        <div class="text-sm text-gray-500">2 destinos</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Puntarenas</div>
+                                        <div class="text-base text-gray-500">2 destinos</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-secondary-500"></i>
                             </button>
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="aventura" 
                                     data-province="cartago">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-water text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-water text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Cartago/Limón</div>
-                                        <div class="text-sm text-gray-500">1 destino</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Cartago/Limón</div>
+                                        <div class="text-base text-gray-500">1 destino</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-secondary-500"></i>
                             </button>
                         </div>
                     </div>
@@ -482,73 +588,69 @@
             </div>
             
             <!-- Aguas Termales -->
-            <div class="category-card-premium group" data-aos="fade-up" data-aos-delay="300" data-category="termales">
-                <div class="relative h-64 overflow-hidden">
+            <div class="category-card group" data-aos="fade-up" data-aos-delay="300" data-category="termales">
+                <div class="category-image">
                     <img src="{{ url_for('static', filename='images/categorias/imagen-termal.jpg') }}" 
                          alt="Aguas Termales"
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-6 left-6">
-                        <h3 class="text-2xl font-bold text-white">Aguas Termales</h3>
-                        <p class="text-white/80 text-sm mt-1">Relajación y bienestar</p>
-                    </div>
+                    <div class="category-overlay"></div>
+                    <h3 class="category-title">Termales</h3>
                 </div>
-                <div class="p-6">
+                <div class="p-8">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 rounded-full bg-primary-50 text-primary-600 text-sm font-medium">
+                        <span class="px-4 py-2 rounded-full bg-primary-50 text-primary-500 text-base font-medium" style="font-weight: 500;">
                             4 destinos
                         </span>
-                        <button class="province-toggle-premium w-10 h-10 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-600 transition-colors">
-                            <i class="fas fa-chevron-down"></i>
+                        <button class="province-toggle w-12 h-12 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-500 transition-colors">
+                            <i class="fas fa-chevron-down text-xl"></i>
                         </button>
                     </div>
                     
-                    <!-- Dropdown de provincias premium -->
-                    <div class="province-dropdown-premium mt-4 hidden p-4" data-province-dropdown>
-                        <p class="text-sm text-gray-500 mb-3 font-medium">Disponible en:</p>
-                        <div class="space-y-2">
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                    <!-- Dropdown de provincias -->
+                    <div class="province-dropdown mt-4 hidden" data-province-dropdown>
+                        <p class="text-base text-gray-500 mb-4 font-medium px-6 pt-6" style="font-weight: 500;">Disponible en:</p>
+                        <div class="space-y-1">
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="termales" 
                                     data-province="alajuela">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-mountain text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-mountain text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Alajuela</div>
-                                        <div class="text-sm text-gray-500">2 destinos</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Alajuela</div>
+                                        <div class="text-base text-gray-500">2 destinos</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-secondary-500"></i>
                             </button>
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="termales" 
                                     data-province="cartago">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-water text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-water text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Cartago</div>
-                                        <div class="text-sm text-gray-500">1 destino</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Cartago</div>
+                                        <div class="text-base text-gray-500">1 destino</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-secondary-500"></i>
                             </button>
-                            <button class="province-btn-premium w-full p-3 rounded-xl flex items-center justify-between group" 
+                            <button class="province-btn w-full p-5 flex items-center justify-between group" 
                                     data-category="termales" 
                                     data-province="guanacaste">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mr-3">
-                                        <i class="fas fa-sun text-white"></i>
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center mr-4">
+                                        <i class="fas fa-sun text-white text-xl"></i>
                                     </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900">Guanacaste</div>
-                                        <div class="text-sm text-gray-500">1 destino</div>
+                                    <div class="text-left">
+                                        <div class="font-semibold text-gray-700 text-lg" style="font-weight: 600;">Guanacaste</div>
+                                        <div class="text-base text-gray-500">1 destino</div>
                                     </div>
                                 </div>
-                                <i class="fas fa-arrow-right text-gray-400 group-hover:text-primary-600"></i>
+                                <i class="fas fa-arrow-right text-gray-400 text-xl group-hover:text-primary-500"></i>
                             </button>
                         </div>
                     </div>
@@ -559,15 +661,15 @@
 </section>
 
 <!-- SECCIÓN DESTINOS DINÁMICA -->
-<section id="destinos-provincia" class="py-20 bg-gradient-to-b from-gray-50 to-white hidden" data-destinos-section>
+<section id="destinos-provincia" class="py-24 bg-white hidden" data-destinos-section>
     <div class="container mx-auto px-6">
         <div class="flex items-center justify-between mb-12" data-aos="fade-up">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900" id="titulo-provincia"></h2>
-                <p class="text-gray-600 mt-2" id="descripcion-provincia"></p>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-700" id="titulo-provincia" style="font-weight: 700;"></h2>
+                <p class="text-xl text-gray-500 mt-3" id="descripcion-provincia" style="font-weight: 400;"></p>
             </div>
-            <button id="cerrar-destinos" class="w-12 h-12 rounded-full bg-white hover:bg-gray-50 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors shadow-lg hover:shadow-xl">
-                <i class="fas fa-times text-xl"></i>
+            <button id="cerrar-destinos" class="w-14 h-14 rounded-full bg-white hover:bg-gray-50 flex items-center justify-center text-gray-500 hover:text-primary-500 transition-colors shadow-lg hover:shadow-xl border border-gray-200">
+                <i class="fas fa-times text-2xl"></i>
             </button>
         </div>
         
@@ -577,31 +679,31 @@
     </div>
 </section>
 
-<!-- TESTIMONIOS PREMIUM -->
-<section id="testimonios" class="py-20 bg-white">
+<!-- TESTIMONIOS - MÁS GRANDES -->
+<section id="testimonios" class="py-24 bg-gray-50">
     <div class="container mx-auto px-6">
         <div class="text-center mb-16" data-aos="fade-up">
-            <span class="inline-block px-4 py-1 rounded-full bg-primary-50 text-primary-600 text-sm font-medium mb-4">
+            <span class="inline-block px-6 py-2 rounded-full bg-primary-50 text-primary-500 text-lg font-medium mb-6" style="font-weight: 500;">
                 Experiencias
             </span>
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Lo que dicen nuestros <span class="gradient-text">viajeros</span>
+            <h2 class="text-5xl md:text-6xl font-bold text-gray-700 mb-6" style="font-weight: 700;">
+                Lo que dicen nuestros viajeros
             </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                Historias reales de quienes ya vivieron la aventura con Trip506
+            <p class="text-xl text-gray-500 max-w-2xl mx-auto" style="font-weight: 400;">
+                Historias reales de quienes ya vivieron la aventura con Nómada
             </p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Testimonio 1 -->
-            <div class="testimonial-card-premium p-8 rounded-3xl" data-aos="fade-up">
-                <div class="flex items-center mb-6">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-bold text-xl mr-4">
+            <div class="testimonial-card" data-aos="fade-up">
+                <div class="flex items-center mb-8">
+                    <div class="testimonial-avatar">
                         AM
                     </div>
                     <div>
-                        <h4 class="font-bold text-gray-900 text-lg">Ana Martínez</h4>
-                        <div class="flex text-amber-400">
+                        <h4 class="font-bold text-gray-700 text-2xl mb-2" style="font-weight: 600;">Ana Martínez</h4>
+                        <div class="flex text-amber-400 text-xl">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -610,23 +712,23 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-gray-600 mb-6 leading-relaxed">
+                <p class="text-gray-600 mb-8 text-lg leading-relaxed" style="font-weight: 400;">
                     "Playa Conchal superó todas mis expectativas. La atención al detalle y la calidad del servicio son excepcionales. Definitivamente volveré."
                 </p>
-                <div class="text-sm text-gray-500">
-                    <i class="fas fa-map-marker-alt mr-2"></i>Playa Conchal • Hace 2 semanas
+                <div class="text-base text-gray-500" style="font-weight: 400;">
+                    <i class="fas fa-map-marker-alt mr-2 text-primary-500"></i>Playa Conchal • Hace 2 semanas
                 </div>
             </div>
             
             <!-- Testimonio 2 -->
-            <div class="testimonial-card-premium p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="100">
-                <div class="flex items-center mb-6">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-xl mr-4">
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex items-center mb-8">
+                    <div class="testimonial-avatar">
                         CR
                     </div>
                     <div>
-                        <h4 class="font-bold text-gray-900 text-lg">Carlos Rodríguez</h4>
-                        <div class="flex text-amber-400">
+                        <h4 class="font-bold text-gray-700 text-2xl mb-2" style="font-weight: 600;">Carlos Rodríguez</h4>
+                        <div class="flex text-amber-400 text-xl">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -635,23 +737,23 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-gray-600 mb-6 leading-relaxed">
+                <p class="text-gray-600 mb-8 text-lg leading-relaxed" style="font-weight: 400;">
                     "La experiencia en el Parque Nacional Arenal fue increíble. Los guías son expertos y la organización impecable. Totalmente recomendado."
                 </p>
-                <div class="text-sm text-gray-500">
-                    <i class="fas fa-map-marker-alt mr-2"></i>Parque Arenal • Hace 1 mes
+                <div class="text-base text-gray-500" style="font-weight: 400;">
+                    <i class="fas fa-map-marker-alt mr-2 text-primary-500"></i>Parque Arenal • Hace 1 mes
                 </div>
             </div>
             
             <!-- Testimonio 3 -->
-            <div class="testimonial-card-premium p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="200">
-                <div class="flex items-center mb-6">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white font-bold text-xl mr-4">
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-center mb-8">
+                    <div class="testimonial-avatar">
                         SG
                     </div>
                     <div>
-                        <h4 class="font-bold text-gray-900 text-lg">Sofía González</h4>
-                        <div class="flex text-amber-400">
+                        <h4 class="font-bold text-gray-700 text-2xl mb-2" style="font-weight: 600;">Sofía González</h4>
+                        <div class="flex text-amber-400 text-xl">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -660,93 +762,94 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-gray-600 mb-6 leading-relaxed">
-                    "Rafting en el Río Pacuare fue la mejor aventura de mi vida. Seguridad, profesionalismo y adrenalina pura. ¡Gracias Trip506!"
+                <p class="text-gray-600 mb-8 text-lg leading-relaxed" style="font-weight: 400;">
+                    "Rafting en el Río Pacuare fue la mejor aventura de mi vida. Seguridad, profesionalismo y adrenalina pura. ¡Gracias Nómada!"
                 </p>
-                <div class="text-sm text-gray-500">
-                    <i class="fas fa-map-marker-alt mr-2"></i>Río Pacuare • Hace 3 días
+                <div class="text-base text-gray-500" style="font-weight: 400;">
+                    <i class="fas fa-map-marker-alt mr-2 text-primary-500"></i>Río Pacuare • Hace 3 días
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- IA CHAT PREMIUM -->
-<section id="ia-chat" class="py-20 bg-gradient-to-br from-gray-900 to-gray-950">
+<!-- IA CHAT - MÁS GRANDE -->
+<section id="ia-chat" class="py-24 bg-white">
     <div class="container mx-auto px-6">
-        <div class="glass-card rounded-3xl p-8 md:p-12" data-aos="fade-up">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <span class="inline-block px-4 py-1 rounded-full bg-white/20 text-white text-sm font-medium mb-6">
-                        Innovación
-                    </span>
-                    <h2 class="text-4xl font-bold text-white mb-6">
-                        Asistente de Viajes <span class="gradient-text">IA</span>
-                    </h2>
-                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
-                        Nuestro asistente inteligente te ayuda a planificar tu viaje perfecto. 
-                        Obtén recomendaciones personalizadas basadas en tus preferencias, 
-                        presupuesto y tiempo disponible.
-                    </p>
-                    
-                    <div class="space-y-4 mb-8">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center mr-4">
-                                <i class="fas fa-check text-white text-sm"></i>
+        <div class="ia-card" data-aos="fade-up">
+            <div class="ia-card-content">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <span class="inline-block px-6 py-2 rounded-full bg-secondary-500/20 text-secondary-500 text-lg font-medium mb-8" style="font-weight: 500;">
+                            Innovación
+                        </span>
+                        <h2 class="text-5xl md:text-6xl font-bold text-white mb-8" style="font-weight: 700;">
+                            Asistente de Viajes <span class="text-secondary-500">IA</span>
+                        </h2>
+                        <p class="text-gray-200 text-xl mb-10 leading-relaxed" style="font-weight: 400;">
+                            Nuestro asistente inteligente te ayuda a planificar tu viaje perfecto. 
+                            Obtén recomendaciones personalizadas basadas en tus preferencias.
+                        </p>
+                        
+                        <div class="space-y-5 mb-10">
+                            <div class="ia-feature">
+                                <div class="ia-feature-icon">
+                                    <i class="fas fa-check text-secondary-500 text-xl"></i>
+                                </div>
+                                <span class="text-gray-200 text-lg">Recomendaciones personalizadas</span>
                             </div>
-                            <span class="text-gray-200">Recomendaciones personalizadas</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center mr-4">
-                                <i class="fas fa-check text-white text-sm"></i>
+                            <div class="ia-feature">
+                                <div class="ia-feature-icon">
+                                    <i class="fas fa-check text-secondary-500 text-xl"></i>
+                                </div>
+                                <span class="text-gray-200 text-lg">Itinerarios optimizados</span>
                             </div>
-                            <span class="text-gray-200">Itinerarios optimizados</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center mr-4">
-                                <i class="fas fa-check text-white text-sm"></i>
+                            <div class="ia-feature">
+                                <div class="ia-feature-icon">
+                                    <i class="fas fa-check text-secondary-500 text-xl"></i>
+                                </div>
+                                <span class="text-gray-200 text-lg">Consejos locales exclusivos</span>
                             </div>
-                            <span class="text-gray-200">Consejos locales exclusivos</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center mr-4">
-                                <i class="fas fa-check text-white text-sm"></i>
-                            </div>
-                            <span class="text-gray-200">Disponible 24/7</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div>
-                    <div class="bg-white/5 rounded-2xl p-8 mb-8 border border-white/10">
-                        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center">
-                            <i class="fas fa-robot text-white text-3xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-white mb-4 text-center">¿Cómo funciona?</h3>
-                        <div class="space-y-3">
-                            <div class="flex items-center text-gray-300">
-                                <span class="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-white text-sm font-bold mr-4">1</span>
-                                Haz clic en "Iniciar Chat"
-                            </div>
-                            <div class="flex items-center text-gray-300">
-                                <span class="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-white text-sm font-bold mr-4">2</span>
-                                Describe tus preferencias
-                            </div>
-                            <div class="flex items-center text-gray-300">
-                                <span class="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-white text-sm font-bold mr-4">3</span>
-                                Recibe recomendaciones personalizadas
-                            </div>
-                            <div class="flex items-center text-gray-300">
-                                <span class="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-white text-sm font-bold mr-4">4</span>
-                                Planifica tu viaje ideal
+                            <div class="ia-feature">
+                                <div class="ia-feature-icon">
+                                    <i class="fas fa-check text-secondary-500 text-xl"></i>
+                                </div>
+                                <span class="text-gray-200 text-lg">Disponible 24/7</span>
                             </div>
                         </div>
                     </div>
                     
-                    <button class="w-full py-4 px-8 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 text-white font-bold text-lg hover:from-primary-600 hover:to-primary-700 transition-all duration-300 shadow-xl hover:shadow-2xl group">
-                        <i class="fas fa-comment-alt mr-3 group-hover:scale-110 transition-transform"></i>
-                        Iniciar Chat con IA
-                    </button>
+                    <div>
+                        <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-10 mb-8 border border-white/20">
+                            <div class="w-28 h-28 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center">
+                                <i class="fas fa-robot text-white text-5xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold text-white mb-6 text-center" style="font-weight: 600;">¿Cómo funciona?</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center text-gray-200 text-lg">
+                                    <span class="w-10 h-10 rounded-full bg-secondary-500 flex items-center justify-center text-white text-lg font-bold mr-5" style="font-weight: 600;">1</span>
+                                    Haz clic en "Iniciar Chat"
+                                </div>
+                                <div class="flex items-center text-gray-200 text-lg">
+                                    <span class="w-10 h-10 rounded-full bg-secondary-500 flex items-center justify-center text-white text-lg font-bold mr-5" style="font-weight: 600;">2</span>
+                                    Describe tus preferencias
+                                </div>
+                                <div class="flex items-center text-gray-200 text-lg">
+                                    <span class="w-10 h-10 rounded-full bg-secondary-500 flex items-center justify-center text-white text-lg font-bold mr-5" style="font-weight: 600;">3</span>
+                                    Recibe recomendaciones personalizadas
+                                </div>
+                                <div class="flex items-center text-gray-200 text-lg">
+                                    <span class="w-10 h-10 rounded-full bg-secondary-500 flex items-center justify-center text-white text-lg font-bold mr-5" style="font-weight: 600;">4</span>
+                                    Planifica tu viaje ideal
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full py-6 px-8 rounded-full bg-secondary-500 text-white font-bold text-xl hover:bg-secondary-700 transition-all duration-300 shadow-2xl hover:shadow-3xl group">
+                            <i class="fas fa-comment-alt mr-3 group-hover:scale-110 transition-transform"></i>
+                            Iniciar Chat con IA
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -756,7 +859,6 @@
 
 {% block extra_js %}
 <script>
-    // Datos de destinos actualizados
     window.destinosData = {
         playas: {
             guanacaste: [
@@ -768,16 +870,20 @@
                     precio: 65000,
                     descripcion: "Arena de conchas blancas cristalinas únicas en el mundo",
                     provincia: "Guanacaste",
+                    categoria: "playas",
+                    slug: "playa-conchal",
                     destacado: true
                 },
                 {
                     id: 2,
-                    nombre: "Playa Manuel Antonio",
-                    imagen: "{{ url_for('static', filename='images/destinos/thumbnails/playas/playamanuel.400x300.jpg') }}",
+                    nombre: "Playa Tamarindo",
+                    imagen: "{{ url_for('static', filename='images/destinos/thumbnails/playas/Tamarindo-Aerial.jpg') }}",
                     rating: 4.8,
                     precio: 40000,
-                    descripcion: "Parque nacional y playas de arena blanca en el Pacífico",
+                    descripcion: "Surf y vida nocturna vibrante",
                     provincia: "Guanacaste",
+                    categoria: "playas",
+                    slug: "playa-tamarindo",
                     destacado: false
                 }
             ],
@@ -788,8 +894,10 @@
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/playas/aerial-Punta-Uva-Manuel-Pinto-2.jpg') }}",
                     rating: 4.8,
                     precio: 45000,
-                    descripcion: "Aguas cristalinas ideales para snorkel y buceo en el Caribe",
+                    descripcion: "Aguas cristalinas ideales para snorkel",
                     provincia: "Limón",
+                    categoria: "playas",
+                    slug: "playa-punta-uva",
                     destacado: true
                 },
                 {
@@ -798,8 +906,10 @@
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/playas/cahuita.400x300.jpg') }}",
                     rating: 4.7,
                     precio: 35000,
-                    descripcion: "Arrecife de coral y parque nacional protegido",
+                    descripcion: "Arrecife de coral y parque nacional",
                     provincia: "Limón",
+                    categoria: "playas",
+                    slug: "playa-cahuita",
                     destacado: false
                 }
             ]
@@ -812,8 +922,10 @@
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/parques/ParqueVolcanArenal.jpg') }}",
                     rating: 4.7,
                     precio: 32000,
-                    descripcion: "Volcán activo con senderos y vistas espectaculares",
+                    descripcion: "Volcán activo con senderos espectaculares",
                     provincia: "Alajuela",
+                    categoria: "parques",
+                    slug: "volcan-arenal",
                     destacado: true
                 }
             ],
@@ -824,8 +936,10 @@
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/parques/ParqueRincon.jpeg') }}",
                     rating: 4.6,
                     precio: 28000,
-                    descripcion: "Volcanes, cataratas, géiseres y aventura",
+                    descripcion: "Volcanes, cataratas y géiseres",
                     provincia: "Guanacaste",
+                    categoria: "parques",
+                    slug: "rincon-vieja",
                     destacado: false
                 }
             ],
@@ -836,8 +950,10 @@
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/parques/tortugueroparque.jpg') }}",
                     rating: 4.8,
                     precio: 35000,
-                    descripcion: "Canales, selva y desove de tortugas en el Caribe",
+                    descripcion: "Canales, selva y desove de tortugas",
                     provincia: "Limón",
+                    categoria: "parques",
+                    slug: "tortuguero",
                     destacado: true
                 }
             ],
@@ -848,8 +964,10 @@
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/parques/corcovadoparque.jpg') }}",
                     rating: 4.9,
                     precio: 42000,
-                    descripcion: "La joya de la corona, mayor biodiversidad del país",
+                    descripcion: "Mayor biodiversidad del país",
                     provincia: "Puntarenas",
+                    categoria: "parques",
+                    slug: "corcovado",
                     destacado: true
                 }
             ]
@@ -858,45 +976,55 @@
             alajuela: [
                 {
                     id: 9,
-                    nombre: "Rafting Río Pacuare",
-                    imagen: "{{ url_for('static', filename='images/destinos/thumbnails/aventura/AventuraRiopacuare.jpg') }}",
-                    rating: 4.9,
+                    nombre: "La Fortuna",
+                    imagen: "{{ url_for('static', filename='images/destinos/thumbnails/aventura/saltofortuna.webp') }}",
+                    rating: 4.8,
                     precio: 55000,
-                    descripcion: "Clase III-IV en uno de los mejores ríos del mundo",
-                    provincia: "Alajuela/Cartago",
+                    descripcion: "Canyoning, caminatas y aventura",
+                    provincia: "Alajuela",
+                    categoria: "aventura",
+                    slug: "la-fortuna",
                     destacado: true
                 }
             ],
             puntarenas: [
                 {
                     id: 10,
-                    nombre: "Surf en Jacó",
-                    imagen: "{{ url_for('static', filename='images/destinos/thumbnails/aventura/aventurasurftjaco.jpg') }}",
-                    rating: 4.5,
-                    precio: 38000,
-                    descripcion: "Clases de surf en playas del Pacífico",
-                    provincia: "Puntarenas",
-                    destacado: false
-                },
-                {
-                    id: 11,
-                    nombre: "Canopy Monteverde",
+                    nombre: "Monteverde",
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/aventura/canopymonteverde.jpeg') }}",
-                    rating: 4.7,
+                    rating: 4.8,
                     precio: 45000,
-                    descripcion: "Tirolinas sobre el bosque nuboso",
+                    descripcion: "Canopy y bosque nuboso",
                     provincia: "Puntarenas",
+                    categoria: "aventura",
+                    slug: "monteverde",
                     destacado: true
                 },
                 {
-                    id: 12,
-                    nombre: "Salto de la Fortuna",
-                    imagen: "{{ url_for('static', filename='images/destinos/thumbnails/aventura/saltofortuna.webp') }}",
-                    rating: 4.6,
-                    precio: 42000,
-                    descripcion: "Salto en cascada natural de 70 metros",
+                    id: 11,
+                    nombre: "Jacó",
+                    imagen: "{{ url_for('static', filename='images/destinos/thumbnails/aventura/aventurasurftjaco.jpg') }}",
+                    rating: 4.5,
+                    precio: 38000,
+                    descripcion: "Surf y vida nocturna",
                     provincia: "Puntarenas",
+                    categoria: "aventura",
+                    slug: "jaco",
                     destacado: false
+                }
+            ],
+            cartago: [
+                {
+                    id: 12,
+                    nombre: "Río Pacuare",
+                    imagen: "{{ url_for('static', filename='images/destinos/thumbnails/aventura/AventuraRiopacuare.jpg') }}",
+                    rating: 4.9,
+                    precio: 65000,
+                    descripcion: "Rafting de clase mundial",
+                    provincia: "Cartago/Limón",
+                    categoria: "aventura",
+                    slug: "rio-pacuare",
+                    destacado: true
                 }
             ]
         },
@@ -904,46 +1032,54 @@
             alajuela: [
                 {
                     id: 13,
-                    nombre: "Termales Tabacón",
+                    nombre: "Tabacón Hot Springs",
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/termales/TermalesTabacon.jpeg') }}",
-                    rating: 4.8,
+                    rating: 4.9,
                     precio: 60000,
-                    descripcion: "Aguas termales de lujo al pie del volcán Arenal",
+                    descripcion: "Termales de lujo al pie del volcán",
                     provincia: "Alajuela",
+                    categoria: "termales",
+                    slug: "tabacon",
                     destacado: true
                 },
                 {
                     id: 14,
-                    nombre: "Termales Baldi",
+                    nombre: "Termales de San Carlos",
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/termales/AguasTermalesbaldi.jpg') }}",
                     rating: 4.6,
-                    precio: 52000,
-                    descripcion: "Complejo termal con 25 piscinas naturales",
+                    precio: 35000,
+                    descripcion: "Experiencia local y natural",
                     provincia: "Alajuela",
+                    categoria: "termales",
+                    slug: "san-carlos",
                     destacado: false
                 }
             ],
             cartago: [
                 {
                     id: 15,
-                    nombre: "Termales Hacienda Orosi",
+                    nombre: "Termales de Orosi",
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/termales/TermalesHaciendaOrosi.jpg') }}",
                     rating: 4.5,
-                    precio: 35000,
-                    descripcion: "Aguas termales rodeadas de naturaleza y montañas",
+                    precio: 30000,
+                    descripcion: "Tranquilas y clima fresco",
                     provincia: "Cartago",
+                    categoria: "termales",
+                    slug: "orosi",
                     destacado: false
                 }
             ],
             guanacaste: [
                 {
                     id: 16,
-                    nombre: "Termales Río Negro",
+                    nombre: "Termales de Río Negro",
                     imagen: "{{ url_for('static', filename='images/destinos/thumbnails/termales/termalrionegro.jpg') }}",
                     rating: 4.4,
-                    precio: 30000,
-                    descripcion: "Termales naturales en medio del bosque tropical",
+                    precio: 28000,
+                    descripcion: "Naturales con barro volcánico",
                     provincia: "Guanacaste",
+                    categoria: "termales",
+                    slug: "rio-negro",
                     destacado: false
                 }
             ]
