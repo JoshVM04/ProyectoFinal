@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>IA Costa Rica</title>
+
+</head>
+
+<body>
+
+<h2>Chat IA Costa Rica</h2>
+
+<input type="text" id="pregunta" placeholder="Escribe tu pregunta">
+
+<button onclick="enviarPregunta()">
+
+Preguntar
+
+</button>
+
+<p id="respuesta"></p>
+
+
+<script>
+
+function enviarPregunta() {
+
+let pregunta = document.getElementById("pregunta").value;
+
+fetch("/ia-chat/preguntar", {
+
+method: "POST",
+
+headers: {
+
+"Content-Type": "application/json"
+
+},
+
+body: JSON.stringify({
+
+pregunta: pregunta
+
+})
+
+})
+
+.then(response => response.json())
+
+.then(data => {
+
+document.getElementById("respuesta").innerText = data.respuesta;
+
+});
+
+}
+
+</script>
+
+
+</body>
+
+</html>
