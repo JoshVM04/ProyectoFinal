@@ -1,10 +1,21 @@
 from flask import Flask
 
-app = Flask(__name__)
 
-# Configuraciones
-app.config['SECRET_KEY'] = 'tu-clave-secreta-aqui'
+def create_app():
 
-from app.routes import main
+    app = Flask(__name__)
 
-app.register_blueprint(main.bp)
+
+    # IMPORTAR RUTA IA
+    from app.routes.ia_chat import IAChatRoute
+
+
+    # CREAR OBJETO
+    ia_chat = IAChatRoute()
+
+
+    # REGISTRAR RUTA
+    app.register_blueprint(ia_chat.bp)
+
+
+    return app

@@ -1,0 +1,191 @@
+DESTINO: HACIENDA OROSI
+PROVINCIA: CARTAGO
+
+========================
+DESDE AEROPUERTO SAN JOSE (SJO)
+========================
+
+PASO 1:
+Aeropuerto SJO → Terminal Lumaca San José
+
+Bus:
+TUASA, bus urbano o taxi
+
+Duración:
+30 a 45 min
+
+Frecuencia:
+Cada 10-15 min
+
+Horario:
+04:30 am – 11:00 pm
+
+
+PASO 2:
+San José → Cartago
+
+Empresa:
+Lumaca
+
+Terminal:
+Terminal Lumaca, San José
+
+Horarios aproximados:
+
+05:00 am
+06:00 am
+07:00 am
+08:00 am
+09:00 am
+10:00 am
+11:00 am
+12:00 pm
+01:00 pm
+02:00 pm
+03:00 pm
+04:00 pm
+05:00 pm
+06:00 pm
+07:00 pm
+08:00 pm
+09:00 pm
+
+Frecuencia:
+Cada 15-30 min
+
+Duración:
+1 hora
+
+
+PASO 3:
+Cartago → Orosi
+
+Empresa:
+Busetas Orosi / CoopetransOrosi
+
+Terminal:
+Cartago centro
+
+Horarios:
+
+05:00 am
+06:00 am
+07:00 am
+08:00 am
+09:00 am
+10:00 am
+11:00 am
+12:00 pm
+01:00 pm
+02:00 pm
+03:00 pm
+04:00 pm
+05:00 pm
+06:00 pm
+07:00 pm
+
+Frecuencia:
+Cada 1 hora
+
+Duración:
+45 min
+
+
+PASO 4:
+Orosi → Hacienda Orosi
+
+Bus:
+Bus local o taxi
+
+Duración:
+5 a 10 min
+
+
+========================
+DESDE AEROPUERTO LIBERIA (LIR)
+========================
+
+PASO 1:
+Aeropuerto Liberia → Liberia centro
+
+Bus:
+Bus local Liberia
+
+Duración:
+20 min
+
+
+PASO 2:
+Liberia → San José
+
+Empresa:
+Pulmitan
+
+Horarios:
+
+05:00 am
+07:00 am
+09:00 am
+11:00 am
+01:00 pm
+03:00 pm
+05:00 pm
+07:00 pm
+
+Duración:
+4 horas
+
+
+PASO 3:
+San José → Cartago
+
+Empresa:
+Lumaca
+
+Frecuencia:
+Cada 15-30 min
+
+Duración:
+1 hora
+
+
+PASO 4:
+Cartago → Orosi
+
+Empresa:
+Busetas Orosi
+
+Frecuencia:
+Cada 1 hora
+
+Duración:
+45 min
+
+
+PASO 5:
+Orosi → Hacienda Orosi
+
+Taxi o bus local
+
+Duración:
+5 a 10 min
+
+
+========================
+REGLAS IMPORTANTES
+========================
+
+Llegar 30 min antes
+
+Pago en efectivo recomendado
+
+No todos aceptan tarjeta
+
+Equipaje permitido:
+1 maleta + bolso personal
+
+Precio total aproximado:
+₡3,000 a ₡7,000 colones
+
+Duración total aproximada:
+2 a 4 horas
