@@ -1,63 +1,210 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!-- AI chat assistant page -->
+<!-- Users can ask questions about Costa Rica destinations -->
+{% extends "base.html" %}
 
-<title>IA Costa Rica</title>
+{% block title %}Asistente IA - Nómada{% endblock %}
 
-</head>
+{% block content %}
+<!-- Gradient background page -->
+<div class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen py-16">
+    <!-- Centered container with max width -->
+    <div class="container mx-auto px-4 max-w-4xl">
+        <!-- Page header -->
+        <div class="text-center mb-8" data-aos="fade-up">
+            <!-- Robot icon circle -->
+            <div class="inline-block p-3 bg-primary-100 rounded-full mb-4">
+                <i class="fas fa-robot text-4xl text-primary-600"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-primary-500 mb-4">
+                AI Travel Assistant
+            </h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Ask me anything about destinations in Costa Rica. 
+                I'll recommend places based on your preferences.
+            </p>
+        </div>
 
-<body>
+        <!-- Chat container -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden" data-aos="slide-up">
+            <!-- Messages area - scrollable -->
+            <div id="chat-messages" class="h-96 overflow-y-auto p-6 bg-gray-50">
+                <!-- Welcome message from bot -->
+                <div class="flex items-start gap-3 mb-4">
+                    <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white text-sm"></i>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 shadow-sm max-w-[80%]">
+                        <p class="text-gray-700 text-sm">
+                            👋 Hi! I'm your travel assistant. 
+                            What kind of destination are you looking for? (beaches, mountains, adventure, relaxation)
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-<h2>Chat IA Costa Rica</h2>
+            <!-- Input area at bottom -->
+            <div class="border-t border-gray-200 p-4 bg-white">
+                <form id="chat-form" class="flex gap-2">
+                    <!-- Text input for user message -->
+                    <input type="text" 
+                           id="chat-input"
+                           class="flex-1 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                           placeholder="Type your question..."
+                           autocomplete="off">
+                    <!-- Send button -->
+                    <button type="submit" 
+                            class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg transition-all hover:scale-105 flex items-center gap-2">
+                        <i class="fas fa-paper-plane"></i>
+                        <span class="hidden sm:inline">Send</span>
+                    </button>
+                </form>
+                <!-- Small disclaimer text -->
+                <p class="text-xs text-gray-400 mt-2">
+                    * The assistant uses AI to recommend destinations. Responses may not be perfect.
+                </p>
+            </div>
+        </div>
 
-<input type="text" id="pregunta" placeholder="Escribe tu pregunta">
+        <!-- Suggested questions section -->
+        <div class="mt-8" data-aos="fade-up">
+            <h3 class="text-sm font-semibold text-gray-600 mb-3 text-center">Suggested questions:</h3>
+            <div class="flex flex-wrap gap-2 justify-center">
+                <button class="suggestion-btn px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-all">
+                    Best beaches for surfing
+                </button>
+                <button class="suggestion-btn px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-all">
+                    Adventure destinations
+                </button>
+                <button class="suggestion-btn px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-all">
+                    Recommended hot springs
+                </button>
+                <button class="suggestion-btn px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-all">
+                    National parks near San José
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<button onclick="enviarPregunta()">
-
-Preguntar
-
-</button>
-
-<p id="respuesta"></p>
-
-
+<!-- JavaScript for chat functionality -->
 <script>
+// Wait for the page to fully load before running any code
+document.addEventListener('DOMContentLoaded', function() {
+    // Get references to HTML elements we'll need
+    const chatMessages = document.getElementById('chat-messages');  // The message container
+    const chatForm = document.getElementById('chat-form');          // The form with input and button
+    const chatInput = document.getElementById('chat-input');        // The text input field
+    const suggestionBtns = document.querySelectorAll('.suggestion-btn'); // All suggestion buttons
 
-function enviarPregunta() {
+    // Function to add a message to the chat window
+    // isUser = true for user messages, false for bot messages
+    function addMessage(message, isUser = false) {
+        // Create a new div for the message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `flex items-start gap-3 mb-4 ${isUser ? 'justify-end' : ''}`;
+        
+        if (!isUser) {
+            // Bot message layout
+            messageDiv.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-robot text-white text-sm"></i>
+                </div>
+                <div class="bg-white rounded-lg p-3 shadow-sm max-w-[80%]">
+                    <p class="text-gray-700 text-sm">${message}</p>
+                </div>
+            `;
+        } else {
+            // User message layout (right-aligned)
+            messageDiv.innerHTML = `
+                <div class="bg-primary-500 rounded-lg p-3 shadow-sm max-w-[80%]">
+                    <p class="text-white text-sm">${message}</p>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-user text-gray-600 text-sm"></i>
+                </div>
+            `;
+        }
+        
+        // Add the message to the chat container
+        chatMessages.appendChild(messageDiv);
+        // Scroll to the bottom to show newest message
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 
-let pregunta = document.getElementById("pregunta").value;
+    // Function to show "typing..." animation while waiting for bot response
+    function addTypingIndicator() {
+        const indicator = document.createElement('div');
+        indicator.id = 'typing-indicator';
+        indicator.className = 'flex items-start gap-3 mb-4';
+        indicator.innerHTML = `
+            <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-robot text-white text-sm"></i>
+            </div>
+            <div class="bg-white rounded-lg p-4 shadow-sm">
+                <div class="flex gap-1">
+                    <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s"></span>
+                    <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                    <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+                </div>
+            </div>
+        `;
+        chatMessages.appendChild(indicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 
-fetch("/ia-chat/preguntar", {
+    // Function to remove the typing indicator
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+    }
 
-method: "POST",
+    // Main function to send a message to the AI
+    async function sendMessage(message) {
+        // Don't send empty messages
+        if (!message.trim()) return;
+        
+        // Show user message immediately
+        addMessage(message, true);
+        // Clear input field
+        chatInput.value = '';
+        // Show typing indicator
+        addTypingIndicator();
 
-headers: {
+        try {
+            // Send message to backend API
+            const response = await fetch('/ia-chat/api', {
+                method: 'POST',              // Send data, not just get
+                headers: {
+                    'Content-Type': 'application/json', // Tell server we're sending JSON
+                },
+                body: JSON.stringify({ message: message }) // Convert message to JSON
+            });
+            
+            // Get response from server
+            const data = await response.json();
+            // Remove typing indicator
+            removeTypingIndicator();
+            // Show bot response
+            addMessage(data.response);
+        } catch (error) {
+            // If anything goes wrong (network, server down, etc)
+            removeTypingIndicator();
+            addMessage('Sorry, there was an error. Please try again.');
+        }
+    }
 
-"Content-Type": "application/json"
+    // Handle form submission (when user presses Enter or clicks Send)
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Stop page from reloading
+        sendMessage(chatInput.value);
+    });
 
-},
-
-body: JSON.stringify({
-
-pregunta: pregunta
-
-})
-
-})
-
-.then(response => response.json())
-
-.then(data => {
-
-document.getElementById("respuesta").innerText = data.respuesta;
-
+    // Handle suggestion button clicks
+    suggestionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            sendMessage(btn.textContent);
+        });
+    });
 });
-
-}
-
 </script>
-
-
-</body>
-
-</html>
+{% endblock %}
