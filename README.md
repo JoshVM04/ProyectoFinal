@@ -212,13 +212,4 @@ For questions or suggestions: josejulianmurillomondragon.17@gmail.com
 
 Project Link: https://github.com/JoshVM04/ProyectoFinal
 
-________________________________
 
-# 4. Guarda el archivo
-- `Ctrl + S` o `Cmd + S`
-
-# 5. Súbelo a GitHub
-```bash
-git add README.md
-git commit -m "Add complete README with team info"
-git push
