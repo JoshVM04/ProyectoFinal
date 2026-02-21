@@ -1,0 +1,139 @@
+<!-- Page where users share their travel experiences -->
+<!-- Shows all comments and ratings from travelers -->
+{% extends "base.html" %}
+
+{% block title %}Experiencias - Nómada{% endblock %}
+
+{% block content %}
+<!-- Light gray background for the whole page -->
+<div class="bg-gray-50 min-h-screen py-16">
+    <!-- Centered content container -->
+    <div class="container mx-auto px-4">
+        <!-- Page header section -->
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h1 class="text-4xl md:text-5xl font-bold text-primary-500 mb-4">
+                Traveler Experiences
+            </h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Discover what other travelers have experienced in Costa Rica. 
+                Share your own story and help the community.
+            </p>
+        </div>
+
+        <!-- Form for new experiences - only shown to logged in users -->
+        <!-- current_user.is_authenticated is a Flask-Login variable -->
+        {% if current_user.is_authenticated %}
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8" data-aos="slide-up">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                <i class="fas fa-pen-alt text-primary-500 mr-2"></i>Share your experience
+            </h3>
+            <!-- Form to create a new experience post -->
+            <form method="POST" action="{{ url_for('experiencias.crear') }}">
+                <!-- Dropdown to select which destination -->
+                <div class="mb-4">
+                    <select name="destino_id" required class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <option value="">Select a destination</option>
+                        <!-- Loop through all destinations from database -->
+                        {% for destino in destinos %}
+                        <option value="{{ destino.id }}">{{ destino.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Text area for the comment -->
+                <div class="mb-4">
+                    <textarea name="comentario" rows="3" required 
+                              class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                              placeholder="Tell us about your experience..."></textarea>
+                </div>
+                <!-- Rating stars section -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Your rating</label>
+                    <div class="flex gap-2 text-2xl">
+                        <!-- Loop to create 5 star rating options -->
+                        {% for i in range(1,6) %}
+                        <label class="cursor-pointer">
+                            <!-- Hidden radio button - peer is for styling -->
+                            <input type="radio" name="rating" value="{{ i }}" class="hidden peer">
+                            <!-- Star icon that changes color when checked -->
+                            <i class="fas fa-star text-gray-300 peer-checked:text-yellow-400 hover:text-yellow-400 transition-colors"></i>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Submit button -->
+                <button type="submit" 
+                        class="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2 px-6 rounded-lg transition-all hover:scale-105">
+                    Post Experience
+                </button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Grid of experiences -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Loop through all experiences from database -->
+            {% for experiencia in experiencias %}
+            <!-- Each experience card -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105"
+                 data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                <div class="p-6">
+                    <!-- User info and rating header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <!-- User avatar circle with initials -->
+                            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                                <!-- Takes first 2 letters of username and makes uppercase -->
+                                <span class="text-primary-700 font-semibold">
+                                    {{ experiencia.usuario.nombre[:2]|upper }}
+                                </span>
+                            </div>
+                            <div>
+                                <!-- User name -->
+                                <h4 class="font-semibold text-gray-800">{{ experiencia.usuario.nombre }}</h4>
+                                <!-- Date of experience -->
+                                <p class="text-xs text-gray-500">{{ experiencia.fecha }}</p>
+                            </div>
+                        </div>
+                        <!-- Star rating display -->
+                        <div class="flex text-yellow-400">
+                            <!-- Loop to show stars based on rating number -->
+                            {% for i in range(experiencia.rating) %}
+                            <i class="fas fa-star text-xs"></i>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Destination badge -->
+                    <div class="mb-3">
+                        <span class="inline-block bg-primary-50 text-primary-700 text-xs px-3 py-1 rounded-full">
+                            <i class="fas fa-map-marker-alt mr-1"></i>{{ experiencia.destino.nombre }}
+                        </span>
+                    </div>
+                    
+                    <!-- Comment text -->
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        {{ experiencia.comentario }}
+                    </p>
+                    
+                    <!-- Admin actions - only shown to system owner -->
+                    {% if current_user.role == 'owner' %}
+                    <div class="mt-4 pt-3 border-t border-gray-100 flex justify-end">
+                        <!-- Delete button for owner -->
+                        <button class="text-red-500 hover:text-red-700 text-sm transition-colors">
+                            <i class="fas fa-trash mr-1"></i>Delete
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- If no experiences exist, show empty state -->
+            {% else %}
+            <div class="col-span-full text-center py-12">
+                <i class="fas fa-comment-dots text-5xl text-gray-300 mb-4"></i>
+                <p class="text-gray-500">No experiences yet. Be the first to share!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
