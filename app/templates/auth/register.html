@@ -1,0 +1,110 @@
+<!-- Registration page for new users -->
+<!-- Extends the base template -->
+{% extends "base.html" %}
+
+<!-- Page title for browser tab -->
+{% block title %}Registrarse - Nómada{% endblock %}
+
+<!-- Main content begins -->
+{% block content %}
+<!-- Full height container with green gradient background -->
+<div class="min-h-screen bg-gradient-to-br from-secondary-50 to-white py-16">
+    <!-- Centered container -->
+    <div class="container mx-auto px-4">
+        <!-- Medium width box - good for forms -->
+        <div class="max-w-md mx-auto">
+            <!-- White card with rounded corners and shadow -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden animate-scale-in">
+                <!-- Green header section -->
+                <div class="bg-secondary-500 py-8 text-center">
+                    <!-- Logo display -->
+                    <div class="flex items-center justify-center gap-0 mb-2">
+                        <span class="text-5xl font-bold text-white">N</span>
+                        <span class="text-5xl font-light text-white/90">ómada</span>
+                    </div>
+                    <!-- Welcome message for new users -->
+                    <p class="text-white/90 text-sm">Join our traveler community</p>
+                </div>
+                
+                <!-- Registration form container -->
+                <div class="p-8">
+                    <!-- Form sends data to auth.register route -->
+                    <form method="POST" action="{{ url_for('auth.register') }}">
+                        <!-- Full name input field -->
+                        <div class="mb-5">
+                            <label class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-user text-secondary-500 mr-2"></i>Full name
+                            </label>
+                            <!-- text type for regular text input -->
+                            <input type="text" name="name" required
+                                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent transition-all"
+                                   placeholder="Your full name">
+                        </div>
+                        
+                        <!-- Email input field -->
+                        <div class="mb-5">
+                            <label class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-envelope text-secondary-500 mr-2"></i>Email
+                            </label>
+                            <input type="email" name="email" required
+                                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent transition-all"
+                                   placeholder="your@email.com">
+                        </div>
+                        
+                        <!-- Password input field -->
+                        <div class="mb-5">
+                            <label class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-lock text-secondary-500 mr-2"></i>Password
+                            </label>
+                            <input type="password" name="password" required
+                                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent transition-all"
+                                   placeholder="Minimum 6 characters">
+                        </div>
+                        
+                        <!-- Confirm password field -->
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-lock text-secondary-500 mr-2"></i>Confirm password
+                            </label>
+                            <input type="password" name="confirm_password" required
+                                   class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent transition-all"
+                                   placeholder="••••••••">
+                        </div>
+                        
+                        <!-- Terms and conditions checkbox -->
+                        <div class="mb-6">
+                            <label class="flex items-start">
+                                <!-- Checkbox must be checked to submit -->
+                                <input type="checkbox" required class="mt-1 rounded border-gray-300 text-secondary-500 focus:ring-secondary-500">
+                                <span class="ml-2 text-sm text-gray-600">
+                                    I accept the 
+                                    <a href="#" class="text-secondary-600 hover:text-secondary-700 hover:underline">Terms and Conditions</a> 
+                                    and 
+                                    <a href="#" class="text-secondary-600 hover:text-secondary-700 hover:underline">Privacy Policy</a>
+                                </span>
+                            </label>
+                        </div>
+                        
+                        <!-- Submit button for registration -->
+                        <button type="submit" 
+                                class="w-full bg-secondary-500 hover:bg-secondary-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2">
+                            <i class="fas fa-user-plus"></i>
+                            Create Account
+                        </button>
+                    </form>
+                    
+                    <!-- Link to login page for existing users -->
+                    <div class="mt-6 text-center">
+                        <p class="text-gray-600 text-sm">
+                            Already have an account? 
+                            <a href="{{ url_for('auth.login') }}" class="text-secondary-600 hover:text-secondary-700 font-semibold hover:underline transition-all">
+                                Sign in here
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
