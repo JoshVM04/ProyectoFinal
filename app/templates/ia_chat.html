@@ -1,4 +1,4 @@
-<!-- AI chat assistant page -->
+ <!-- AI chat assistant page -->
 <!-- Users can ask questions about Costa Rica destinations -->
 {% extends "base.html" %}
 
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Send message to backend API
-            const response = await fetch('/ia-chat/api', {
+            const response = await fetch('/ia/chat', {
                 method: 'POST',              // Send data, not just get
                 headers: {
                     'Content-Type': 'application/json', // Tell server we're sending JSON
