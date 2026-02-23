@@ -1,8 +1,8 @@
- <!-- AI chat assistant page -->
+<!-- AI chat assistant page -->
 <!-- Users can ask questions about Costa Rica destinations -->
 {% extends "base.html" %}
 
-{% block title %}Asistente IA - Nómada{% endblock %}
+{% block title %}AI Assistant - Nómada{% endblock %}
 
 {% block content %}
 <!-- Gradient background page -->
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
         messageDiv.className = `flex items-start gap-3 mb-4 ${isUser ? 'justify-end' : ''}`;
         
         if (!isUser) {
-            // Bot message layout
+            // Bot message layout (left side with robot icon)
             messageDiv.innerHTML = `
                 <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0">
                     <i class="fas fa-robot text-white text-sm"></i>
@@ -171,13 +171,13 @@ document.addEventListener('DOMContentLoaded', function() {
         addTypingIndicator();
 
         try {
-            // Send message to backend API
+            // Send message to backend API - using the correct endpoint /ia/chat
             const response = await fetch('/ia/chat', {
                 method: 'POST',              // Send data, not just get
                 headers: {
                     'Content-Type': 'application/json', // Tell server we're sending JSON
                 },
-                body: JSON.stringify({ message: message }) // Convert message to JSON
+                body: JSON.stringify({ pregunta: message }) // Send as 'pregunta' to match backend
             });
             
             // Get response from server
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remove typing indicator
             removeTypingIndicator();
             // Show bot response
-            addMessage(data.response);
+            addMessage(data.respuesta);
         } catch (error) {
             // If anything goes wrong (network, server down, etc)
             removeTypingIndicator();

@@ -1,19 +1,23 @@
 # app/__init__.py
+# Flask application factory - initializes the app and registers all blueprints
+
 from flask import Flask
 from config import Config
 
 def create_app():
+    """Create and configure the Flask application"""
+    
+    # Initialize Flask app with configuration
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # SOLO MAIN POR AHORA
+    # Register main routes (home page, static pages)
     from app.routes.main import main_bp
     app.register_blueprint(main_bp)
 
-    from app.routes.ia_chat import IAChatRoute
-    ia_chat = IAChatRoute()
-    app.register_blueprint(ia_chat.bp)
-    
-
+    # Register AI chat routes with /ia prefix
+    # All chat URLs will start with /ia (e.g., /ia, /ia/chat)
+    from app.routes.ia_chat import ia_chat_bp
+    app.register_blueprint(ia_chat_bp, url_prefix='/ia')
 
     return app

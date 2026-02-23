@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Nómada | Descubre la Costa Rica Auténtica{% endblock %}
+{% block title %}Nómada | Discover Authentic Costa Rica{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* Hero section */
+    /* Hero section - main landing area with background image */
     .hero-section {
         background: linear-gradient(135deg, rgba(26, 59, 79, 0.85) 0%, rgba(26, 59, 79, 0.45) 100%),
                     url("static/images/hero/foto-hero.jpg") center/cover no-repeat;
@@ -15,6 +15,7 @@
         overflow: hidden;
     }
     
+    /* Animated overlay effect */
     .hero-section::before {
         content: '';
         position: absolute;
@@ -29,6 +30,7 @@
         50% { opacity: 0.6; }
     }
     
+    /* Gradient fade at bottom of hero */
     .hero-section::after {
         content: '';
         position: absolute;
@@ -40,12 +42,14 @@
         pointer-events: none;
     }
     
+    /* Floating particles animation container */
     .hero-particles {
         position: absolute;
         inset: 0;
         pointer-events: none;
     }
     
+    /* Individual particle style */
     .particle {
         position: absolute;
         width: 3px;
@@ -61,7 +65,7 @@
         100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
     }
     
-    /* Stats cards */
+    /* Statistics cards styling */
     .stat-card {
         background: white;
         border: 1px solid #e9ecef;
@@ -72,6 +76,7 @@
         overflow: hidden;
     }
     
+    /* Radial gradient effect on hover */
     .stat-card::before {
         content: '';
         position: absolute;
@@ -120,7 +125,7 @@
         font-weight: 500;
     }
     
-    /* Category cards */
+    /* Category cards styling */
     .category-card {
         background: white;
         border-radius: 16px;
@@ -191,7 +196,7 @@
         text-shadow: 0 4px 8px rgba(0,0,0,0.4);
     }
     
-    /* Province dropdown */
+    /* Province dropdown styling */
     .province-dropdown {
         background: white;
         border-radius: 12px;
@@ -208,6 +213,7 @@
         overflow: hidden;
     }
     
+    /* Shine effect on hover */
     .province-btn::before {
         content: '';
         position: absolute;
@@ -230,7 +236,7 @@
         box-shadow: 0 5px 15px -5px rgba(74, 124, 89, 0.3);
     }
     
-    /* Testimonial cards */
+    /* Testimonial cards styling */
     .testimonial-card {
         background: white;
         border: 1px solid #e9ecef;
@@ -286,7 +292,7 @@
         box-shadow: 0 10px 20px -5px rgba(26, 59, 79, 0.3);
     }
     
-    /* IA Card */
+    /* AI Card styling - special gradient background */
     .ia-card {
         background: linear-gradient(135deg, #1A3B4F 0%, #0F2A38 100%);
         border-radius: 24px;
@@ -335,7 +341,7 @@
         background: rgba(74, 124, 89, 0.5);
     }
     
-    /* Loading animation */
+    /* Loading spinner animation */
     .loading-spinner {
         width: 40px;
         height: 40px;
@@ -353,93 +359,93 @@
 {% endblock %}
 
 {% block content %}
-<!-- HERO SECTION con partículas animadas -->
+<!-- HERO SECTION with animated particles -->
 <section class="hero-section">
     <div class="hero-particles" id="hero-particles"></div>
     
     <div class="container mx-auto px-4 sm:px-6 relative z-10">
         <div class="max-w-3xl" data-aos="fade-up" data-aos-duration="1000">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-white mb-4 leading-tight">
-                Descubre la <span class="text-secondary-500 animate-pulse">Costa Rica</span> auténtica
+                Discover the <span class="text-secondary-500 animate-pulse">authentic Costa Rica</span>
             </h1>
             
             <p class="text-base sm:text-lg text-gray-200 mb-8 max-w-2xl" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
-                Plataforma de experiencias turísticas para viajeros modernos. 
-                Conectamos con los destinos más auténticos y experiencias memorables.
+                Travel experience platform for modern explorers. 
+                We connect you with the most authentic destinations and memorable experiences.
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
                 <a href="#categorias" class="group inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-primary-500 rounded-full hover:bg-primary-600 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105">
-                    Explorar Experiencias
+                    Explore Experiences
                     <i class="fas fa-arrow-right ml-2 text-xs group-hover:translate-x-2 transition-transform"></i>
                 </a>
                 
-                <a href="#ia-chat" class="group inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-gray-700 bg-white rounded-full hover:bg-gray-50 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105">
+                <a href="/ia" class="group inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-gray-700 bg-white rounded-full hover:bg-gray-50 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105">
                     <i class="fas fa-robot text-primary-500 mr-2 text-sm group-hover:rotate-12 transition-transform"></i>
-                    Asistente IA
+                    AI Assistant
                 </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- STATS con animaciones -->
+<!-- STATS with animations -->
 <section class="py-12 bg-white">
     <div class="container mx-auto px-4 sm:px-6">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="stat-card text-center" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
                 <div class="stat-number">16</div>
-                <div class="stat-label">Destinos Únicos</div>
+                <div class="stat-label">Unique Destinations</div>
             </div>
             <div class="stat-card text-center" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                 <div class="stat-number">4.8</div>
-                <div class="stat-label">Rating Promedio</div>
+                <div class="stat-label">Average Rating</div>
             </div>
             <div class="stat-card text-center" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
                 <div class="stat-number">100%</div>
-                <div class="stat-label">Auténticas</div>
+                <div class="stat-label">Authentic</div>
             </div>
             <div class="stat-card text-center" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
                 <div class="stat-number">24/7</div>
-                <div class="stat-label">Soporte</div>
+                <div class="stat-label">Support</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CATEGORÍAS con animaciones -->
+<!-- CATEGORIES with animations -->
 <section id="categorias" class="py-12 bg-gray-50">
     <div class="container mx-auto px-4 sm:px-6">
-        <!-- Encabezado -->
+        <!-- Header -->
         <div class="text-center mb-8" data-aos="fade-up" data-aos-duration="800">
-            <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-2">Categorías</h2>
-            <p class="text-sm text-gray-500">Descubre por tipo de experiencia</p>
+            <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-2">Categories</h2>
+            <p class="text-sm text-gray-500">Discover by experience type</p>
         </div>
         
-        <!-- Grid de categorías -->
+        <!-- Categories grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Playas -->
+            <!-- Beaches -->
             <div class="category-card group" data-category="playas" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
                 <div class="category-image">
                     <img src="static/images/categorias/imagen-playa.jpg" 
-                         alt="Playas"
+                         alt="Beaches"
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop'">
                     <div class="category-overlay"></div>
-                    <h3 class="category-title">Playas</h3>
+                    <h3 class="category-title">Beaches</h3>
                 </div>
                 <div class="p-4">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs px-2 py-1 bg-primary-50 text-primary-600 rounded-full font-medium">
-                            4 destinos
+                            4 destinations
                         </span>
                         <button class="province-toggle w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-500 transition-all duration-300 hover:scale-110">
                             <i class="fas fa-chevron-down text-xs"></i>
                         </button>
                     </div>
                     
-                    <!-- Dropdown de provincias -->
+                    <!-- Province dropdown -->
                     <div class="province-dropdown mt-3 hidden" data-province-dropdown>
-                        <p class="text-xs text-gray-500 mb-2 font-medium px-3 pt-3">Disponible en:</p>
+                        <p class="text-xs text-gray-500 mb-2 font-medium px-3 pt-3">Available in:</p>
                         <div class="space-y-1 pb-2">
                             <button class="province-btn w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center justify-between" 
                                     data-category="playas" data-province="guanacaste">
@@ -462,19 +468,19 @@
                 </div>
             </div>
             
-            <!-- Parques Nacionales -->
+            <!-- National Parks -->
             <div class="category-card group" data-category="parques" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                 <div class="category-image">
                     <img src="static/images/categorias/imagen-parquenacio.png" 
-                         alt="Parques"
+                         alt="Parks"
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=300&fit=crop'">
                     <div class="category-overlay"></div>
-                    <h3 class="category-title">Parques</h3>
+                    <h3 class="category-title">Parks</h3>
                 </div>
                 <div class="p-4">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs px-2 py-1 bg-primary-50 text-primary-600 rounded-full font-medium">
-                            4 destinos
+                            4 destinations
                         </span>
                         <button class="province-toggle w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-500 transition-all duration-300 hover:scale-110">
                             <i class="fas fa-chevron-down text-xs"></i>
@@ -482,7 +488,7 @@
                     </div>
                     
                     <div class="province-dropdown mt-3 hidden" data-province-dropdown>
-                        <p class="text-xs text-gray-500 mb-2 font-medium px-3 pt-3">Disponible en:</p>
+                        <p class="text-xs text-gray-500 mb-2 font-medium px-3 pt-3">Available in:</p>
                         <div class="space-y-1 pb-2">
                             <button class="province-btn w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center justify-between" 
                                     data-category="parques" data-province="alajuela">
@@ -521,19 +527,19 @@
                 </div>
             </div>
             
-            <!-- Aventura -->
+            <!-- Adventure -->
             <div class="category-card group" data-category="aventura" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
                 <div class="category-image">
                     <img src="static/images/categorias/imagen-aventura.jpg" 
-                         alt="Aventura"
+                         alt="Adventure"
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1536152471326-6428c2f4e7e1?w=400&h=300&fit=crop'">
                     <div class="category-overlay"></div>
-                    <h3 class="category-title">Aventura</h3>
+                    <h3 class="category-title">Adventure</h3>
                 </div>
                 <div class="p-4">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs px-2 py-1 bg-primary-50 text-primary-600 rounded-full font-medium">
-                            4 destinos
+                            4 destinations
                         </span>
                         <button class="province-toggle w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-500 transition-all duration-300 hover:scale-110">
                             <i class="fas fa-chevron-down text-xs"></i>
@@ -541,7 +547,7 @@
                     </div>
                     
                     <div class="province-dropdown mt-3 hidden" data-province-dropdown>
-                        <p class="text-xs text-gray-500 mb-2 font-medium px-3 pt-3">Disponible en:</p>
+                        <p class="text-xs text-gray-500 mb-2 font-medium px-3 pt-3">Available in:</p>
                         <div class="space-y-1 pb-2">
                             <button class="province-btn w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center justify-between" 
                                     data-category="aventura" data-province="alajuela">
@@ -572,19 +578,19 @@
                 </div>
             </div>
             
-            <!-- Aguas Termales -->
+            <!-- Hot Springs -->
             <div class="category-card group" data-category="termales" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
                 <div class="category-image">
                     <img src="static/images/categorias/imagen-termal.jpg" 
-                         alt="Termales"
+                         alt="Hot Springs"
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop'">
                     <div class="category-overlay"></div>
-                    <h3 class="category-title">Termales</h3>
+                    <h3 class="category-title">Hot Springs</h3>
                 </div>
                 <div class="p-4">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs px-2 py-1 bg-primary-50 text-primary-600 rounded-full font-medium">
-                            4 destinos
+                            4 destinations
                         </span>
                         <button class="province-toggle w-8 h-8 rounded-full flex items-center justify-center bg-gray-50 hover:bg-primary-50 hover:text-primary-500 transition-all duration-300 hover:scale-110">
                             <i class="fas fa-chevron-down text-xs"></i>
@@ -592,7 +598,7 @@
                     </div>
                     
                     <div class="province-dropdown mt-3 hidden" data-province-dropdown>
-                        <p class="text-xs text-gray-500 mb-2 font-medium px-3 pt-3">Disponible en:</p>
+                        <p class="text-xs text-gray-500 mb-2 font-medium px-3 pt-3">Available in:</p>
                         <div class="space-y-1 pb-2">
                             <button class="province-btn w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center justify-between" 
                                     data-category="termales" data-province="alajuela">
@@ -626,7 +632,7 @@
     </div>
 </section>
 
-<!-- SECCIÓN DESTINOS DINÁMICA -->
+<!-- DYNAMIC DESTINATIONS SECTION -->
 <section id="destinos-provincia" class="py-12 bg-white hidden" data-destinos-section>
     <div class="container mx-auto px-4 sm:px-6">
         <div class="flex items-center justify-between mb-6">
@@ -643,23 +649,23 @@
     </div>
 </section>
 
-<!-- TESTIMONIOS -->
+<!-- TESTIMONIALS -->
 <section id="testimonios" class="py-12 bg-gray-50">
     <div class="container mx-auto px-4 sm:px-6">
         <div class="text-center mb-8" data-aos="fade-up" data-aos-duration="800">
             <span class="inline-block px-3 py-1 rounded-full bg-primary-50 text-primary-600 text-xs font-medium mb-3 animate-pulse">
-                Experiencias
+                Experiences
             </span>
             <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-2">
-                Lo que dicen nuestros viajeros
+                What our travelers say
             </h2>
             <p class="text-sm text-gray-500 max-w-2xl mx-auto">
-                Historias reales de quienes ya vivieron la aventura con Nómada
+                Real stories from those who already lived the adventure with Nómada
             </p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Testimonio 1 -->
+            <!-- Testimonial 1 -->
             <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
                 <div class="flex items-center mb-4">
                     <div class="testimonial-avatar">AM</div>
@@ -673,14 +679,14 @@
                     </div>
                 </div>
                 <p class="text-sm text-gray-600 mb-3 leading-relaxed">
-                    "Playa Conchal superó todas mis expectativas. La atención al detalle y la calidad del servicio son excepcionales."
+                    "Playa Conchal exceeded all my expectations. The attention to detail and service quality are exceptional."
                 </p>
                 <div class="text-xs text-gray-500">
-                    <i class="fas fa-map-marker-alt mr-1 text-primary-500"></i>Playa Conchal • Hace 2 semanas
+                    <i class="fas fa-map-marker-alt mr-1 text-primary-500"></i>Playa Conchal • 2 weeks ago
                 </div>
             </div>
             
-            <!-- Testimonio 2 -->
+            <!-- Testimonial 2 -->
             <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                 <div class="flex items-center mb-4">
                     <div class="testimonial-avatar">CR</div>
@@ -694,14 +700,14 @@
                     </div>
                 </div>
                 <p class="text-sm text-gray-600 mb-3 leading-relaxed">
-                    "La experiencia en el Parque Nacional Arenal fue increíble. Los guías son expertos y la organización impecable."
+                    "The experience at Arenal National Park was incredible. The guides are experts and the organization was impeccable."
                 </p>
                 <div class="text-xs text-gray-500">
-                    <i class="fas fa-map-marker-alt mr-1 text-primary-500"></i>Parque Arenal • Hace 1 mes
+                    <i class="fas fa-map-marker-alt mr-1 text-primary-500"></i>Arenal Park • 1 month ago
                 </div>
             </div>
             
-            <!-- Testimonio 3 -->
+            <!-- Testimonial 3 -->
             <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
                 <div class="flex items-center mb-4">
                     <div class="testimonial-avatar">SG</div>
@@ -715,17 +721,17 @@
                     </div>
                 </div>
                 <p class="text-sm text-gray-600 mb-3 leading-relaxed">
-                    "Rafting en el Río Pacuare fue la mejor aventura de mi vida. Seguridad, profesionalismo y adrenalina pura."
+                    "Rafting on the Pacuare River was the best adventure of my life. Safety, professionalism and pure adrenaline."
                 </p>
                 <div class="text-xs text-gray-500">
-                    <i class="fas fa-map-marker-alt mr-1 text-primary-500"></i>Río Pacuare • Hace 3 días
+                    <i class="fas fa-map-marker-alt mr-1 text-primary-500"></i>Pacuare River • 3 days ago
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- IA CHAT -->
+<!-- AI CHAT -->
 <section id="ia-chat" class="py-12 bg-white">
     <div class="container mx-auto px-4 sm:px-6">
         <div class="ia-card" data-aos="zoom-in" data-aos-duration="1000">
@@ -733,14 +739,14 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div>
                         <span class="inline-block px-3 py-1 rounded-full bg-secondary-500/20 text-secondary-500 text-xs font-medium mb-4 animate-pulse">
-                            Innovación
+                            Innovation
                         </span>
                         <h2 class="text-2xl font-semibold text-white mb-3">
-                            Asistente de Viajes <span class="text-secondary-500">IA</span>
+                            AI <span class="text-secondary-500">Travel Assistant</span>
                         </h2>
                         <p class="text-gray-200 text-sm mb-6 leading-relaxed">
-                            Recomendaciones personalizadas para tu viaje perfecto. 
-                            Obtén sugerencias basadas en tus preferencias.
+                            Personalized recommendations for your perfect trip. 
+                            Get suggestions based on your preferences.
                         </p>
                         
                         <div class="space-y-3">
@@ -748,25 +754,25 @@
                                 <div class="ia-feature-icon">
                                     <i class="fas fa-check text-secondary-500 text-xs"></i>
                                 </div>
-                                <span class="text-gray-200 text-sm group-hover:text-white transition-colors">Recomendaciones personalizadas</span>
+                                <span class="text-gray-200 text-sm group-hover:text-white transition-colors">Personalized recommendations</span>
                             </div>
                             <div class="ia-feature flex items-center group">
                                 <div class="ia-feature-icon">
                                     <i class="fas fa-check text-secondary-500 text-xs"></i>
                                 </div>
-                                <span class="text-gray-200 text-sm group-hover:text-white transition-colors">Itinerarios optimizados</span>
+                                <span class="text-gray-200 text-sm group-hover:text-white transition-colors">Optimized itineraries</span>
                             </div>
                             <div class="ia-feature flex items-center group">
                                 <div class="ia-feature-icon">
                                     <i class="fas fa-check text-secondary-500 text-xs"></i>
                                 </div>
-                                <span class="text-gray-200 text-sm group-hover:text-white transition-colors">Consejos locales exclusivos</span>
+                                <span class="text-gray-200 text-sm group-hover:text-white transition-colors">Exclusive local tips</span>
                             </div>
                             <div class="ia-feature flex items-center group">
                                 <div class="ia-feature-icon">
                                     <i class="fas fa-check text-secondary-500 text-xs"></i>
                                 </div>
-                                <span class="text-gray-200 text-sm group-hover:text-white transition-colors">Disponible 24/7</span>
+                                <span class="text-gray-200 text-sm group-hover:text-white transition-colors">Available 24/7</span>
                             </div>
                         </div>
                     </div>
@@ -776,27 +782,27 @@
                             <div class="w-16 h-16 mx-auto lg:mx-0 mb-4 rounded-xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center animate-float">
                                 <i class="fas fa-robot text-white text-2xl"></i>
                             </div>
-                            <h3 class="text-lg font-semibold text-white mb-3">¿Cómo funciona?</h3>
+                            <h3 class="text-lg font-semibold text-white mb-3">How it works?</h3>
                             <div class="space-y-2 text-left">
                                 <div class="flex items-center text-gray-200 text-xs group">
                                     <span class="w-6 h-6 rounded-full bg-secondary-500 flex items-center justify-center text-white text-xs font-bold mr-2 group-hover:scale-110 transition-transform">1</span>
-                                    Haz clic en "Iniciar Chat"
+                                    Click "Start Chat"
                                 </div>
                                 <div class="flex items-center text-gray-200 text-xs group">
                                     <span class="w-6 h-6 rounded-full bg-secondary-500 flex items-center justify-center text-white text-xs font-bold mr-2 group-hover:scale-110 transition-transform">2</span>
-                                    Describe tus preferencias
+                                    Describe your preferences
                                 </div>
                                 <div class="flex items-center text-gray-200 text-xs group">
                                     <span class="w-6 h-6 rounded-full bg-secondary-500 flex items-center justify-center text-white text-xs font-bold mr-2 group-hover:scale-110 transition-transform">3</span>
-                                    Recibe recomendaciones
+                                    Get recommendations
                                 </div>
                             </div>
                         </div>
                         
-                        <button class="w-full lg:w-auto px-6 py-3 rounded-full bg-secondary-500 text-white font-medium text-sm hover:bg-secondary-600 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 group">
+                        <a href="/ia" class="w-full lg:w-auto px-6 py-3 rounded-full bg-secondary-500 text-white font-medium text-sm hover:bg-secondary-600 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 group inline-flex items-center justify-center">
                             <i class="fas fa-comment-alt mr-2 group-hover:rotate-12 transition-transform"></i>
-                            Iniciar Chat
-                        </button>
+                            Start Chat
+                        </a>
                     </div>
                 </div>
             </div>
@@ -807,30 +813,31 @@
 
 {% block extra_js %}
 <script>
-    // ===== DATOS DE DESTINOS (16 destinos) =====
+    // ===== DESTINATIONS DATA (16 destinations) =====
+    // This object contains all destination information organized by category and province
     window.destinosData = {
         playas: {
             guanacaste: [
-                { id: 1, nombre: "Playa Conchal", imagen: "static/images/destinos/thumbnails/playas/ReservaConchal.jpg", rating: 4.9, precio: 65000, descripcion: "Arena de conchas blancas", provincia: "Guanacaste", categoria: "playas", slug: "playa-conchal", destacado: true },
-                { id: 2, nombre: "Playa Manuel Antonio", imagen: "static/images/destinos/thumbnails/playas/playamanuel.400x300.jpg", rating: 4.8, precio: 40000, descripcion: "Surf y vida nocturna", provincia: "Guanacaste", categoria: "playas", slug: "playa-tamarindo", destacado: false }
+                { id: 1, nombre: "Playa Conchal", imagen: "static/images/destinos/thumbnails/playas/ReservaConchal.jpg", rating: 4.9, precio: 65000, descripcion: "White shell sand beach", provincia: "Guanacaste", categoria: "playas", slug: "playa-conchal", destacado: true },
+                { id: 2, nombre: "Playa Manuel Antonio", imagen: "static/images/destinos/thumbnails/playas/playamanuel.400x300.jpg", rating: 4.8, precio: 40000, descripcion: "Surf and nightlife", provincia: "Guanacaste", categoria: "playas", slug: "playa-tamarindo", destacado: false }
             ],
             limon: [
-                { id: 3, nombre: "Playa Punta Uva", imagen: "static/images/destinos/thumbnails/playas/aerial-Punta-Uva-Manuel-Pinto-2.jpg", rating: 4.8, precio: 45000, descripcion: "Aguas cristalinas", provincia: "Limón", categoria: "playas", slug: "playa-punta-uva", destacado: true },
-                { id: 4, nombre: "Playa Cahuita", imagen: "static/images/destinos/thumbnails/playas/cahuita.400x300.jpg", rating: 4.7, precio: 35000, descripcion: "Arrecife de coral", provincia: "Limón", categoria: "playas", slug: "playa-cahuita", destacado: false }
+                { id: 3, nombre: "Playa Punta Uva", imagen: "static/images/destinos/thumbnails/playas/aerial-Punta-Uva-Manuel-Pinto-2.jpg", rating: 4.8, precio: 45000, descripcion: "Crystal clear waters", provincia: "Limón", categoria: "playas", slug: "playa-punta-uva", destacado: true },
+                { id: 4, nombre: "Playa Cahuita", imagen: "static/images/destinos/thumbnails/playas/cahuita.400x300.jpg", rating: 4.7, precio: 35000, descripcion: "Coral reef", provincia: "Limón", categoria: "playas", slug: "playa-cahuita", destacado: false }
             ]
         },
         parques: {
             alajuela: [
-                { id: 5, nombre: "Parque Nacional Volcán Arenal", imagen: "static/images/destinos/thumbnails/parques/ParqueVolcanArenal.jpg", rating: 4.7, precio: 32000, descripcion: "Volcán activo", provincia: "Alajuela", categoria: "parques", slug: "volcan-arenal", destacado: true }
+                { id: 5, nombre: "Parque Nacional Volcán Arenal", imagen: "static/images/destinos/thumbnails/parques/ParqueVolcanArenal.jpg", rating: 4.7, precio: 32000, descripcion: "Active volcano", provincia: "Alajuela", categoria: "parques", slug: "volcan-arenal", destacado: true }
             ],
             guanacaste: [
-                { id: 6, nombre: "Parque Nacional Rincón de la Vieja", imagen: "static/images/destinos/thumbnails/parques/ParqueRincon.jpeg", rating: 4.6, precio: 28000, descripcion: "Volcanes y géiseres", provincia: "Guanacaste", categoria: "parques", slug: "rincon-vieja", destacado: false }
+                { id: 6, nombre: "Parque Nacional Rincón de la Vieja", imagen: "static/images/destinos/thumbnails/parques/ParqueRincon.jpeg", rating: 4.6, precio: 28000, descripcion: "Volcanoes and geysers", provincia: "Guanacaste", categoria: "parques", slug: "rincon-vieja", destacado: false }
             ],
             limon: [
-                { id: 7, nombre: "Parque Nacional Tortuguero", imagen: "static/images/destinos/thumbnails/parques/tortugueroparque.jpg", rating: 4.8, precio: 35000, descripcion: "Canales y tortugas", provincia: "Limón", categoria: "parques", slug: "tortuguero", destacado: true }
+                { id: 7, nombre: "Parque Nacional Tortuguero", imagen: "static/images/destinos/thumbnails/parques/tortugueroparque.jpg", rating: 4.8, precio: 35000, descripcion: "Canals and turtles", provincia: "Limón", categoria: "parques", slug: "tortuguero", destacado: true }
             ],
             puntarenas: [
-                { id: 8, nombre: "Parque Nacional Corcovado", imagen: "static/images/destinos/thumbnails/parques/corcovadoparque.jpg", rating: 4.9, precio: 42000, descripcion: "Biodiversidad única", provincia: "Puntarenas", categoria: "parques", slug: "corcovado", destacado: true }
+                { id: 8, nombre: "Parque Nacional Corcovado", imagen: "static/images/destinos/thumbnails/parques/corcovadoparque.jpg", rating: 4.9, precio: 42000, descripcion: "Unique biodiversity", provincia: "Puntarenas", categoria: "parques", slug: "corcovado", destacado: true }
             ]
         },
         aventura: {
@@ -847,14 +854,14 @@
         },
         termales: {
             alajuela: [
-                { id: 13, nombre: "Tabacón Hot Springs", imagen: "static/images/destinos/thumbnails/termales/TermalesTabacon.jpeg", rating: 4.9, precio: 60000, descripcion: "Termales de lujo", provincia: "Alajuela", categoria: "termales", slug: "tabacon", destacado: true },
-                { id: 14, nombre: "Termales de San Carlos", imagen: "static/images/destinos/thumbnails/termales/AguasTermalesbaldi.jpg", rating: 4.6, precio: 35000, descripcion: "Experiencia local", provincia: "Alajuela", categoria: "termales", slug: "san-carlos", destacado: false }
+                { id: 13, nombre: "Tabacón Hot Springs", imagen: "static/images/destinos/thumbnails/termales/TermalesTabacon.jpeg", rating: 4.9, precio: 60000, descripcion: "Luxury hot springs", provincia: "Alajuela", categoria: "termales", slug: "tabacon", destacado: true },
+                { id: 14, nombre: "Termales de San Carlos", imagen: "static/images/destinos/thumbnails/termales/AguasTermalesbaldi.jpg", rating: 4.6, precio: 35000, descripcion: "Local experience", provincia: "Alajuela", categoria: "termales", slug: "san-carlos", destacado: false }
             ],
             cartago: [
-                { id: 15, nombre: "Termales de Orosi", imagen: "static/images/destinos/thumbnails/termales/TermalesHaciendaOrosi.jpg", rating: 4.5, precio: 30000, descripcion: "Tranquilas", provincia: "Cartago", categoria: "termales", slug: "orosi", destacado: false }
+                { id: 15, nombre: "Termales de Orosi", imagen: "static/images/destinos/thumbnails/termales/TermalesHaciendaOrosi.jpg", rating: 4.5, precio: 30000, descripcion: "Relaxing", provincia: "Cartago", categoria: "termales", slug: "orosi", destacado: false }
             ],
             guanacaste: [
-                { id: 16, nombre: "Termales de Río Negro", imagen: "static/images/destinos/thumbnails/termales/termalrionegro.jpg", rating: 4.4, precio: 28000, descripcion: "Naturales", provincia: "Guanacaste", categoria: "termales", slug: "rio-negro", destacado: false }
+                { id: 16, nombre: "Termales de Río Negro", imagen: "static/images/destinos/thumbnails/termales/termalrionegro.jpg", rating: 4.4, precio: 28000, descripcion: "Natural", provincia: "Guanacaste", categoria: "termales", slug: "rio-negro", destacado: false }
             ]
         }
     };

@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Nómada | Experiencias Auténticas en Costa Rica{% endblock %}</title>
+    <title>{% block title %}Nómada | Authentic Costa Rica Experiences{% endblock %}</title>
     
-    <!-- Meta tags SEO optimizados -->
-    <meta name="description" content="Plataforma de experiencias turísticas en Costa Rica. Descubre los destinos más auténticos y vive la verdadera esencia del país.">
-    <meta name="keywords" content="Costa Rica, turismo, experiencias, playas, parques nacionales, aventura, aguas termales, viajes">
+    <!-- SEO optimized meta tags -->
+    <meta name="description" content="Travel experience platform in Costa Rica. Discover the most authentic destinations and live the true essence of the country.">
+    <meta name="keywords" content="Costa Rica, tourism, experiences, beaches, national parks, adventure, hot springs, travel">
     <meta name="author" content="Nómada">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nomada.cr/">
-    <meta property="og:title" content="Nómada | Experiencias Auténticas en Costa Rica">
-    <meta property="og:description" content="Descubre la belleza auténtica de Costa Rica con experiencias cuidadosamente seleccionadas para viajeros modernos.">
+    <meta property="og:title" content="Nómada | Authentic Experiences in Costa Rica">
+    <meta property="og:description" content="Discover the authentic beauty of Costa Rica with carefully selected experiences for modern travelers.">
     <meta property="og:image" content="static/images/hero/foto-hero.jpg">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://nomada.cr/">
-    <meta property="twitter:title" content="Nómada | Experiencias Auténticas en Costa Rica">
-    <meta property="twitter:description" content="Descubre la belleza auténtica de Costa Rica con experiencias cuidadosamente seleccionadas para viajeros modernos.">
+    <meta property="twitter:title" content="Nómada | Authentic Experiences in Costa Rica">
+    <meta property="twitter:description" content="Discover the authentic beauty of Costa Rica with carefully selected experiences for modern travelers.">
     <meta property="twitter:image" content="static/images/hero/foto-hero.jpg">
     
     <!-- Favicon -->
@@ -31,15 +31,15 @@
     <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon/favicon-16x16.png">
     <link rel="manifest" href="static/images/favicon/site.webmanifest">
     
-    <!-- Fonts Premium - MONTSERRAT ÚNICAMENTE -->
+    <!-- Premium Fonts - MONTSERRAT ONLY -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Iconos -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- AOS Animations (para scroll effects) -->
+    <!-- AOS Animations (for scroll effects) -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <!-- Tailwind CSS -->
@@ -125,14 +125,14 @@
         }
     </script>
     
-    <!-- Tu CSS personalizado -->
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="static/css/main.css">
     
     {% block extra_css %}{% endblock %}
 </head>
 <body class="font-sans antialiased text-gray-700 bg-white overflow-x-hidden">
     
-    <!-- Preloader con animación -->
+    <!-- Animated preloader -->
     <div id="preloader" class="fixed inset-0 bg-white z-[9999] flex items-center justify-center transition-opacity duration-500">
         <div class="text-center">
             <div class="w-16 h-16 mx-auto mb-4 relative">
@@ -142,15 +142,15 @@
                     <span class="text-white font-semibold text-sm">N</span>
                 </div>
             </div>
-            <div class="text-sm text-gray-500 font-medium animate-pulse">Cargando experiencias...</div>
+            <div class="text-sm text-gray-500 font-medium animate-pulse">Loading experiences...</div>
         </div>
     </div>
 
-    <!-- ===== NAVBAR PROFESIONAL ===== -->
+    <!-- ===== PROFESSIONAL NAVBAR ===== -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm transition-all duration-300">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <nav class="flex items-center justify-between h-16">
-                <!-- LOGO que recarga la página -->
+                <!-- LOGO that reloads the page -->
                 <button onclick="window.location.reload()" class="flex items-center gap-0 group shrink-0 focus:outline-none cursor-pointer">
                     <span class="text-3xl md:text-4xl font-bold text-primary-500 group-hover:text-primary-600 transition-all duration-300 group-hover:scale-105">
                         N
@@ -160,9 +160,15 @@
                     </span>
                 </button>
 
+                <!-- Language selector -->
+                <div class="flex items-center gap-2 mx-4">
+                    <a href="?lang=en" class="text-xs px-2 py-1 rounded {% if session.get('lang') == 'en' %}bg-primary-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} hover:bg-primary-600 hover:text-white transition-all">EN</a>
+                    <a href="?lang=es" class="text-xs px-2 py-1 rounded {% if session.get('lang') == 'es' %}bg-primary-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} hover:bg-primary-600 hover:text-white transition-all">ES</a>
+                </div>
+
                 <div class="flex-1"></div>
 
-                <!-- MENÚ HAMBURGUESA con animación -->
+                <!-- Hamburger menu with animation -->
                 <button id="menu-hamburguesa" 
                         class="flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full bg-white border border-gray-200 hover:border-primary-500 hover:shadow-md transition-all duration-300 hover:scale-110">
                     <i class="fas fa-bars text-gray-600 text-lg md:text-xl"></i>
@@ -170,38 +176,38 @@
             </nav>
         </div>
 
-        <!-- MENÚ DESPLEGABLE con animación -->
+        <!-- Dropdown menu with animation -->
         <div id="menu-desplegable" class="hidden absolute top-full right-4 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50 animate-slide-down">
             <a href="experiencias.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
                 <i class="fas fa-compass text-primary-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Experiencias</span>
+                <span class="text-gray-700 text-sm font-medium">Experiences</span>
             </a>
             
-            <a href="ia-chat.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
+            <a href="/ia" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
                 <i class="fas fa-robot text-secondary-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">IA Chat</span>
+                <span class="text-gray-700 text-sm font-medium">AI Assistant</span>
             </a>
             
             <div class="border-t border-gray-100 my-1"></div>
             
             <a href="auth/login.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
                 <i class="fas fa-sign-in-alt text-gray-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Iniciar sesión</span>
+                <span class="text-gray-700 text-sm font-medium">Sign In</span>
             </a>
             
             <a href="auth/register.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
                 <i class="fas fa-user-plus text-gray-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Registrarse</span>
+                <span class="text-gray-700 text-sm font-medium">Register</span>
             </a>
         </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- MAIN CONTENT -->
     <main class="overflow-hidden pt-16">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- FOOTER PROFESIONAL -->
+    <!-- PROFESSIONAL FOOTER -->
     <footer class="bg-primary-500 text-white">
         <div class="container mx-auto px-4 sm:px-6 py-12">
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -212,8 +218,8 @@
                         <span class="text-4xl font-light text-white/90">omada</span>
                     </div>
                     <p class="text-gray-200 mb-6 text-sm leading-relaxed max-w-md">
-                        Plataforma de experiencias turísticas en Costa Rica. 
-                        Conectamos viajeros modernos con experiencias auténticas.
+                        Travel experience platform in Costa Rica. 
+                        We connect modern travelers with unforgettable experiences.
                     </p>
                     <div class="flex space-x-3">
                         <a href="#" class="social-icon w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-secondary-500 transition-all duration-300 hover:scale-110">
@@ -228,36 +234,35 @@
                     </div>
                 </div>
                 
-                <!-- Links con animaciones -->
+                <!-- Links with animations -->
                 <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
-                    <h4 class="text-sm font-semibold mb-4 text-white">Explorar</h4>
+                    <h4 class="text-sm font-semibold mb-4 text-white">Explore</h4>
                     <ul class="space-y-2">
-                        <li><a href="#playas" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Playas</a></li>
-                        <li><a href="#parques" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Parques</a></li>
-                        <li><a href="#aventura" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Aventura</a></li>
-                        <li><a href="#termales" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Termales</a></li>
+                        <li><a href="#playas" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Beaches</a></li>
+                        <li><a href="#parques" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Parks</a></li>
+                        <li><a href="#aventura" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Adventure</a></li>
+                        <li><a href="#termales" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Hot Springs</a></li>
                     </ul>
                 </div>
                 
                 <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                     <h4 class="text-sm font-semibold mb-4 text-white">Nómada</h4>
                     <ul class="space-y-2">
-                        <li><a href="experiencias.html" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Experiencias</a></li>
-                        <li><a href="ia-chat.html" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">IA Chat</a></li>
-                        <li><a href="#" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Sobre nosotros</a></li>
+                        <li><a href="experiencias.html" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Experiences</a></li>
+                        <li><a href="/ia" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">AI Assistant</a></li>
                     </ul>
                 </div>
                 
                 <div data-aos="fade-left" data-aos-delay="300" data-aos-duration="800">
-                    <h4 class="text-sm font-semibold mb-4 text-white">Contacto</h4>
+                    <h4 class="text-sm font-semibold mb-4 text-white">Contact</h4>
                     <ul class="space-y-2">
                         <li class="flex items-start text-sm group">
                             <i class="fas fa-envelope text-secondary-500 mr-2 mt-0.5 text-xs group-hover:scale-110 transition-transform"></i>
-                            <span class="text-gray-200 group-hover:text-white transition-colors">hola@nomada.cr</span>
+                            <span class="text-gray-200 group-hover:text-white transition-colors">JMJMVM26@nomada.cr</span>
                         </li>
                         <li class="flex items-start text-sm group">
                             <i class="fas fa-phone text-secondary-500 mr-2 mt-0.5 text-xs group-hover:scale-110 transition-transform"></i>
-                            <span class="text-gray-200 group-hover:text-white transition-colors">+506 8888 8888</span>
+                            <span class="text-gray-200 group-hover:text-white transition-colors">+506 8613 0150</span>
                         </li>
                     </ul>
                 </div>
@@ -268,13 +273,13 @@
             <!-- Copyright -->
             <div class="text-center" data-aos="fade-up" data-aos-duration="800">
                 <p class="text-gray-300 text-xs">
-                    &copy; 2024 Nómada. Todos los derechos reservados.
+                    &copy; 2026 Nómada. All rights reserved.
                 </p>
             </div>
         </div>
     </footer>
 
-    <!-- Back to top button con animación -->
+    <!-- Back to top button with animation -->
     <button id="back-to-top" class="fixed bottom-4 right-4 w-10 h-10 bg-secondary-500 text-white rounded-full shadow-md hover:bg-secondary-600 hover:scale-110 transition-all duration-300 z-40 hidden items-center justify-center animate-bounce">
         <i class="fas fa-chevron-up text-sm"></i>
     </button>
@@ -285,7 +290,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar AOS con configuraciones profesionales
+            // Initialize AOS (Animate On Scroll) library
             AOS.init({
                 duration: 800,
                 once: true,
@@ -296,11 +301,12 @@
                 anchorPlacement: 'top-bottom',
             });
 
-            // ===== TOGGLE MENÚ HAMBURGUESA =====
+            // ===== HAMBURGER MENU TOGGLE =====
             const menuBtn = document.getElementById('menu-hamburguesa');
             const menuDesplegable = document.getElementById('menu-desplegable');
 
             if (menuBtn && menuDesplegable) {
+                // Toggle menu when clicking the hamburger button
                 menuBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     menuDesplegable.classList.toggle('hidden');
@@ -309,12 +315,14 @@
                     }
                 });
 
+                // Close menu when clicking outside
                 document.addEventListener('click', function(e) {
                     if (!menuBtn.contains(e.target) && !menuDesplegable.contains(e.target)) {
                         menuDesplegable.classList.add('hidden');
                     }
                 });
 
+                // Close menu with Escape key
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape' && !menuDesplegable.classList.contains('hidden')) {
                         menuDesplegable.classList.add('hidden');
@@ -322,10 +330,11 @@
                 });
             }
 
-            // Back to top
+            // Back to top button functionality
             const backToTop = document.getElementById('back-to-top');
             if (backToTop) {
                 window.addEventListener('scroll', function() {
+                    // Show button when scrolled more than 500px
                     if (window.scrollY > 500) {
                         backToTop.classList.remove('hidden');
                         backToTop.classList.add('flex', 'animate-bounce');
@@ -336,7 +345,7 @@
                 });
             }
 
-            // Preloader
+            // Preloader - hide after 1 second
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
                 if (preloader) {
