@@ -1,39 +1,43 @@
-import os
+from pathlib import Path
 
 
 class KnowledgeLoader:
 
     def __init__(self):
 
-        # Ruta base del knowledge
-        self.base_path = "app/data/knowledge_base"
+        # obtiene la carpeta app automáticamente
+        base_dir = Path(__file__).resolve().parent.parent
+
+        # entra a app/data/kwowledge
+        self.ruta = base_dir / "data" / "kwowledge"
+
+        print("RUTA USADA:", self.ruta)  # para verificar
+
+        self.contenido = self.cargar()
 
 
-    def cargar_todo(self):
+
+    def cargar(self):
 
         conocimiento = ""
 
-        # Recorre TODAS las carpetas y archivos
-        for root, dirs, files in os.walk(self.base_path):
 
-            for file in files:
+        if not self.ruta.exists():
 
-                if file.endswith(".txt"):
+            print("ERROR: carpeta knowledge no encontrada")
 
-                    ruta_archivo = os.path.join(root, file)
+            return ""
 
-                    try:
 
-                        with open(ruta_archivo, "r", encoding="utf-8") as f:
+        for archivo in self.ruta.glob("*.txt"):
 
-                            contenido = f.read()
+            conocimiento += archivo.read_text(encoding="utf-8") + "\n"
 
-                            conocimiento += "\n\n"
-                            conocimiento += f"========== {file} ==========\n"
-                            conocimiento += contenido
-
-                    except Exception as e:
-
-                        print(f"Error leyendo {file}: {e}")
 
         return conocimiento
+
+
+
+    def obtener(self):
+
+        return self.contenido

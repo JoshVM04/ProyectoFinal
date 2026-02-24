@@ -14,10 +14,11 @@ def create_app():
     # Register main routes (home page, static pages)
     from app.routes.main import main_bp
     app.register_blueprint(main_bp)
+    # importar clase POO IA
+    from app.routes.ia_chat import IAChatRoutes
 
-    # Register AI chat routes with /ia prefix
-    # All chat URLs will start with /ia (e.g., /ia, /ia/chat)
-    from app.routes.ia_chat import ia_chat_bp
-    app.register_blueprint(ia_chat_bp, url_prefix='/ia')
+    ia_routes = IAChatRoutes()
+
+    app.register_blueprint(ia_routes.blueprint)
 
     return app

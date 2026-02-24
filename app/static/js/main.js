@@ -419,3 +419,5 @@ if (!Element.prototype.closest) {
 // ===== FUNCIONES GLOBALES =====
 window.closeDestinosSection = closeDestinosSection;
 window.showNotification = showNotification;
+
+

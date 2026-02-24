@@ -1,30 +1,31 @@
 from app.utils.knowledge_loader import KnowledgeLoader
+
 from app.utils.external_ia import ExternalAI
 
 
 class IAEngine:
 
+
     def __init__(self):
 
-        self.loader = KnowledgeLoader()
-        self.external_ai = ExternalAI()
+        self.knowledge = KnowledgeLoader()
+
+        self.external = ExternalAI()
 
 
-    def responder(self, pregunta):
 
-        conocimiento = self.loader.cargar_todo()
+    def generar_respuesta(self, pregunta):
 
-        prompt = f"""
-Usa esta información:
 
-{conocimiento}
+        contexto = self.knowledge.obtener()
 
-Pregunta:
-{pregunta}
-"""
+        respuesta = self.external.preguntar(
 
-        respuesta = self.external_ai.preguntar(prompt)
+            pregunta,
+
+            contexto
+
+        )
 
         return respuesta
-
 

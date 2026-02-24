@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Send message to backend API - using the correct endpoint /ia/chat
-            const response = await fetch('/ia/chat', {
+            const response = await fetch('/ia-chat/chat', {
                 method: 'POST',              // Send data, not just get
                 headers: {
                     'Content-Type': 'application/json', // Tell server we're sending JSON

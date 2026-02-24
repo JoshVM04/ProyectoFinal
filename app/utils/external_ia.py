@@ -15,28 +15,31 @@ class ExternalAI:
         )
 
 
-    def preguntar(self, pregunta):
 
-        response = self.client.chat.completions.create(
+    def preguntar(self, pregunta, contexto):
+
+
+        respuesta = self.client.chat.completions.create(
 
             model="deepseek-chat",
 
             messages=[
 
                 {
-
                     "role": "system",
+                    "content": f"""
+                    Eres Nómada, guía turístico de Costa Rica.
 
-                    "content": "Eres una guía turística experta en Costa Rica"
+                    Usa este conocimiento:
 
+                    {contexto}
+
+                    """
                 },
 
                 {
-
                     "role": "user",
-
                     "content": pregunta
-
                 }
 
             ]
@@ -44,4 +47,4 @@ class ExternalAI:
         )
 
 
-        return response.choices[0].message.content
+        return respuesta.choices[0].message.content
