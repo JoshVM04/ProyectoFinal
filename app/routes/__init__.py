@@ -18,6 +18,6 @@ def create_app():
     # app.register_blueprint(auth_bp, url_prefix='/auth')
     # app.register_blueprint(destinos_bp, url_prefix='/destinos')
     # app.register_blueprint(experiencias_bp, url_prefix='/experiencias')
-    # app.register_blueprint(ia_chat_bp, url_prefix='/ia-chat')
+    #app.register_blueprint(ia_chat_bp, url_prefix='/ia-chat')
 
     return app
