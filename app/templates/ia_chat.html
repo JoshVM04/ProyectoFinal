@@ -1,210 +1,255 @@
 <!-- AI chat assistant page -->
-<!-- Users can ask questions about Costa Rica destinations -->
+<!-- Professional chat interface like DeepSeek with history sidebar -->
 {% extends "base.html" %}
 
-{% block title %}AI Assistant - Nómada{% endblock %}
+{% block title %}Asistente IA - Nómada{% endblock %}
 
 {% block content %}
-<!-- Gradient background page -->
-<div class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen py-16">
-    <!-- Centered container with max width -->
-    <div class="container mx-auto px-4 max-w-4xl">
-        <!-- Page header -->
-        <div class="text-center mb-8" data-aos="fade-up">
-            <!-- Robot icon circle -->
-            <div class="inline-block p-3 bg-primary-100 rounded-full mb-4">
-                <i class="fas fa-robot text-4xl text-primary-600"></i>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-primary-500 mb-4">
-                AI Travel Assistant
-            </h1>
-            <p class="text-gray-600 max-w-2xl mx-auto">
-                Ask me anything about destinations in Costa Rica. 
-                I'll recommend places based on your preferences.
-            </p>
+<!-- Pure white background like DeepSeek - Full viewport height -->
+<div class="h-screen flex bg-white">
+    
+    <!-- ===== SIDEBAR - Chat history (Left side) ===== -->
+    <!-- Hidden on mobile, visible on tablet/desktop -->
+    <div class="w-64 sm:w-72 md:w-80 border-r border-gray-100 flex flex-col bg-gray-50/30 hidden md:flex">
+        
+        <!-- Sidebar Header - New Chat Button -->
+        <div class="p-4 border-b border-gray-100">
+            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-plus text-xs"></i>
+                <span>Nuevo chat</span>
+            </button>
         </div>
-
-        <!-- Chat container -->
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden" data-aos="slide-up">
-            <!-- Messages area - scrollable -->
-            <div id="chat-messages" class="h-96 overflow-y-auto p-6 bg-gray-50">
-                <!-- Welcome message from bot -->
-                <div class="flex items-start gap-3 mb-4">
-                    <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-robot text-white text-sm"></i>
+        
+        <!-- Chat History List - Scrollable -->
+        <div class="flex-1 overflow-y-auto p-3">
+            <!-- History sections will be populated dynamically -->
+            <div class="mb-4">
+                <p class="text-xs font-medium text-gray-400 px-2 mb-2">Hoy</p>
+                <div class="space-y-0.5" id="today-chats">
+                    <!-- Chats from today will appear here -->
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <p class="text-xs font-medium text-gray-400 px-2 mb-2">Esta semana</p>
+                <div class="space-y-0.5" id="week-chats">
+                    <!-- Chats from this week will appear here -->
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <p class="text-xs font-medium text-gray-400 px-2 mb-2">Este mes</p>
+                <div class="space-y-0.5" id="month-chats">
+                    <!-- Chats from this month will appear here -->
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <p class="text-xs font-medium text-gray-400 px-2 mb-2">Anteriores</p>
+                <div class="space-y-0.5" id="older-chats">
+                    <!-- Older chats will appear here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Footer - User Info -->
+        <div class="p-4 border-t border-gray-100">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center">
+                    <span class="text-primary-700 text-xs font-medium">U</span>
+                </div>
+                <!-- Removed current_user reference that caused the error -->
+                <span class="text-xs text-gray-700 truncate">Invitado</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ===== MAIN CHAT AREA (Right side) ===== -->
+    <div class="flex-1 flex flex-col bg-white">
+        
+        <!-- Header - Minimalist like DeepSeek -->
+        <div class="border-b border-gray-100 py-3 px-4 sm:px-5 md:px-6 flex items-center justify-between md:justify-end">
+            <!-- Mobile menu button (visible only on mobile) -->
+            <button id="mobile-menu-button" class="md:hidden flex items-center justify-center w-8 h-8 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-bars text-sm"></i>
+            </button>
+            
+            <div class="flex items-center gap-2">
+                <!-- Mobile logo (visible only on mobile) -->
+                <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary-100 flex items-center justify-center md:hidden">
+                    <span class="text-primary-700 text-xs sm:text-sm font-medium">N</span>
+                </div>
+                <span class="text-sm sm:text-base font-medium text-gray-900 md:hidden">Asistente Nómada</span>
+                
+                <!-- Beta tag - Visible on all devices -->
+                <span class="text-xs text-gray-400">beta</span>
+            </div>
+        </div>
+        
+        <!-- Messages area - Scrollable with flex-1 -->
+        <div id="chat-messages" class="flex-1 overflow-y-auto px-4 sm:px-5 md:px-6 py-4 sm:py-5 md:py-6">
+            <!-- Centered container for messages -->
+            <div class="max-w-3xl mx-auto">
+                
+                <!-- Welcome message -->
+                <div class="flex items-start gap-2 sm:gap-3 mb-6 sm:mb-8" id="welcome-message">
+                    <!-- AI Avatar -->
+                    <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
+                        <span class="text-primary-700 text-xs sm:text-sm font-medium">N</span>
                     </div>
-                    <div class="bg-white rounded-lg p-3 shadow-sm max-w-[80%]">
-                        <p class="text-gray-700 text-sm">
-                            👋 Hi! I'm your travel assistant. 
-                            What kind of destination are you looking for? (beaches, mountains, adventure, relaxation)
+                    
+                    <!-- Message bubble -->
+                    <div class="bg-gray-50 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 max-w-[85%] sm:max-w-[80%]">
+                        <p class="text-xs sm:text-sm text-gray-800 leading-relaxed">
+                            Hola, soy tu asistente de viajes especializado en Costa Rica. ¿En qué puedo ayudarte hoy?
                         </p>
+                        <p class="text-[10px] sm:text-xs text-gray-400 mt-1 sm:mt-2">Disponible ahora</p>
+                    </div>
+                </div>
+                
+                <!-- Suggested questions section -->
+                <div id="popular-questions-container" class="mb-4 sm:mb-6 ml-8 sm:ml-9 md:ml-10">
+                    <p class="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wider mb-2 sm:mb-3">Sugerencias</p>
+                    
+                    <div class="space-y-1 sm:space-y-1.5">
+                        <button class="popular-question w-full text-left px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+                            Mejores playas para surfear
+                        </button>
+                        <button class="popular-question w-full text-left px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+                            Rutas de aventura recomendadas
+                        </button>
+                        <button class="popular-question w-full text-left px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+                            Aguas termales cerca de San José
+                        </button>
+                        <button class="popular-question w-full text-left px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+                            Parques nacionales imperdibles
+                        </button>
                     </div>
                 </div>
             </div>
-
-            <!-- Input area at bottom -->
-            <div class="border-t border-gray-200 p-4 bg-white">
-                <form id="chat-form" class="flex gap-2">
-                    <!-- Text input for user message -->
+        </div>
+        
+        <!-- Fixed input area at bottom -->
+        <div class="border-t border-gray-100 bg-white px-4 sm:px-5 md:px-6 py-3 sm:py-4">
+            <div class="max-w-3xl mx-auto">
+                
+                <!-- Input form -->
+                <form id="chat-form" class="relative">
                     <input type="text" 
                            id="chat-input"
-                           class="flex-1 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                           placeholder="Type your question..."
+                           class="w-full px-4 sm:px-5 py-3 sm:py-3.5 bg-gray-50 border-0 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500/30 text-sm sm:text-base placeholder:text-gray-400 pr-12"
+                           placeholder="Escribe tu mensaje..."
                            autocomplete="off">
-                    <!-- Send button -->
+                    
                     <button type="submit" 
-                            class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg transition-all hover:scale-105 flex items-center gap-2">
-                        <i class="fas fa-paper-plane"></i>
-                        <span class="hidden sm:inline">Send</span>
+                            class="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary-600 transition-colors p-1 sm:p-1.5 disabled:opacity-40"
+                            id="send-button">
+                        <i class="fas fa-arrow-up text-sm sm:text-base"></i>
+                        <span class="sr-only">Enviar</span>
                     </button>
                 </form>
-                <!-- Small disclaimer text -->
-                <p class="text-xs text-gray-400 mt-2">
-                    * The assistant uses AI to recommend destinations. Responses may not be perfect.
-                </p>
-            </div>
-        </div>
-
-        <!-- Suggested questions section -->
-        <div class="mt-8" data-aos="fade-up">
-            <h3 class="text-sm font-semibold text-gray-600 mb-3 text-center">Suggested questions:</h3>
-            <div class="flex flex-wrap gap-2 justify-center">
-                <button class="suggestion-btn px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-all">
-                    Best beaches for surfing
-                </button>
-                <button class="suggestion-btn px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-all">
-                    Adventure destinations
-                </button>
-                <button class="suggestion-btn px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-all">
-                    Recommended hot springs
-                </button>
-                <button class="suggestion-btn px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-all">
-                    National parks near San José
-                </button>
+                
+                <!-- Footer disclaimer -->
+                <div class="flex items-center justify-between mt-2 sm:mt-3 px-1">
+                    <p class="text-[10px] sm:text-xs text-gray-400">
+                        <i class="fas fa-info-circle mr-1 text-gray-300 text-[10px] sm:text-xs"></i>
+                        Puede cometer errores. Verifica información importante.
+                    </p>
+                    <div id="typing-status" class="text-[10px] sm:text-xs text-gray-400 hidden">
+                        <i class="fas fa-ellipsis animate-pulse mr-1"></i> Escribiendo...
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- JavaScript for chat functionality -->
+<!-- Mobile sidebar overlay (hidden by default) -->
+<div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/20 z-50 hidden md:hidden">
+    <div class="w-64 bg-white h-full border-r border-gray-100 flex flex-col">
+        <!-- Sidebar Header -->
+        <div class="p-4 border-b border-gray-100">
+            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <i class="fas fa-plus text-xs"></i>
+                <span>Nuevo chat</span>
+            </button>
+        </div>
+        
+        <!-- Sidebar Content -->
+        <div class="flex-1 overflow-y-auto p-3">
+            <div class="mb-4">
+                <p class="text-xs font-medium text-gray-400 px-2 mb-2">Hoy</p>
+                <div class="space-y-0.5" id="mobile-today-chats"></div>
+            </div>
+            <div class="mb-4">
+                <p class="text-xs font-medium text-gray-400 px-2 mb-2">Esta semana</p>
+                <div class="space-y-0.5" id="mobile-week-chats"></div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Footer -->
+        <div class="p-4 border-t border-gray-100">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center">
+                    <span class="text-primary-700 text-xs font-medium">U</span>
+                </div>
+                <!-- Removed current_user reference that caused the error -->
+                <span class="text-xs text-gray-700 truncate">Invitado</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Link to external CSS and JS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ia.css') }}">
+<script src="{{ url_for('static', filename='js/ia.js') }}"></script>
+
+<!-- Additional scripts -->
 <script>
-// Wait for the page to fully load before running any code
+/**
+ * Force scroll to top on page load
+ * Ensures chat starts at welcome message
+ */
 document.addEventListener('DOMContentLoaded', function() {
-    // Get references to HTML elements we'll need
-    const chatMessages = document.getElementById('chat-messages');  // The message container
-    const chatForm = document.getElementById('chat-form');          // The form with input and button
-    const chatInput = document.getElementById('chat-input');        // The text input field
-    const suggestionBtns = document.querySelectorAll('.suggestion-btn'); // All suggestion buttons
-
-    // Function to add a message to the chat window
-    // isUser = true for user messages, false for bot messages
-    function addMessage(message, isUser = false) {
-        // Create a new div for the message
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `flex items-start gap-3 mb-4 ${isUser ? 'justify-end' : ''}`;
-        
-        if (!isUser) {
-            // Bot message layout (left side with robot icon)
-            messageDiv.innerHTML = `
-                <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-robot text-white text-sm"></i>
-                </div>
-                <div class="bg-white rounded-lg p-3 shadow-sm max-w-[80%]">
-                    <p class="text-gray-700 text-sm">${message}</p>
-                </div>
-            `;
-        } else {
-            // User message layout (right-aligned)
-            messageDiv.innerHTML = `
-                <div class="bg-primary-500 rounded-lg p-3 shadow-sm max-w-[80%]">
-                    <p class="text-white text-sm">${message}</p>
-                </div>
-                <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-user text-gray-600 text-sm"></i>
-                </div>
-            `;
-        }
-        
-        // Add the message to the chat container
-        chatMessages.appendChild(messageDiv);
-        // Scroll to the bottom to show newest message
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+    // Scroll to top
+    const chatMessages = document.getElementById('chat-messages');
+    if (chatMessages) {
+        chatMessages.scrollTop = 0;
+        setTimeout(() => chatMessages.scrollTop = 0, 100);
     }
-
-    // Function to show "typing..." animation while waiting for bot response
-    function addTypingIndicator() {
-        const indicator = document.createElement('div');
-        indicator.id = 'typing-indicator';
-        indicator.className = 'flex items-start gap-3 mb-4';
-        indicator.innerHTML = `
-            <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0">
-                <i class="fas fa-robot text-white text-sm"></i>
-            </div>
-            <div class="bg-white rounded-lg p-4 shadow-sm">
-                <div class="flex gap-1">
-                    <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s"></span>
-                    <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-                    <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
-                </div>
-            </div>
-        `;
-        chatMessages.appendChild(indicator);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Focus input
+    const chatInput = document.getElementById('chat-input');
+    if (chatInput) {
+        chatInput.focus();
     }
-
-    // Function to remove the typing indicator
-    function removeTypingIndicator() {
-        const indicator = document.getElementById('typing-indicator');
-        if (indicator) indicator.remove();
-    }
-
-    // Main function to send a message to the AI
-    async function sendMessage(message) {
-        // Don't send empty messages
-        if (!message.trim()) return;
-        
-        // Show user message immediately
-        addMessage(message, true);
-        // Clear input field
-        chatInput.value = '';
-        // Show typing indicator
-        addTypingIndicator();
-
-        try {
-            // Send message to backend API - using the correct endpoint /ia/chat
-            const response = await fetch('/ia-chat/chat', {
-                method: 'POST',              // Send data, not just get
-                headers: {
-                    'Content-Type': 'application/json', // Tell server we're sending JSON
-                },
-                body: JSON.stringify({ pregunta: message }) // Send as 'pregunta' to match backend
-            });
-            
-            // Get response from server
-            const data = await response.json();
-            // Remove typing indicator
-            removeTypingIndicator();
-            // Show bot response
-            addMessage(data.respuesta);
-        } catch (error) {
-            // If anything goes wrong (network, server down, etc)
-            removeTypingIndicator();
-            addMessage('Sorry, there was an error. Please try again.');
-        }
-    }
-
-    // Handle form submission (when user presses Enter or clicks Send)
-    chatForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Stop page from reloading
-        sendMessage(chatInput.value);
-    });
-
-    // Handle suggestion button clicks
-    suggestionBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            sendMessage(btn.textContent);
+    
+    // Mobile sidebar toggle
+    const menuButton = document.getElementById('mobile-menu-button');
+    const overlay = document.getElementById('mobile-sidebar-overlay');
+    
+    if (menuButton && overlay) {
+        menuButton.addEventListener('click', () => {
+            overlay.classList.remove('hidden');
         });
-    });
+        
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.classList.add('hidden');
+            }
+        });
+    }
+    
+    /**
+     * Load chat history from localStorage or API
+     * This is a placeholder - implement actual history loading
+     */
+    function loadChatHistory() {
+        // TODO: Implement actual chat history loading
+        console.log('Loading chat history...');
+    }
+    
+    loadChatHistory();
 });
 </script>
 {% endblock %}
