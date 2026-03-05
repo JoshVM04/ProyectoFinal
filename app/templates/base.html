@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Nómada | Authentic Costa Rica Experiences{% endblock %}</title>
+    <title>{% block title %}Nómada | Experiencias Auténticas en Costa Rica{% endblock %}</title>
     
     <!-- SEO optimized meta tags -->
-    <meta name="description" content="Travel experience platform in Costa Rica. Discover the most authentic destinations and live the true essence of the country.">
-    <meta name="keywords" content="Costa Rica, tourism, experiences, beaches, national parks, adventure, hot springs, travel">
+    <meta name="description" content="Plataforma de experiencias de viaje en Costa Rica. Descubre los destinos más auténticos y vive la verdadera esencia del país.">
+    <meta name="keywords" content="Costa Rica, turismo, experiencias, playas, parques nacionales, aventura, aguas termales, viajes">
     <meta name="author" content="Nómada">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nomada.cr/">
-    <meta property="og:title" content="Nómada | Authentic Experiences in Costa Rica">
-    <meta property="og:description" content="Discover the authentic beauty of Costa Rica with carefully selected experiences for modern travelers.">
+    <meta property="og:title" content="Nómada | Experiencias Auténticas en Costa Rica">
+    <meta property="og:description" content="Descubre la belleza auténtica de Costa Rica con experiencias cuidadosamente seleccionadas para viajeros modernos.">
     <meta property="og:image" content="static/images/hero/foto-hero.jpg">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://nomada.cr/">
-    <meta property="twitter:title" content="Nómada | Authentic Experiences in Costa Rica">
-    <meta property="twitter:description" content="Discover the authentic beauty of Costa Rica with carefully selected experiences for modern travelers.">
+    <meta property="twitter:title" content="Nómada | Experiencias Auténticas en Costa Rica">
+    <meta property="twitter:description" content="Descubre la belleza auténtica de Costa Rica con experiencias cuidadosamente seleccionadas para viajeros modernos.">
     <meta property="twitter:image" content="static/images/hero/foto-hero.jpg">
     
     <!-- Favicon -->
@@ -142,7 +142,7 @@
                     <span class="text-white font-semibold text-sm">N</span>
                 </div>
             </div>
-            <div class="text-sm text-gray-500 font-medium animate-pulse">Loading experiences...</div>
+            <div class="text-sm text-gray-500 font-medium animate-pulse">Cargando experiencias...</div>
         </div>
     </div>
 
@@ -150,21 +150,18 @@
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm transition-all duration-300">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <nav class="flex items-center justify-between h-16">
-                <!-- LOGO that reloads the page -->
-                <button onclick="window.location.reload()" class="flex items-center gap-0 group shrink-0 focus:outline-none cursor-pointer">
+                <!-- LOGO that links to homepage -->
+                <a href="/" class="flex items-center gap-0 group shrink-0 focus:outline-none cursor-pointer">
                     <span class="text-3xl md:text-4xl font-bold text-primary-500 group-hover:text-primary-600 transition-all duration-300 group-hover:scale-105">
                         N
                     </span>
                     <span class="text-3xl md:text-4xl font-light text-gray-700 group-hover:text-gray-900 transition-all duration-300 group-hover:scale-105">
                         omada
                     </span>
-                </button>
+                </a>
 
-                <!-- Language selector -->
-                <div class="flex items-center gap-2 mx-4">
-                    <a href="?lang=en" class="text-xs px-2 py-1 rounded {% if session.get('lang') == 'en' %}bg-primary-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} hover:bg-primary-600 hover:text-white transition-all">EN</a>
-                    <a href="?lang=es" class="text-xs px-2 py-1 rounded {% if session.get('lang') == 'es' %}bg-primary-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} hover:bg-primary-600 hover:text-white transition-all">ES</a>
-                </div>
+                <!-- Empty spacer to maintain layout (removed language selector) -->
+                <div class="w-20"></div>
 
                 <div class="flex-1"></div>
 
@@ -176,28 +173,28 @@
             </nav>
         </div>
 
-        <!-- Dropdown menu with animation -->
+        <!-- Dropdown menu with animation - TRANSLATED TO SPANISH -->
         <div id="menu-desplegable" class="hidden absolute top-full right-4 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50 animate-slide-down">
             <a href="experiencias.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
                 <i class="fas fa-compass text-primary-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Experiences</span>
+                <span class="text-gray-700 text-sm font-medium">Experiencias</span>
             </a>
             
-            <a href="/ia" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
+            <a href="/ia-chat" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
                 <i class="fas fa-robot text-secondary-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">AI Assistant</span>
+                <span class="text-gray-700 text-sm font-medium">Asistente IA</span>
             </a>
             
             <div class="border-t border-gray-100 my-1"></div>
             
             <a href="auth/login.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
                 <i class="fas fa-sign-in-alt text-gray-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Sign In</span>
+                <span class="text-gray-700 text-sm font-medium">Iniciar Sesión</span>
             </a>
             
             <a href="auth/register.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
                 <i class="fas fa-user-plus text-gray-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Register</span>
+                <span class="text-gray-700 text-sm font-medium">Registrarse</span>
             </a>
         </div>
     </header>
@@ -207,7 +204,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- PROFESSIONAL FOOTER -->
+    <!-- PROFESSIONAL FOOTER - TRANSLATED TO SPANISH -->
     <footer class="bg-primary-500 text-white">
         <div class="container mx-auto px-4 sm:px-6 py-12">
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -218,8 +215,8 @@
                         <span class="text-4xl font-light text-white/90">omada</span>
                     </div>
                     <p class="text-gray-200 mb-6 text-sm leading-relaxed max-w-md">
-                        Travel experience platform in Costa Rica. 
-                        We connect modern travelers with unforgettable experiences.
+                        Plataforma de experiencias de viaje en Costa Rica. 
+                        Conectamos viajeros modernos con experiencias inolvidables.
                     </p>
                     <div class="flex space-x-3">
                         <a href="#" class="social-icon w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-secondary-500 transition-all duration-300 hover:scale-110">
@@ -236,25 +233,25 @@
                 
                 <!-- Links with animations -->
                 <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
-                    <h4 class="text-sm font-semibold mb-4 text-white">Explore</h4>
+                    <h4 class="text-sm font-semibold mb-4 text-white">Explorar</h4>
                     <ul class="space-y-2">
-                        <li><a href="#playas" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Beaches</a></li>
-                        <li><a href="#parques" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Parks</a></li>
-                        <li><a href="#aventura" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Adventure</a></li>
-                        <li><a href="#termales" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Hot Springs</a></li>
+                        <li><a href="#playas" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Playas</a></li>
+                        <li><a href="#parques" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Parques</a></li>
+                        <li><a href="#aventura" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Aventura</a></li>
+                        <li><a href="#termales" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Aguas Termales</a></li>
                     </ul>
                 </div>
                 
                 <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                     <h4 class="text-sm font-semibold mb-4 text-white">Nómada</h4>
                     <ul class="space-y-2">
-                        <li><a href="experiencias.html" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Experiences</a></li>
-                        <li><a href="/ia" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">AI Assistant</a></li>
+                        <li><a href="experiencias.html" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Experiencias</a></li>
+                        <li><a href="/ia-chat" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Asistente IA</a></li>
                     </ul>
                 </div>
                 
                 <div data-aos="fade-left" data-aos-delay="300" data-aos-duration="800">
-                    <h4 class="text-sm font-semibold mb-4 text-white">Contact</h4>
+                    <h4 class="text-sm font-semibold mb-4 text-white">Contacto</h4>
                     <ul class="space-y-2">
                         <li class="flex items-start text-sm group">
                             <i class="fas fa-envelope text-secondary-500 mr-2 mt-0.5 text-xs group-hover:scale-110 transition-transform"></i>
@@ -273,7 +270,7 @@
             <!-- Copyright -->
             <div class="text-center" data-aos="fade-up" data-aos-duration="800">
                 <p class="text-gray-300 text-xs">
-                    &copy; 2026 Nómada. All rights reserved.
+                    &copy; 2026 Nómada. Todos los derechos reservados.
                 </p>
             </div>
         </div>

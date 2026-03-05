@@ -1,4 +1,3 @@
-<!-- templates/destinos/detalle.html -->
 {% extends "base.html" %}
 
 {% block title %}{{ destino.nombre }} - Nómada{% endblock %}
@@ -10,7 +9,7 @@
 {% block content %}
 <div class="destino-detalle">
 
-    <!-- 1. TÍTULO GRANDE DEL LUGAR -->
+    <!--TÍTULO GRANDE DEL LUGAR -->
     <div class="destino-header">
         <div class="container">
             <h1 class="destino-titulo">{{ destino.nombre }}</h1>
@@ -21,7 +20,7 @@
         </div>
     </div>
 
-    <!-- 2. GALERÍA DE FOTOS (1 grande + 2 medianas) -->
+    <!-- GALERÍA DE FOTOS (el formato es de 1 foto grande + 2 medianas) -->
     <div class="galeria-container">
         <div class="container">
             <div class="galeria-grid">
@@ -36,7 +35,7 @@
         </div>
     </div>
 
-    <!-- 3. DESCRIPCIÓN + COSTO POR DÍA -->
+    <!-- DESCRIPCIÓN + COSTO POR DÍA -->
     <div class="info-principal-section">
         <div class="container">
             <div class="info-grid">
@@ -46,7 +45,7 @@
                     <p class="descripcion-texto">{{ destino.descripcion_larga }}</p>
                 </div>
 
-                <!-- Sidebar de costo -->
+                <!-- Sidebar de donde se ubica el  costo -->
                 <div class="costo-sidebar">
                     <div class="costo-card">
                         <h3>Costo por persona</h3>
@@ -62,7 +61,7 @@
         </div>
     </div>
 
-    <!-- 4. ACTIVIDADES (SOLO LINKS) -->
+    <!--ACA ES VAN A IR LOS LINKS DE DÓNDE HACER ACTIVIDADES (SOLO LINKS) -->
     <div class="seccion-links">
         <div class="container">
             <h2 class="seccion-titulo">Actividades</h2>
@@ -87,7 +86,7 @@
         </div>
     </div>
 
-    <!-- 5. DÓNDE COMER (SOLO LINKS) -->
+    <!--ACA ES VAN A IR LOS LINKS DE DÓNDE COMER -->
     <div class="seccion-links fondo-gris">
         <div class="container">
             <h2 class="seccion-titulo">Dónde comer</h2>
@@ -112,7 +111,7 @@
         </div>
     </div>
 
-    <!-- 6. DÓNDE DORMIR (SOLO LINKS) -->
+    <!--ACA ES VAN A IR LOS LINKS DE DÓNDE DORMIR-->
     <div class="seccion-links">
         <div class="container">
             <h2 class="seccion-titulo">Dónde dormir</h2>
@@ -137,7 +136,7 @@
         </div>
     </div>
 
-    <!-- 7. DÓNDE RENTAR CARRO (SOLO LINKS) -->
+    <!--ACA ES VAN A IR LOS LINKS DE DÓNDE RENTAR CARRO -->
     <div class="seccion-links fondo-gris">
         <div class="container">
             <h2 class="seccion-titulo">Dónde rentar carro</h2>
