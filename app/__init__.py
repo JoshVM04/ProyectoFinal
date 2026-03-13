@@ -14,11 +14,15 @@ def create_app():
     # Register main routes (home page, static pages)
     from app.routes.main import main_bp
     app.register_blueprint(main_bp)
+    
     # importar clase POO IA
     from app.routes.ia_chat import IAChatRoutes
-
     ia_routes = IAChatRoutes()
-
     app.register_blueprint(ia_routes.blueprint)
+
+    # ===== RUTAS DE DESTINOS =====
+    from app.routes.destinos import DestinosRoutes
+    destinos_routes = DestinosRoutes()
+    app.register_blueprint(destinos_routes.blueprint)
 
     return app
