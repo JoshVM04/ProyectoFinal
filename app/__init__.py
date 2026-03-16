@@ -1,9 +1,14 @@
-# app/__init__.py
 from flask import Flask
 from config import Config
+import os
 
 def create_app():
-    app = Flask(__name__)
+    # Especificar explícitamente la carpeta static
+    static_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+    app = Flask(__name__, 
+                static_folder=static_folder,
+                static_url_path='/static')
+    
     app.config.from_object(Config)
 
     # Register main routes
@@ -25,7 +30,7 @@ def create_app():
     auth_routes = AuthRoutes()
     app.register_blueprint(auth_routes.blueprint)
 
-    # ===== EXPERIENCIAS =====
+    # Experiencias
     from app.routes.experiencias import ExperienciasRoutes
     experiencias_routes = ExperienciasRoutes()
     app.register_blueprint(experiencias_routes.blueprint)
