@@ -7,7 +7,7 @@ auth = Blueprint('auth', __name__)
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="",
+    password="Admin",
     database="Nomada"
 )
 
