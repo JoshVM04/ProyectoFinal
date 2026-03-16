@@ -1,218 +1,80 @@
 # routes/destinos.py
 """
 Rutas de Destinos - Controlador para manejar peticiones relacionadas con destinos
-Misma estructura que IAChatRoutes para mantener consistencia
 """
 
 from flask import Blueprint, render_template, request, jsonify
 from app.utils.destino_engine import DestinoEngine
 
 class DestinosRoutes:
-    """
-    Controlador de destinos - Maneja todas las rutas /destinos/*
-    Sigue el mismo patrón que IAChatRoutes para mantener consistencia en el proyecto
-    """
     
     def __init__(self, db_connection=None):
         """
         Inicializa el blueprint y el motor de destinos
         
         Args:
-            db_connection: Conexión a la base de datos (opcional)
+            db_connection: Conexión a la base de datos (obligatoria)
         """
+        print(f"🔄 Inicializando DestinosRoutes con db: {db_connection}")
+        
         # ===== CONFIGURACIÓN DEL BLUEPRINT =====
-        # Todas las rutas empezarán con /destinos
         self.blueprint = Blueprint(
             "destinos",
             __name__,
             url_prefix="/destinos"
         )
         
-        # ===== INICIALIZAR MOTOR =====
-        # El motor maneja toda la lógica de negocio
+        # ===== INICIALIZAR MOTOR CON LA CONEXIÓN =====
         self.engine = DestinoEngine(db_connection)
         
         # ===== REGISTRAR RUTAS =====
         self.register_routes()
     
     def register_routes(self):
-        """
-        Registra todas las rutas del controlador
-        """
-        
-        # Ruta principal: /destinos/
-        # Muestra todos los destinos en una lista (para explorar)
-        self.blueprint.add_url_rule(
-            "/",
-            view_func=self.listar_todos
-        )
-        
-        # Ruta de detalle: /destinos/<id>
-        # Muestra la información completa de un destino
-        self.blueprint.add_url_rule(
-            "/<int:destino_id>",
-            view_func=self.ver_detalle
-        )
-        
-        # Ruta por categoría: /destinos/categoria/<id>
-        # Filtra destinos por categoría (1: playas, 2: parques, 3: aventura, 4: termales)
-        self.blueprint.add_url_rule(
-            "/categoria/<int:categoria_id>",
-            view_func=self.por_categoria
-        )
-        
-        # Ruta por provincia: /destinos/provincia/<nombre>
-        # Filtra destinos por provincia
-        self.blueprint.add_url_rule(
-            "/provincia/<string:provincia>",
-            view_func=self.por_provincia
-        )
-        
-        # Ruta de búsqueda: /destinos/buscar?q=termino
-        # Busca destinos por título o descripción
-        self.blueprint.add_url_rule(
-            "/buscar",
-            view_func=self.buscar,
-            methods=["GET"]
-        )
-        
-        # API endpoint: /destinos/api/todos
-        # Devuelve todos los destinos en formato JSON
-        self.blueprint.add_url_rule(
-            "/api/todos",
-            view_func=self.api_todos
-        )
-        
-        # API endpoint: /destinos/api/<id>
-        # Devuelve un destino específico en formato JSON
-        self.blueprint.add_url_rule(
-            "/api/<int:destino_id>",
-            view_func=self.api_detalle
-        )
+        self.blueprint.add_url_rule("/", view_func=self.listar_todos)
+        self.blueprint.add_url_rule("/<int:destino_id>", view_func=self.ver_detalle)
+        self.blueprint.add_url_rule("/categoria/<int:categoria_id>", view_func=self.por_categoria)
+        self.blueprint.add_url_rule("/provincia/<string:provincia>", view_func=self.por_provincia)
+        self.blueprint.add_url_rule("/buscar", view_func=self.buscar, methods=["GET"])
+        self.blueprint.add_url_rule("/api/todos", view_func=self.api_todos)
+        self.blueprint.add_url_rule("/api/<int:destino_id>", view_func=self.api_detalle)
     
     def listar_todos(self):
-        """
-        Ruta: /destinos/
-        Método: GET
-        Template: destinos/lista.html
-        Muestra todos los destinos en una página
-        """
-        # Obtener todos los destinos del motor (versión simplificada)
         destinos = self.engine.obtener_todos()
-        
-        # Renderizar template con la lista
-        return render_template(
-            "destinos/lista.html",
-            destinos=destinos,
-            titulo="Todos los destinos"
-        )
+        return render_template("destinos/lista.html", destinos=destinos, titulo="Todos los destinos")
     
     def ver_detalle(self, destino_id):
-        """
-        Ruta: /destinos/<int:destino_id>
-        Método: GET
-        Template: destinos/detalle.html
-        Muestra la información detallada de un destino específico
-        """
-        # Buscar el destino por ID con TODA su información relacionada
+        print(f"🔍 Buscando destino ID: {destino_id}")
         destino = self.engine.obtener_por_id(destino_id)
         
-        # Si no existe, mostrar página 404
         if not destino:
-            return render_template("404.html", mensaje="Destino no encontrado"), 404
+            print("❌ Destino NO encontrado")
+            return "Destino no encontrado", 404
         
-        # Renderizar template de detalle con el destino completo
-        return render_template(
-            "destinos/detalle.html",
-            destino=destino  # Ahora es un diccionario con TODOS los datos
-        )
+        print(f"✅ Destino encontrado: {destino.get('titulo')}")
+        return render_template("destinos/detalle.html", destino=destino)
     
     def por_categoria(self, categoria_id):
-        """
-        Ruta: /destinos/categoria/<int:categoria_id>
-        Método: GET
-        Template: destinos/lista.html
-        Filtra destinos por categoría
-        """
-        # Obtener destinos filtrados por categoría
         destinos = self.engine.obtener_por_categoria(categoria_id)
-        
-        # Diccionario de nombres de categorías
-        categorias = {
-            1: "Playas",
-            2: "Parques",
-            3: "Aventura",
-            4: "Termales"
-        }
-        
-        # Renderizar template con los resultados filtrados
-        return render_template(
-            "destinos/lista.html",
-            destinos=destinos,
-            titulo=categorias.get(categoria_id, "Categoría")
-        )
+        categorias = {1: "Playas", 2: "Parques", 3: "Aventura", 4: "Termales"}
+        return render_template("destinos/lista.html", destinos=destinos, titulo=categorias.get(categoria_id, "Categoría"))
     
     def por_provincia(self, provincia):
-        """
-        Ruta: /destinos/provincia/<string:provincia>
-        Método: GET
-        Template: destinos/lista.html
-        Filtra destinos por provincia
-        """
-        # Obtener destinos filtrados por provincia
         destinos = self.engine.obtener_por_provincia(provincia)
-        
-        # Renderizar template con los resultados
-        return render_template(
-            "destinos/lista.html",
-            destinos=destinos,
-            titulo=f"Destinos en {provincia.title()}"
-        )
+        return render_template("destinos/lista.html", destinos=destinos, titulo=f"Destinos en {provincia.title()}")
     
     def buscar(self):
-        """
-        Ruta: /destinos/buscar?q=termino
-        Método: GET
-        Template: destinos/buscar.html
-        Busca destinos por término en título o descripción
-        """
-        # Obtener término de búsqueda de la URL
         termino = request.args.get('q', '')
-        
-        # Si no hay término, mostrar página vacía
         if not termino:
             return render_template("destinos/buscar.html", resultados=[], termino="")
-        
-        # Realizar la búsqueda
         resultados = self.engine.buscar(termino)
-        
-        # Renderizar template con resultados
-        return render_template(
-            "destinos/buscar.html",
-            resultados=resultados,
-            termino=termino
-        )
+        return render_template("destinos/buscar.html", resultados=resultados, termino=termino)
     
     def api_todos(self):
-        """
-        Ruta: /destinos/api/todos
-        Método: GET
-        Respuesta: JSON
-        Endpoint para APIs que necesiten los destinos en formato JSON
-        """
-        destinos = self.engine.obtener_todos()
-        return jsonify(destinos)
+        return jsonify(self.engine.obtener_todos())
     
     def api_detalle(self, destino_id):
-        """
-        Ruta: /destinos/api/<int:destino_id>
-        Método: GET
-        Respuesta: JSON
-        Endpoint para APIs que necesiten un destino completo en formato JSON
-        """
         destino = self.engine.obtener_por_id(destino_id)
-        
         if not destino:
             return jsonify({'error': 'Destino no encontrado'}), 404
-        
         return jsonify(destino)

@@ -20,176 +20,50 @@
         </div>
     </div>
 
-    <!-- GALERÍA DE FOTOS -->
+    <!-- IMAGEN PRINCIPAL -->
     <div class="galeria-container">
         <div class="container">
             <div class="galeria-grid">
-                <!-- Foto principal -->
                 <div class="foto-principal">
-                    <img src="{{ destino.imagen_principal }}" alt="{{ destino.titulo }}">
-                </div>
-                <!-- Fotos secundarias (primeras 2 de la galería) -->
-                <div class="fotos-secundarias">
-                    {% if destino.imagenes and destino.imagenes|length > 0 %}
-                        {% for img in destino.imagenes[:2] %}
-                        <img src="{{ img }}" alt="{{ destino.titulo }}">
-                        {% endfor %}
-                    {% else %}
-                        <!-- Si no hay imágenes adicionales, duplicar la principal -->
-                        <img src="{{ destino.imagen_principal }}" alt="{{ destino.titulo }}">
-                        <img src="{{ destino.imagen_principal }}" alt="{{ destino.titulo }}">
-                    {% endif %}
+                    <img src="{{ destino.imagen }}" alt="{{ destino.titulo }}" style="width: 100%; max-height: 500px; object-fit: cover; border-radius: 8px;">
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- DESCRIPCIÓN + COSTO POR DÍA -->
+    <!-- DESCRIPCIÓN -->
     <div class="info-principal-section">
         <div class="container">
             <div class="info-grid">
-                <!-- Descripción larga -->
                 <div class="descripcion-card">
                     <h2 class="section-title">Sobre {{ destino.titulo }}</h2>
                     <p class="descripcion-texto">{{ destino.descripcion }}</p>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- Sidebar con el costo -->
-                <div class="costo-sidebar">
-                    <div class="costo-card">
-                        <h3>Costo por persona</h3>
-                        <div class="costo-precio">
-                            <span class="moneda">₡</span>
-                            <span class="valor">{{ "{:,.0f}".format(destino.costo_dia) }}</span>
-                            <span class="periodo">/día</span>
-                        </div>
-                        <p class="costo-incluye">✓ {{ destino.que_incluye }}</p>
-                    </div>
+    <!-- SECCIÓN INFORMACIÓN ADICIONAL (solo si existe en tu BD) -->
+    {% if destino.comentarios and destino.comentarios|length > 0 %}
+    <div class="seccion-comentarios">
+        <div class="container">
+            <h2 class="seccion-titulo">Comentarios de viajeros</h2>
+            <div class="comentarios-grid">
+                {% for comentario in destino.comentarios %}
+                <div class="comentario-card" style="background: #f9f9f9; padding: 15px; margin-bottom: 15px; border-radius: 8px; border-left: 4px solid #1A3B4F;">
+                    <p style="font-style: italic;">"{{ comentario.comentario }}"</p>
+                    <p style="text-align: right; font-size: 0.9rem; color: #666;">— {{ comentario.usuario_nombre }} <small>({{ comentario.fecha }})</small></p>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ACTIVIDADES -->
-    {% if destino.actividades and destino.actividades|length > 0 %}
-    <div class="seccion-links">
-        <div class="container">
-            <h2 class="seccion-titulo">Actividades</h2>
-            <p class="seccion-subtitulo">Experiencias que puedes reservar</p>
-            
-            <div class="links-grid">
-                {% for actividad in destino.actividades %}
-                <a href="{{ actividad.link }}" target="_blank" class="link-item">
-                    <div class="link-content">
-                        {% if actividad.imagen %}
-                        <img src="{{ actividad.imagen }}" alt="{{ actividad.nombre }}" class="link-imagen">
-                        {% else %}
-                        <img src="{{ destino.imagen_principal }}" alt="{{ actividad.nombre }}" class="link-imagen">
-                        {% endif %}
-                        <div class="link-info">
-                            <h4 class="link-nombre">{{ actividad.nombre }}</h4>
-                            <p class="link-descripcion">{{ actividad.descripcion_corta }}</p>
-                        </div>
-                        <span class="link-flecha">→</span>
-                    </div>
-                </a>
                 {% endfor %}
             </div>
         </div>
     </div>
     {% endif %}
 
-    <!-- RESTAURANTES -->
-    {% if destino.restaurantes and destino.restaurantes|length > 0 %}
-    <div class="seccion-links fondo-gris">
-        <div class="container">
-            <h2 class="seccion-titulo">Dónde comer</h2>
-            <p class="seccion-subtitulo">Restaurantes recomendados</p>
-            
-            <div class="links-grid">
-                {% for restaurante in destino.restaurantes %}
-                <a href="{{ restaurante.link }}" target="_blank" class="link-item">
-                    <div class="link-content">
-                        {% if restaurante.imagen %}
-                        <img src="{{ restaurante.imagen }}" alt="{{ restaurante.nombre }}" class="link-imagen">
-                        {% else %}
-                        <img src="{{ destino.imagen_principal }}" alt="{{ restaurante.nombre }}" class="link-imagen">
-                        {% endif %}
-                        <div class="link-info">
-                            <h4 class="link-nombre">{{ restaurante.nombre }}</h4>
-                            <p class="link-descripcion">{{ restaurante.tipo_comida }}</p>
-                        </div>
-                        <span class="link-flecha">→</span>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- HOSPEDAJES -->
-    {% if destino.hospedajes and destino.hospedajes|length > 0 %}
-    <div class="seccion-links">
-        <div class="container">
-            <h2 class="seccion-titulo">Dónde dormir</h2>
-            <p class="seccion-subtitulo">Hospedajes cerca</p>
-            
-            <div class="links-grid">
-                {% for hospedaje in destino.hospedajes %}
-                <a href="{{ hospedaje.link }}" target="_blank" class="link-item">
-                    <div class="link-content">
-                        {% if hospedaje.imagen %}
-                        <img src="{{ hospedaje.imagen }}" alt="{{ hospedaje.nombre }}" class="link-imagen">
-                        {% else %}
-                        <img src="{{ destino.imagen_principal }}" alt="{{ hospedaje.nombre }}" class="link-imagen">
-                        {% endif %}
-                        <div class="link-info">
-                            <h4 class="link-nombre">{{ hospedaje.nombre }}</h4>
-                            <p class="link-descripcion">{{ hospedaje.tipo }} · ${{ hospedaje.precio_noche }}/noche</p>
-                        </div>
-                        <span class="link-flecha">→</span>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- RENTA DE CARROS -->
-    {% if destino.rentacar and destino.rentacar|length > 0 %}
-    <div class="seccion-links fondo-gris">
-        <div class="container">
-            <h2 class="seccion-titulo">Dónde rentar carro</h2>
-            <p class="seccion-subtitulo">Las mejores opciones para moverte</p>
-            
-            <div class="links-grid">
-                {% for rentacar in destino.rentacar %}
-                <a href="{{ rentacar.link }}" target="_blank" class="link-item">
-                    <div class="link-content">
-                        {% if rentacar.imagen %}
-                        <img src="{{ rentacar.imagen }}" alt="{{ rentacar.nombre }}" class="link-imagen">
-                        {% else %}
-                        <img src="{{ destino.imagen_principal }}" alt="{{ rentacar.nombre }}" class="link-imagen">
-                        {% endif %}
-                        <div class="link-info">
-                            <h4 class="link-nombre">{{ rentacar.nombre }}</h4>
-                            <p class="link-descripcion">{{ rentacar.ubicacion }} · ${{ rentacar.precio_dia }}/día</p>
-                        </div>
-                        <span class="link-flecha">→</span>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- MENSAJE SI NO HAY NINGUNA SECCIÓN -->
-    {% if not destino.actividades and not destino.restaurantes and not destino.hospedajes and not destino.rentacar %}
+    <!-- MENSAJE SI NO HAY COMENTARIOS -->
+    {% if not destino.comentarios %}
     <div class="container text-center py-8">
-        <p class="text-gray-500">Próximamente más información sobre este destino.</p>
+        <p class="text-gray-500">Sé el primero en comentar sobre este destino.</p>
     </div>
     {% endif %}
 
