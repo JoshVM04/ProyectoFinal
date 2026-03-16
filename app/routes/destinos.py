@@ -106,7 +106,7 @@ class DestinosRoutes:
         """
         Ruta: /destinos/<int:destino_id>
         Método: GET
-        Template: destinos/detalle.html (ya lo tienes)
+        Template: destinos/detalle.html
         Muestra la información detallada de un destino específico
         """
         # Buscar el destino por ID
@@ -116,10 +116,10 @@ class DestinosRoutes:
         if not destino:
             return render_template("404.html", mensaje="Destino no encontrado"), 404
         
-        # Renderizar template de detalle con el destino
+        # ✅ CORREGIDO: destino ya es un diccionario, no llamar a .to_dict()
         return render_template(
             "destinos/detalle.html",
-            destino=destino.to_dict()
+            destino=destino  # ← así directo
         )
     
     def por_categoria(self, categoria_id):

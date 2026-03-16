@@ -168,7 +168,7 @@ function showDestinosForProvince(category, province) {
     }, 100);
 }
 
-// ===== CREAR CARD DE DESTINO =====
+// ===== CREAR CARD DE DESTINO (CORREGIDO) =====
 function createDestinoCard(destino, index) {
     const precioFormateado = new Intl.NumberFormat('es-CR', {
         style: 'currency',
@@ -211,9 +211,11 @@ function createDestinoCard(destino, index) {
                     <span class="text-gray-400 text-xs ml-1">/ persona</span>
                 </div>
                 
-                <button class="px-3 py-1.5 rounded-full bg-primary-500 text-white text-xs font-medium hover:bg-primary-600 transition-all duration-300 shadow-sm hover:shadow-md hover:scale-105">
+                <!-- ✅ CORREGIDO: Ahora es un enlace que lleva a /destinos/ID -->
+                <a href="/destinos/${destino.id}" 
+                   class="inline-block px-3 py-1.5 rounded-full bg-primary-500 text-white text-xs font-medium hover:bg-primary-600 transition-all duration-300 shadow-sm hover:shadow-md hover:scale-105">
                     Ver detalles
-                </button>
+                </a>
             </div>
         </div>
     `;
@@ -419,5 +421,3 @@ if (!Element.prototype.closest) {
 // ===== FUNCIONES GLOBALES =====
 window.closeDestinosSection = closeDestinosSection;
 window.showNotification = showNotification;
-
-

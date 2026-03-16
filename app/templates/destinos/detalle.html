@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ destino.nombre }} - Nómada{% endblock %}
+{% block title %}{{ destino.titulo }} - Nómada{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/destino.css') }}">
@@ -9,27 +9,36 @@
 {% block content %}
 <div class="destino-detalle">
 
-    <!--TÍTULO GRANDE DEL LUGAR -->
+    <!-- TÍTULO GRANDE DEL LUGAR -->
     <div class="destino-header">
         <div class="container">
-            <h1 class="destino-titulo">{{ destino.nombre }}</h1>
+            <h1 class="destino-titulo">{{ destino.titulo }}</h1>
             <div class="destino-meta">
-                <span class="ubicacion">📍 {{ destino.ubicacion }}</span>
-                <span class="categoria">{{ destino.categoria|capitalize }}</span>
+                <span class="ubicacion">📍 {{ destino.provincia }}</span>
+                <span class="categoria">{{ destino.categoria_nombre }}</span>
             </div>
         </div>
     </div>
 
-    <!-- GALERÍA DE FOTOS (el formato es de 1 foto grande + 2 medianas) -->
+    <!-- GALERÍA DE FOTOS -->
     <div class="galeria-container">
         <div class="container">
             <div class="galeria-grid">
+                <!-- Foto principal -->
                 <div class="foto-principal">
-                    <img src="{{ destino.foto_principal }}" alt="{{ destino.nombre }}">
+                    <img src="{{ destino.imagen_principal }}" alt="{{ destino.titulo }}">
                 </div>
+                <!-- Fotos secundarias (primeras 2 de la galería) -->
                 <div class="fotos-secundarias">
-                    <img src="{{ destino.foto_2 }}" alt="{{ destino.nombre }} 2">
-                    <img src="{{ destino.foto_3 }}" alt="{{ destino.nombre }} 3">
+                    {% if destino.imagenes and destino.imagenes|length > 0 %}
+                        {% for img in destino.imagenes[:2] %}
+                        <img src="{{ img }}" alt="{{ destino.titulo }}">
+                        {% endfor %}
+                    {% else %}
+                        <!-- Si no hay imágenes adicionales, duplicar la principal -->
+                        <img src="{{ destino.imagen_principal }}" alt="{{ destino.titulo }}">
+                        <img src="{{ destino.imagen_principal }}" alt="{{ destino.titulo }}">
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -41,17 +50,17 @@
             <div class="info-grid">
                 <!-- Descripción larga -->
                 <div class="descripcion-card">
-                    <h2 class="section-title">Sobre {{ destino.nombre }}</h2>
-                    <p class="descripcion-texto">{{ destino.descripcion_larga }}</p>
+                    <h2 class="section-title">Sobre {{ destino.titulo }}</h2>
+                    <p class="descripcion-texto">{{ destino.descripcion }}</p>
                 </div>
 
-                <!-- Sidebar de donde se ubica el  costo -->
+                <!-- Sidebar con el costo -->
                 <div class="costo-sidebar">
                     <div class="costo-card">
                         <h3>Costo por persona</h3>
                         <div class="costo-precio">
-                            <span class="moneda">$</span>
-                            <span class="valor">{{ destino.costo_dia }}</span>
+                            <span class="moneda">₡</span>
+                            <span class="valor">{{ "{:,.0f}".format(destino.costo_dia) }}</span>
                             <span class="periodo">/día</span>
                         </div>
                         <p class="costo-incluye">✓ {{ destino.que_incluye }}</p>
@@ -61,7 +70,8 @@
         </div>
     </div>
 
-    <!--ACA ES VAN A IR LOS LINKS DE DÓNDE HACER ACTIVIDADES (SOLO LINKS) -->
+    <!-- ACTIVIDADES -->
+    {% if destino.actividades and destino.actividades|length > 0 %}
     <div class="seccion-links">
         <div class="container">
             <h2 class="seccion-titulo">Actividades</h2>
@@ -73,6 +83,8 @@
                     <div class="link-content">
                         {% if actividad.imagen %}
                         <img src="{{ actividad.imagen }}" alt="{{ actividad.nombre }}" class="link-imagen">
+                        {% else %}
+                        <img src="{{ destino.imagen_principal }}" alt="{{ actividad.nombre }}" class="link-imagen">
                         {% endif %}
                         <div class="link-info">
                             <h4 class="link-nombre">{{ actividad.nombre }}</h4>
@@ -85,8 +97,10 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
-    <!--ACA ES VAN A IR LOS LINKS DE DÓNDE COMER -->
+    <!-- RESTAURANTES -->
+    {% if destino.restaurantes and destino.restaurantes|length > 0 %}
     <div class="seccion-links fondo-gris">
         <div class="container">
             <h2 class="seccion-titulo">Dónde comer</h2>
@@ -98,6 +112,8 @@
                     <div class="link-content">
                         {% if restaurante.imagen %}
                         <img src="{{ restaurante.imagen }}" alt="{{ restaurante.nombre }}" class="link-imagen">
+                        {% else %}
+                        <img src="{{ destino.imagen_principal }}" alt="{{ restaurante.nombre }}" class="link-imagen">
                         {% endif %}
                         <div class="link-info">
                             <h4 class="link-nombre">{{ restaurante.nombre }}</h4>
@@ -110,8 +126,10 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
-    <!--ACA ES VAN A IR LOS LINKS DE DÓNDE DORMIR-->
+    <!-- HOSPEDAJES -->
+    {% if destino.hospedajes and destino.hospedajes|length > 0 %}
     <div class="seccion-links">
         <div class="container">
             <h2 class="seccion-titulo">Dónde dormir</h2>
@@ -123,6 +141,8 @@
                     <div class="link-content">
                         {% if hospedaje.imagen %}
                         <img src="{{ hospedaje.imagen }}" alt="{{ hospedaje.nombre }}" class="link-imagen">
+                        {% else %}
+                        <img src="{{ destino.imagen_principal }}" alt="{{ hospedaje.nombre }}" class="link-imagen">
                         {% endif %}
                         <div class="link-info">
                             <h4 class="link-nombre">{{ hospedaje.nombre }}</h4>
@@ -135,8 +155,10 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
-    <!--ACA ES VAN A IR LOS LINKS DE DÓNDE RENTAR CARRO -->
+    <!-- RENTA DE CARROS -->
+    {% if destino.rentacar and destino.rentacar|length > 0 %}
     <div class="seccion-links fondo-gris">
         <div class="container">
             <h2 class="seccion-titulo">Dónde rentar carro</h2>
@@ -148,6 +170,8 @@
                     <div class="link-content">
                         {% if rentacar.imagen %}
                         <img src="{{ rentacar.imagen }}" alt="{{ rentacar.nombre }}" class="link-imagen">
+                        {% else %}
+                        <img src="{{ destino.imagen_principal }}" alt="{{ rentacar.nombre }}" class="link-imagen">
                         {% endif %}
                         <div class="link-info">
                             <h4 class="link-nombre">{{ rentacar.nombre }}</h4>
@@ -160,6 +184,14 @@
             </div>
         </div>
     </div>
+    {% endif %}
+
+    <!-- MENSAJE SI NO HAY NINGUNA SECCIÓN -->
+    {% if not destino.actividades and not destino.restaurantes and not destino.hospedajes and not destino.rentacar %}
+    <div class="container text-center py-8">
+        <p class="text-gray-500">Próximamente más información sobre este destino.</p>
+    </div>
+    {% endif %}
 
 </div>
 {% endblock %}
