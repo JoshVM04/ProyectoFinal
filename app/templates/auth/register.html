@@ -13,6 +13,18 @@
     <div class="container mx-auto px-4">
         <!-- Medium width box - good for forms -->
         <div class="max-w-md mx-auto">
+            
+            <!-- ✅ NUEVO: Mostrar mensaje de error si existe -->
+            {% if error %}
+            <div class="mb-4 animate-slide-down bg-red-50 border-l-4 border-red-500 rounded-lg p-3 flex items-start">
+                <i class="fas fa-exclamation-circle text-red-500 mr-2 mt-0.5"></i>
+                <span class="text-sm text-gray-700 flex-1">{{ error }}</span>
+                <button onclick="this.parentElement.remove()" class="ml-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xs"></i>
+                </button>
+            </div>
+            {% endif %}
+            
             <!-- White card with rounded corners and shadow -->
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden animate-scale-in">
                 <!-- Green header section - SPANISH -->
@@ -28,53 +40,55 @@
                 
                 <!-- Registration form container -->
                 <div class="p-8">
-                    <!-- Form sends data to auth.register route -->
-                    <form method="POST" action="{{ url_for('auth.register') }}">
-                        <!-- Full name input field - SPANISH -->
+                    <!-- 🔴 CAMBIADO: action="auth.register" a "auth.registro" -->
+                    <form method="POST" action="{{ url_for('auth.registro') }}" id="registerForm">
+                        <!-- Full name input field -->
                         <div class="mb-5">
                             <label class="block text-gray-700 text-sm font-medium mb-2">
                                 <i class="fas fa-user text-secondary-500 mr-2"></i>Nombre completo
                             </label>
-                            <!-- text type for regular text input -->
-                            <input type="text" name="name" required
+                            <input type="text" name="nombre" required
                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent transition-all"
-                                   placeholder="Tu nombre completo">
+                                   placeholder="Ej: María González"
+                                   value="{{ nombre or '' }}">  <!-- ✅ CAMBIADO: request.form.nombre a nombre -->
                         </div>
                         
-                        <!-- Email input field - SPANISH -->
+                        <!-- Email input field -->
                         <div class="mb-5">
                             <label class="block text-gray-700 text-sm font-medium mb-2">
                                 <i class="fas fa-envelope text-secondary-500 mr-2"></i>Correo electrónico
                             </label>
                             <input type="email" name="email" required
                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent transition-all"
-                                   placeholder="tucorreo@email.com">
+                                   placeholder="tucorreo@email.com"
+                                   value="{{ email or '' }}">  <!-- ✅ CAMBIADO: request.form.email a email -->
                         </div>
                         
-                        <!-- Password input field - SPANISH -->
+                        <!-- 🔴 CAMBIADO: name="password" a name="contra" -->
                         <div class="mb-5">
                             <label class="block text-gray-700 text-sm font-medium mb-2">
                                 <i class="fas fa-lock text-secondary-500 mr-2"></i>Contraseña
                             </label>
-                            <input type="password" name="password" required
+                            <input type="password" name="contra" id="password" required minlength="6"
                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent transition-all"
                                    placeholder="Mínimo 6 caracteres">
+                            <p class="text-xs text-gray-500 mt-1">La contraseña debe tener al menos 6 caracteres</p>
                         </div>
                         
-                        <!-- Confirm password field - SPANISH -->
+                        <!-- 🔴 CAMBIADO: name="confirm_password" a name="contra_confirm" -->
                         <div class="mb-6">
                             <label class="block text-gray-700 text-sm font-medium mb-2">
                                 <i class="fas fa-lock text-secondary-500 mr-2"></i>Confirmar contraseña
                             </label>
-                            <input type="password" name="confirm_password" required
+                            <input type="password" name="contra_confirm" id="confirm_password" required minlength="6"
                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent transition-all"
                                    placeholder="••••••••">
+                            <div id="password-error" class="text-xs text-red-500 mt-1 hidden">Las contraseñas no coinciden</div>
                         </div>
                         
-                        <!-- Terms and conditions checkbox - SPANISH -->
+                        <!-- Terms and conditions checkbox -->
                         <div class="mb-6">
                             <label class="flex items-start">
-                                <!-- Checkbox must be checked to submit -->
                                 <input type="checkbox" required class="mt-1 rounded border-gray-300 text-secondary-500 focus:ring-secondary-500">
                                 <span class="ml-2 text-sm text-gray-600">
                                     Acepto los 
@@ -85,15 +99,15 @@
                             </label>
                         </div>
                         
-                        <!-- Submit button for registration - SPANISH -->
-                        <button type="submit" 
+                        <!-- Submit button -->
+                        <button type="submit" id="submitBtn"
                                 class="w-full bg-secondary-500 hover:bg-secondary-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2">
                             <i class="fas fa-user-plus"></i>
                             Crear Cuenta
                         </button>
                     </form>
                     
-                    <!-- Link to login page for existing users - SPANISH -->
+                    <!-- Link to login page -->
                     <div class="mt-6 text-center">
                         <p class="text-gray-600 text-sm">
                             ¿Ya tienes una cuenta? 
@@ -107,4 +121,41 @@
         </div>
     </div>
 </div>
+
+<!-- JavaScript para validación en tiempo real (sin cambios) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm_password');
+    const errorDiv = document.getElementById('password-error');
+    const submitBtn = document.getElementById('submitBtn');
+    const form = document.getElementById('registerForm');
+    
+    function validatePasswords() {
+        if (confirmPassword.value.length === 0) {
+            errorDiv.classList.add('hidden');
+            return true;
+        }
+        
+        if (password.value !== confirmPassword.value) {
+            errorDiv.classList.remove('hidden');
+            return false;
+        } else {
+            errorDiv.classList.add('hidden');
+            return true;
+        }
+    }
+    
+    password.addEventListener('input', validatePasswords);
+    confirmPassword.addEventListener('input', validatePasswords);
+    
+    form.addEventListener('submit', function(e) {
+        if (password.value !== confirmPassword.value) {
+            e.preventDefault();
+            errorDiv.classList.remove('hidden');
+            confirmPassword.focus();
+        }
+    });
+});
+</script>
 {% endblock %}

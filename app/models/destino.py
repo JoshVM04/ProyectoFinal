@@ -1,69 +1,74 @@
 # models/destino.py
-"""
-Modelo Destino - Representa un destino turístico en Costa Rica
-Corresponde a la tabla 'destinos' en la base de datos
-"""
-
 class Destino:
-    """
-    Clase Destino que coincide exactamente con la estructura de la tabla 'destinos'
-    Campos: id, título, descripción, provincia, caterogoria_id, imagen, fecha_creación
-    """
-    
-    def __init__(self, id, titulo, descripcion, provincia, caterogoria_id, imagen, fecha_creacion):
-        """
-        Inicializa una nueva instancia de Destino con los campos de la base de datos
-        
-        Args:
-            id: Identificador único (PRIMARY KEY)
-            titulo: Nombre del destino
-            descripcion: Descripción detallada
-            provincia: Provincia donde se ubica
-            caterogoria_id: ID de categoría (1: playas, 2: parques, 3: aventura, 4: termales)
-            imagen: Ruta de la imagen principal
-            fecha_creacion: Fecha de creación del registro
-        """
-        # ===== CAMPOS DE LA BASE DE DATOS =====
-        # Estos campos mapean directamente a las columnas de la tabla 'destinos'
-        self.id = id                       # INT PRIMARY KEY AUTO_INCREMENT
-        self.titulo = titulo                 # VARCHAR(200) NOT NULL
-        self.descripcion = descripcion       # TEXT
-        self.provincia = provincia           # VARCHAR(100)
-        self.caterogoria_id = caterogoria_id # INT (FOREIGN KEY a categorias)
-        self.imagen = imagen                 # VARCHAR(500)
-        self.fecha_creacion = fecha_creacion # TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    def __init__(self, id=None, titulo=None, descripcion=None, provincia=None, 
+                 categoria_id=None, imagen_principal=None, costo_dia=None, 
+                 que_incluye=None, fecha_creacion=None):
+        self.id = id
+        self.titulo = titulo
+        self.descripcion = descripcion
+        self.provincia = provincia
+        self.categoria_id = categoria_id
+        self.imagen_principal = imagen_principal
+        self.costo_dia = costo_dia
+        self.que_incluye = que_incluye
+        self.fecha_creacion = fecha_creacion
     
     def to_dict(self):
-        """
-        Convierte el objeto a diccionario para enviar a templates o APIs
-        Útil para pasar datos a JSON o a las vistas de Flask
-        """
         return {
             'id': self.id,
             'titulo': self.titulo,
             'descripcion': self.descripcion,
             'provincia': self.provincia,
-            'caterogoria_id': self.caterogoria_id,
-            'imagen': self.imagen,
-            'fecha_creacion': self.fecha_creacion.strftime('%Y-%m-%d') if self.fecha_creacion else None
+            'categoria_id': self.categoria_id,
+            'imagen_principal': self.imagen_principal,
+            'costo_dia': self.costo_dia,
+            'que_incluye': self.que_incluye,
+            'fecha_creacion': self.fecha_creacion.isoformat() if self.fecha_creacion else None
         }
     
-    def obtener_nombre_categoria(self):
-        """
-        Devuelve el nombre de la categoría según el ID
-        Útil para mostrar en las templates en lugar del número
-        """
-        categorias = {
-            1: "Playas",
-            2: "Parques",
-            3: "Aventura",
-            4: "Termales"
-        }
-        return categorias.get(self.caterogoria_id, "Desconocido")
+    def to_dict_completo(self):
+        """Versión completa con datos de ejemplo para pruebas"""
+        dict_base = self.to_dict()
+        dict_base.update({
+            'categoria_nombre': self._get_categoria_nombre(),
+            'imagenes': [
+                self.imagen_principal,
+                self.imagen_principal.replace('.jpg', '2.jpg'),
+                self.imagen_principal.replace('.jpg', '3.jpg')
+            ],
+            'actividades': self._get_actividades_ejemplo(),
+            'restaurantes': self._get_restaurantes_ejemplo(),
+            'hospedajes': self._get_hospedajes_ejemplo(),
+            'rentacar': self._get_rentacar_ejemplo()
+        })
+        return dict_base
     
-    def __repr__(self):
-        """
-        Representación del objeto para debugging
-        Se usa cuando se imprime el objeto en consola
-        """
-        return f"<Destino {self.id}: {self.titulo}>"
+    def _get_categoria_nombre(self):
+        categorias = {1: 'Playas', 2: 'Parques', 3: 'Aventura', 4: 'Termales'}
+        return categorias.get(self.categoria_id, '')
+    
+    def _get_actividades_ejemplo(self):
+        return [
+            {'nombre': 'Tour guiado', 'descripcion_corta': 'Recorrido por el lugar', 
+             'imagen': '/static/img/actividades/tour.jpg', 'link': '#'},
+            {'nombre': 'Fotografía', 'descripcion_corta': 'Sesión de fotos profesional', 
+             'imagen': '/static/img/actividades/foto.jpg', 'link': '#'}
+        ]
+    
+    def _get_restaurantes_ejemplo(self):
+        return [
+            {'nombre': 'Restaurante Local', 'tipo_comida': 'Típica costarricense', 
+             'imagen': '/static/img/restaurantes/local.jpg', 'link': '#'}
+        ]
+    
+    def _get_hospedajes_ejemplo(self):
+        return [
+            {'nombre': 'Hotel Principal', 'tipo': 'Hotel', 'precio_noche': 80, 
+             'imagen': '/static/img/hospedajes/hotel.jpg', 'link': '#'}
+        ]
+    
+    def _get_rentacar_ejemplo(self):
+        return [
+            {'nombre': 'Rent a Car Local', 'ubicacion': 'Centro', 'precio_dia': 45, 
+             'imagen': '/static/img/rentacar/local.jpg', 'link': '#'}
+        ]

@@ -86,7 +86,15 @@ class AuthRoutes:
         # ===== PROCESAR LOGIN (POST) =====
         # Obtener datos del formulario
         email = request.form.get('email', '')
-        contra = request.form.get('contra', '')
+        contra = request.form.get('contra', '')  # Cambiado de 'password' a 'contra'
+        
+        # Validación básica
+        if not email or not contra:
+            return render_template(
+                "auth/login.html", 
+                error="Por favor completa todos los campos",
+                email=email
+            )
         
         # Intentar login
         resultado = self.engine.login(email, contra)
@@ -102,7 +110,11 @@ class AuthRoutes:
             return redirect(next_page)
         else:
             # Mostrar error
-            return render_template("auth/login.html", error=resultado['error'], email=email)
+            return render_template(
+                "auth/login.html", 
+                error=resultado['error'], 
+                email=email
+            )
     
     def registro(self):
         """
@@ -121,8 +133,18 @@ class AuthRoutes:
         # Obtener datos del formulario
         nombre = request.form.get('nombre', '')
         email = request.form.get('email', '')
-        contra = request.form.get('contra', '')
-        contra_confirm = request.form.get('contra_confirm', '')
+        contra = request.form.get('contra', '')  # Cambiado de 'password' a 'contra'
+        contra_confirm = request.form.get('contra_confirm', '')  # Cambiado de 'confirm_password'
+        
+        # ===== VALIDACIONES =====
+        # Verificar campos obligatorios
+        if not nombre or not email or not contra:
+            return render_template(
+                "auth/register.html", 
+                error="Todos los campos son obligatorios",
+                nombre=nombre,
+                email=email
+            )
         
         # Validar que las contraseñas coincidan
         if contra != contra_confirm:
@@ -133,11 +155,20 @@ class AuthRoutes:
                 email=email
             )
         
+        # Validar longitud mínima de contraseña
+        if len(contra) < 6:
+            return render_template(
+                "auth/register.html", 
+                error="La contraseña debe tener al menos 6 caracteres",
+                nombre=nombre,
+                email=email
+            )
+        
         # Intentar registro
         resultado = self.engine.registrar(nombre, email, contra)
         
         if resultado['exito']:
-            # Registro exitoso, redirigir a login
+            # Registro exitoso, redirigir a login con mensaje
             return redirect(url_for('auth.login', registro_exitoso=1))
         else:
             # Mostrar error
@@ -168,8 +199,6 @@ class AuthRoutes:
         Método: GET
         API endpoint para verificar si hay sesión activa
         """
-        from flask import jsonify
-        
         if 'usuario_id' in session:
             return jsonify({
                 'logueado': True,

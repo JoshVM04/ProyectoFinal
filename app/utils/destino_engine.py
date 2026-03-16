@@ -34,21 +34,28 @@ class DestinoEngine:
             return self._obtener_datos_prueba()
         
         # ===== CONSULTA SQL =====
-        # SELECT * FROM destinos ORDER BY titulo
-        cursor = self.db.cursor()
-        cursor.execute("SELECT id, titulo, descripcion, provincia, caterogoria_id, imagen, fecha_creacion FROM destinos ORDER BY titulo")
+        cursor = self.db.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT d.*, c.nombre as categoria_nombre 
+            FROM destinos d
+            LEFT JOIN categorias c ON d.categoria_id = c.id
+            ORDER BY d.titulo
+        """)
         resultados = cursor.fetchall()
+        cursor.close()
         
         destinos = []
         for row in resultados:
             destino = Destino(
-                id=row[0],
-                titulo=row[1],
-                descripcion=row[2],
-                provincia=row[3],
-                caterogoria_id=row[4],
-                imagen=row[5],
-                fecha_creacion=row[6]
+                id=row['id'],
+                titulo=row['titulo'],
+                descripcion=row['descripcion'],
+                provincia=row['provincia'],
+                categoria_id=row['categoria_id'],
+                imagen_principal=row['imagen_principal'],
+                costo_dia=row['costo_dia'],
+                que_incluye=row['que_incluye'],
+                fecha_creacion=row['fecha_creacion']
             )
             destinos.append(destino)
         
@@ -56,38 +63,74 @@ class DestinoEngine:
     
     def obtener_por_id(self, destino_id):
         """
-        Obtiene un destino específico por su ID
+        Obtiene un destino específico por su ID con todas sus relaciones
         
         Args:
             destino_id: ID del destino a buscar
             
         Returns:
-            Objeto Destino o None si no existe
+            Diccionario con todos los datos del destino o None si no existe
         """
         if self.usar_datos_prueba:
             destinos = self._obtener_datos_prueba()
             for d in destinos:
                 if d.id == destino_id:
-                    return d
+                    return d.to_dict_completo()
             return None
         
-        # ===== CONSULTA SQL =====
-        # SELECT * FROM destinos WHERE id = ?
-        cursor = self.db.cursor()
-        cursor.execute("SELECT id, titulo, descripcion, provincia, caterogoria_id, imagen, fecha_creacion FROM destinos WHERE id = %s", (destino_id,))
-        row = cursor.fetchone()
+        cursor = self.db.cursor(dictionary=True)
         
-        if row:
-            return Destino(
-                id=row[0],
-                titulo=row[1],
-                descripcion=row[2],
-                provincia=row[3],
-                caterogoria_id=row[4],
-                imagen=row[5],
-                fecha_creacion=row[6]
-            )
-        return None
+        # 1. Obtener datos básicos del destino
+        cursor.execute("""
+            SELECT d.*, c.nombre as categoria_nombre 
+            FROM destinos d
+            LEFT JOIN categorias c ON d.categoria_id = c.id
+            WHERE d.id = %s
+        """, (destino_id,))
+        destino = cursor.fetchone()
+        
+        if not destino:
+            cursor.close()
+            return None
+        
+        # 2. Obtener imágenes adicionales
+        cursor.execute(
+            "SELECT imagen FROM imagenes_destino WHERE destino_id = %s",
+            (destino_id,)
+        )
+        imagenes = cursor.fetchall()
+        destino['imagenes'] = [img['imagen'] for img in imagenes]
+        
+        # 3. Obtener actividades
+        cursor.execute(
+            "SELECT * FROM actividades WHERE destino_id = %s",
+            (destino_id,)
+        )
+        destino['actividades'] = cursor.fetchall()
+        
+        # 4. Obtener restaurantes
+        cursor.execute(
+            "SELECT * FROM restaurantes WHERE destino_id = %s",
+            (destino_id,)
+        )
+        destino['restaurantes'] = cursor.fetchall()
+        
+        # 5. Obtener hospedajes
+        cursor.execute(
+            "SELECT * FROM hospedajes WHERE destino_id = %s",
+            (destino_id,)
+        )
+        destino['hospedajes'] = cursor.fetchall()
+        
+        # 6. Obtener renta de carros
+        cursor.execute(
+            "SELECT * FROM rentacar WHERE destino_id = %s",
+            (destino_id,)
+        )
+        destino['rentacar'] = cursor.fetchall()
+        
+        cursor.close()
+        return destino
     
     def obtener_por_categoria(self, categoria_id):
         """
@@ -101,24 +144,31 @@ class DestinoEngine:
         """
         if self.usar_datos_prueba:
             todos = self._obtener_datos_prueba()
-            return [d for d in todos if d.caterogoria_id == categoria_id]
+            return [d for d in todos if d.categoria_id == categoria_id]
         
-        # ===== CONSULTA SQL =====
-        # SELECT * FROM destinos WHERE caterogoria_id = ?
-        cursor = self.db.cursor()
-        cursor.execute("SELECT id, titulo, descripcion, provincia, caterogoria_id, imagen, fecha_creacion FROM destinos WHERE caterogoria_id = %s", (categoria_id,))
+        cursor = self.db.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT d.*, c.nombre as categoria_nombre 
+            FROM destinos d
+            LEFT JOIN categorias c ON d.categoria_id = c.id
+            WHERE d.categoria_id = %s
+            ORDER BY d.titulo
+        """, (categoria_id,))
         resultados = cursor.fetchall()
+        cursor.close()
         
         destinos = []
         for row in resultados:
             destino = Destino(
-                id=row[0],
-                titulo=row[1],
-                descripcion=row[2],
-                provincia=row[3],
-                caterogoria_id=row[4],
-                imagen=row[5],
-                fecha_creacion=row[6]
+                id=row['id'],
+                titulo=row['titulo'],
+                descripcion=row['descripcion'],
+                provincia=row['provincia'],
+                categoria_id=row['categoria_id'],
+                imagen_principal=row['imagen_principal'],
+                costo_dia=row['costo_dia'],
+                que_incluye=row['que_incluye'],
+                fecha_creacion=row['fecha_creacion']
             )
             destinos.append(destino)
         
@@ -138,22 +188,29 @@ class DestinoEngine:
             todos = self._obtener_datos_prueba()
             return [d for d in todos if d.provincia.lower() == provincia.lower()]
         
-        # ===== CONSULTA SQL =====
-        # SELECT * FROM destinos WHERE provincia = ?
-        cursor = self.db.cursor()
-        cursor.execute("SELECT id, titulo, descripcion, provincia, caterogoria_id, imagen, fecha_creacion FROM destinos WHERE provincia = %s", (provincia,))
+        cursor = self.db.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT d.*, c.nombre as categoria_nombre 
+            FROM destinos d
+            LEFT JOIN categorias c ON d.categoria_id = c.id
+            WHERE d.provincia = %s
+            ORDER BY d.titulo
+        """, (provincia,))
         resultados = cursor.fetchall()
+        cursor.close()
         
         destinos = []
         for row in resultados:
             destino = Destino(
-                id=row[0],
-                titulo=row[1],
-                descripcion=row[2],
-                provincia=row[3],
-                caterogoria_id=row[4],
-                imagen=row[5],
-                fecha_creacion=row[6]
+                id=row['id'],
+                titulo=row['titulo'],
+                descripcion=row['descripcion'],
+                provincia=row['provincia'],
+                categoria_id=row['categoria_id'],
+                imagen_principal=row['imagen_principal'],
+                costo_dia=row['costo_dia'],
+                que_incluye=row['que_incluye'],
+                fecha_creacion=row['fecha_creacion']
             )
             destinos.append(destino)
         
@@ -179,24 +236,31 @@ class DestinoEngine:
                     resultados.append(d)
             return resultados
         
-        # ===== CONSULTA SQL =====
-        # SELECT * FROM destinos WHERE LOWER(titulo) LIKE ? OR LOWER(descripcion) LIKE ?
-        cursor = self.db.cursor()
-        query = "SELECT id, titulo, descripcion, provincia, caterogoria_id, imagen, fecha_creacion FROM destinos WHERE LOWER(titulo) LIKE %s OR LOWER(descripcion) LIKE %s"
+        cursor = self.db.cursor(dictionary=True)
+        query = """
+            SELECT d.*, c.nombre as categoria_nombre 
+            FROM destinos d
+            LEFT JOIN categorias c ON d.categoria_id = c.id
+            WHERE LOWER(d.titulo) LIKE %s OR LOWER(d.descripcion) LIKE %s
+            ORDER BY d.titulo
+        """
         param = f"%{termino.lower()}%"
         cursor.execute(query, (param, param))
         resultados = cursor.fetchall()
+        cursor.close()
         
         destinos = []
         for row in resultados:
             destino = Destino(
-                id=row[0],
-                titulo=row[1],
-                descripcion=row[2],
-                provincia=row[3],
-                caterogoria_id=row[4],
-                imagen=row[5],
-                fecha_creacion=row[6]
+                id=row['id'],
+                titulo=row['titulo'],
+                descripcion=row['descripcion'],
+                provincia=row['provincia'],
+                categoria_id=row['categoria_id'],
+                imagen_principal=row['imagen_principal'],
+                costo_dia=row['costo_dia'],
+                que_incluye=row['que_incluye'],
+                fecha_creacion=row['fecha_creacion']
             )
             destinos.append(destino)
         
@@ -205,43 +269,43 @@ class DestinoEngine:
     def _obtener_datos_prueba(self):
         """
         Método privado para pruebas sin BD
-        Retorna una lista de destinos quemados basados en tu JSON
+        Retorna una lista de destinos quemados
         """
         from datetime import datetime
         
         return [
             Destino(1, "Playa Conchal", "Playa de arena blanca de conchas", 
-                   "Guanacaste", 1, "/static/images/playa-conchal.jpg", datetime.now()),
-            Destino(2, "Playa Tamarindo", "Surf y vida nocturna", 
-                   "Guanacaste", 1, "/static/images/tamarindo.jpg", datetime.now()),
+                   "Guanacaste", 1, "img/playas/conchal3.jpg", 65000, "Entrada gratuita", datetime.now()),
+            Destino(2, "Playa Manuel Antonio", "Playas dentro del parque nacional", 
+                   "Puntarenas", 1, "img/playas/manuelantonio.webp", 40000, "Entrada al parque", datetime.now()),
             Destino(3, "Playa Punta Uva", "Aguas cristalinas", 
-                   "Limón", 1, "/static/images/punta-uva.jpg", datetime.now()),
+                   "Limón", 1, "img/playas/puntauva.jpg", 35000, "Acceso libre", datetime.now()),
             Destino(4, "Playa Cahuita", "Arrecife de coral", 
-                   "Limón", 1, "/static/images/cahuita.jpg", datetime.now()),
-            Destino(5, "Volcán Arenal", "Volcán activo", 
-                   "Alajuela", 2, "/static/images/arenal.jpg", datetime.now()),
+                   "Limón", 1, "img/playas/cahuita2.jpg", 38000, "Donación sugerida", datetime.now()),
+            Destino(5, "Parque Nacional Volcán Arenal", "Volcán activo", 
+                   "Alajuela", 2, "img/parques/Parquearenal1.jpg", 32000, "Entrada al parque", datetime.now()),
             Destino(6, "Rincón de la Vieja", "Volcanes y géiseres", 
-                   "Guanacaste", 2, "/static/images/rincon.jpg", datetime.now()),
+                   "Guanacaste", 2, "img/parques/rincondelavieja1.jpg", 28000, "Entrada al parque", datetime.now()),
             Destino(7, "Tortuguero", "Canales y tortugas", 
-                   "Limón", 2, "/static/images/tortuguero.jpg", datetime.now()),
+                   "Limón", 2, "img/parques/tortuguero1.jpg", 35000, "Entrada al parque", datetime.now()),
             Destino(8, "Corcovado", "Biodiversidad única", 
-                   "Puntarenas", 2, "/static/images/corcovado.jpg", datetime.now()),
-            Destino(9, "La Fortuna", "Canyoning", 
-                   "Alajuela", 3, "/static/images/fortuna.jpg", datetime.now()),
-            Destino(10, "Monteverde", "Canopy", 
-                    "Puntarenas", 3, "/static/images/monteverde.jpg", datetime.now()),
-            Destino(11, "Jacó", "Surf", 
-                    "Puntarenas", 3, "/static/images/jaco.jpg", datetime.now()),
-            Destino(12, "Río Pacuare", "Rafting", 
-                    "Cartago", 3, "/static/images/pacuare.jpg", datetime.now()),
+                   "Puntarenas", 2, "img/parques/corcovado1.jpg", 42000, "Entrada al parque", datetime.now()),
+            Destino(9, "La Fortuna", "Canyoning y aventura", 
+                   "Alajuela", 3, "img/aventura/lafortuna1.jpg", 55000, "Acceso a cataratas", datetime.now()),
+            Destino(10, "Monteverde", "Canopy y bosque nuboso", 
+                    "Puntarenas", 3, "img/aventura/monteverde1.jpg", 45000, "Entrada a reserva", datetime.now()),
+            Destino(11, "Jacó", "Surf y vida nocturna", 
+                    "Puntarenas", 3, "img/aventura/jaco1.jpg", 38000, "Acceso a playa", datetime.now()),
+            Destino(12, "Río Pacuare", "Rafting clase III-IV", 
+                    "Limón", 3, "img/aventura/pacuare1.jpg", 65000, "Tour completo", datetime.now()),
             Destino(13, "Tabacón", "Aguas termales de lujo", 
-                    "Alajuela", 4, "/static/images/tabacon.jpg", datetime.now()),
-            Destino(14, "Baldi", "Aguas termales", 
-                    "Alajuela", 4, "/static/images/baldi.jpg", datetime.now()),
-            Destino(15, "Orosi", "Aguas termales tradicionales", 
-                    "Cartago", 4, "/static/images/orosi.jpg", datetime.now()),
-            Destino(16, "Río Negro", "Aguas termales naturales", 
-                    "Guanacaste", 4, "/static/images/rio-negro.jpg", datetime.now()),
+                    "Alajuela", 4, "img/termales/Tabacon3.jpg", 60000, "Acceso a termales", datetime.now()),
+            Destino(14, "Termales Baldi", "Aguas termales", 
+                    "Alajuela", 4, "img/termales/baldi2.jpg", 35000, "Acceso a piscinas", datetime.now()),
+            Destino(15, "Termales de Orosi", "Aguas termales tradicionales", 
+                    "Cartago", 4, "img/termales/orosi.jpg", 30000, "Acceso a pozas", datetime.now()),
+            Destino(16, "Termales Río Negro", "Aguas termales naturales", 
+                    "Guanacaste", 4, "img/termales/rionegro.jpg", 28000, "Acceso a pozas", datetime.now()),
         ]
     
     def to_dict_list(self, destinos=None):
