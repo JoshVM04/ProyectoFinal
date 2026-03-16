@@ -15,6 +15,79 @@ const AppState = {
     particlesInitialized: false
 };
 
+// ===== FUNCIONES GLOBALES (definidas primero) =====
+window.closeDestinosSection = function() {
+    const section = document.getElementById('destinos-provincia');
+    if (section) {
+        addAnimation(section, 'fadeOut', () => {
+            section.classList.add('hidden');
+            const categorias = document.getElementById('categorias');
+            if (categorias) {
+                categorias.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+};
+
+window.showNotification = function(message, type = 'info') {
+    const container = document.getElementById('notifications-container') || createNotificationContainer();
+    
+    const notification = document.createElement('div');
+    notification.className = `notification ${type} animate-slide-up`;
+    notification.innerHTML = `
+        <div class="flex items-center p-3 rounded-lg bg-white shadow-lg border-l-4 ${getNotificationBorder(type)} hover:scale-105 transition-transform">
+            <i class="${getNotificationIcon(type)} text-base mr-2"></i>
+            <span class="text-sm text-gray-700">${message}</span>
+            <button class="ml-3 text-gray-400 hover:text-gray-600 hover:rotate-90 transition-transform" onclick="this.parentElement.parentElement.remove()">
+                <i class="fas fa-times text-xs"></i>
+            </button>
+        </div>
+    `;
+    
+    container.appendChild(notification);
+    
+    setTimeout(() => {
+        if (notification.parentNode) {
+            addAnimation(notification, 'fadeOut', () => notification.remove());
+        }
+    }, CONFIG.NOTIFICATION_DURATION);
+};
+
+// ===== FUNCIONES AUXILIARES =====
+function closeAllDropdowns() {
+    document.querySelectorAll('.province-dropdown').forEach(dropdown => {
+        dropdown.classList.add('hidden');
+        const icon = dropdown.closest('.category-card')?.querySelector('.province-toggle i');
+        if (icon) icon.className = 'fas fa-chevron-down';
+    });
+}
+
+function createNotificationContainer() {
+    const container = document.createElement('div');
+    container.id = 'notifications-container';
+    container.className = 'fixed top-4 right-4 z-[9999] space-y-2 max-w-sm';
+    document.body.appendChild(container);
+    return container;
+}
+
+function getNotificationBorder(type) {
+    return {
+        'info': 'border-primary-500',
+        'success': 'border-secondary-500',
+        'warning': 'border-amber-500',
+        'error': 'border-red-500'
+    }[type] || 'border-primary-500';
+}
+
+function getNotificationIcon(type) {
+    return {
+        'info': 'fas fa-info-circle text-primary-500',
+        'success': 'fas fa-check-circle text-secondary-500',
+        'warning': 'fas fa-exclamation-circle text-amber-500',
+        'error': 'fas fa-times-circle text-red-500'
+    }[type] || 'fas fa-info-circle text-primary-500';
+}
+
 // ===== INICIALIZACIÓN =====
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🌿 Nómada - Sistema premium iniciado');
@@ -101,14 +174,6 @@ function initCategoryInteractions() {
             closeAllDropdowns();
         }
     });
-    
-    function closeAllDropdowns() {
-        document.querySelectorAll('.province-dropdown').forEach(dropdown => {
-            dropdown.classList.add('hidden');
-            const icon = dropdown.closest('.category-card')?.querySelector('.province-toggle i');
-            if (icon) icon.className = 'fas fa-chevron-down';
-        });
-    }
 }
 
 // ===== SELECCIÓN DE PROVINCIAS =====
@@ -168,7 +233,7 @@ function showDestinosForProvince(category, province) {
     }, 100);
 }
 
-// ===== CREAR CARD DE DESTINO (CORREGIDO) =====
+// ===== CREAR CARD DE DESTINO =====
 function createDestinoCard(destino, index) {
     const precioFormateado = new Intl.NumberFormat('es-CR', {
         style: 'currency',
@@ -211,7 +276,6 @@ function createDestinoCard(destino, index) {
                     <span class="text-gray-400 text-xs ml-1">/ persona</span>
                 </div>
                 
-                <!-- ✅ CORREGIDO: Ahora es un enlace que lleva a /destinos/ID -->
                 <a href="/destinos/${destino.id}" 
                    class="inline-block px-3 py-1.5 rounded-full bg-primary-500 text-white text-xs font-medium hover:bg-primary-600 transition-all duration-300 shadow-sm hover:shadow-md hover:scale-105">
                     Ver detalles
@@ -230,7 +294,7 @@ function createEmptyState() {
             <i class="fas fa-map-marker-alt text-3xl text-gray-300 mb-3 animate-bounce"></i>
             <h3 class="text-lg font-medium text-gray-700 mb-2">No hay destinos disponibles</h3>
             <p class="text-sm text-gray-500 mb-4">Próximamente agregaremos más experiencias.</p>
-            <button onclick="closeDestinosSection()" class="px-4 py-2 rounded-full bg-primary-500 text-white text-sm hover:bg-primary-600 transition-all duration-300 hover:scale-105">
+            <button onclick="window.closeDestinosSection()" class="px-4 py-2 rounded-full bg-primary-500 text-white text-sm hover:bg-primary-600 transition-all duration-300 hover:scale-105">
                 Volver a categorías
             </button>
         </div>
@@ -241,17 +305,7 @@ function createEmptyState() {
 function initCloseDestinos() {
     const closeBtn = document.getElementById('cerrar-destinos');
     if (closeBtn) {
-        closeBtn.addEventListener('click', closeDestinosSection);
-    }
-}
-
-function closeDestinosSection() {
-    const section = document.getElementById('destinos-provincia');
-    if (section) {
-        addAnimation(section, 'fadeOut', () => {
-            section.classList.add('hidden');
-            document.getElementById('categorias').scrollIntoView({ behavior: 'smooth' });
-        });
+        closeBtn.addEventListener('click', window.closeDestinosSection);
     }
 }
 
@@ -303,55 +357,7 @@ function initImageOptimization() {
 
 // ===== NOTIFICACIONES =====
 function initNotifications() {
-    window.showNotification = function(message, type = 'info') {
-        const container = document.getElementById('notifications-container') || createNotificationContainer();
-        
-        const notification = document.createElement('div');
-        notification.className = `notification ${type} animate-slide-up`;
-        notification.innerHTML = `
-            <div class="flex items-center p-3 rounded-lg bg-white shadow-lg border-l-4 ${getNotificationBorder(type)} hover:scale-105 transition-transform">
-                <i class="${getNotificationIcon(type)} text-base mr-2"></i>
-                <span class="text-sm text-gray-700">${message}</span>
-                <button class="ml-3 text-gray-400 hover:text-gray-600 hover:rotate-90 transition-transform" onclick="this.parentElement.parentElement.remove()">
-                    <i class="fas fa-times text-xs"></i>
-                </button>
-            </div>
-        `;
-        
-        container.appendChild(notification);
-        
-        setTimeout(() => {
-            if (notification.parentNode) {
-                addAnimation(notification, 'fadeOut', () => notification.remove());
-            }
-        }, CONFIG.NOTIFICATION_DURATION);
-    };
-    
-    function createNotificationContainer() {
-        const container = document.createElement('div');
-        container.id = 'notifications-container';
-        container.className = 'fixed top-4 right-4 z-[9999] space-y-2 max-w-sm';
-        document.body.appendChild(container);
-        return container;
-    }
-    
-    function getNotificationBorder(type) {
-        return {
-            'info': 'border-primary-500',
-            'success': 'border-secondary-500',
-            'warning': 'border-amber-500',
-            'error': 'border-red-500'
-        }[type] || 'border-primary-500';
-    }
-    
-    function getNotificationIcon(type) {
-        return {
-            'info': 'fas fa-info-circle text-primary-500',
-            'success': 'fas fa-check-circle text-secondary-500',
-            'warning': 'fas fa-exclamation-circle text-amber-500',
-            'error': 'fas fa-times-circle text-red-500'
-        }[type] || 'fas fa-info-circle text-primary-500';
-    }
+    // La función showNotification ya está definida globalmente
 }
 
 // ===== EFECTOS HOVER =====
@@ -417,7 +423,3 @@ if (!Element.prototype.closest) {
         return null;
     };
 }
-
-// ===== FUNCIONES GLOBALES =====
-window.closeDestinosSection = closeDestinosSection;
-window.showNotification = showNotification;
