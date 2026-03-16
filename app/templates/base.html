@@ -173,29 +173,61 @@
             </nav>
         </div>
 
-        <!-- Dropdown menu with animation - TRANSLATED TO SPANISH -->
+        <!-- Dropdown menu with animation - CORREGIDO COMPLETAMENTE -->
         <div id="menu-desplegable" class="hidden absolute top-full right-4 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50 animate-slide-down">
-            <a href="experiencias.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
-                <i class="fas fa-compass text-primary-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Experiencias</span>
-            </a>
             
-            <a href="/ia-chat" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
-                <i class="fas fa-robot text-secondary-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Asistente IA</span>
-            </a>
-            
-            <div class="border-t border-gray-100 my-1"></div>
-            
-            <a href="auth/login.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
-                <i class="fas fa-sign-in-alt text-gray-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Iniciar Sesión</span>
-            </a>
-            
-            <a href="auth/register.html" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
-                <i class="fas fa-user-plus text-gray-500 text-base w-6"></i>
-                <span class="text-gray-700 text-sm font-medium">Registrarse</span>
-            </a>
+            {% if session.usuario_id %}
+                <!-- ===== USUARIO LOGUEADO ===== -->
+                <div class="px-5 py-3 bg-primary-50">
+                    <p class="text-xs text-gray-500">Bienvenido,</p>
+                    <p class="font-semibold text-primary-700">{{ session.usuario_nombre }}</p>
+                </div>
+                <div class="border-t border-gray-100 my-1"></div>
+                
+                <!-- Enlace a Experiencias (temporalmente como ruta directa) -->
+                <a href="/experiencias" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
+                    <i class="fas fa-compass text-primary-500 text-base w-6"></i>
+                    <span class="text-gray-700 text-sm font-medium">Experiencias</span>
+                </a>
+                
+                <a href="/ia-chat" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
+                    <i class="fas fa-robot text-secondary-500 text-base w-6"></i>
+                    <span class="text-gray-700 text-sm font-medium">Asistente IA</span>
+                </a>
+                
+                <div class="border-t border-gray-100 my-1"></div>
+                
+                <a href="{{ url_for('auth.logout') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1 text-red-600">
+                    <i class="fas fa-sign-out-alt text-base w-6"></i>
+                    <span class="text-sm font-medium">Cerrar Sesión</span>
+                </a>
+                
+            {% else %}
+                <!-- ===== USUARIO NO LOGUEADO ===== -->
+                <!-- Enlace a Experiencias (temporalmente como ruta directa) -->
+                <a href="/experiencias" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
+                    <i class="fas fa-compass text-primary-500 text-base w-6"></i>
+                    <span class="text-gray-700 text-sm font-medium">Experiencias</span>
+                </a>
+                
+                <a href="/ia-chat" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
+                    <i class="fas fa-robot text-secondary-500 text-base w-6"></i>
+                    <span class="text-gray-700 text-sm font-medium">Asistente IA</span>
+                </a>
+                
+                <div class="border-t border-gray-100 my-1"></div>
+                
+                <!-- CORREGIDO: Usando url_for para auth -->
+                <a href="{{ url_for('auth.login') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
+                    <i class="fas fa-sign-in-alt text-gray-500 text-base w-6"></i>
+                    <span class="text-gray-700 text-sm font-medium">Iniciar Sesión</span>
+                </a>
+                
+                <a href="{{ url_for('auth.registro') }}" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
+                    <i class="fas fa-user-plus text-gray-500 text-base w-6"></i>
+                    <span class="text-gray-700 text-sm font-medium">Registrarse</span>
+                </a>
+            {% endif %}
         </div>
     </header>
 
@@ -245,7 +277,7 @@
                 <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                     <h4 class="text-sm font-semibold mb-4 text-white">Nómada</h4>
                     <ul class="space-y-2">
-                        <li><a href="experiencias.html" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Experiencias</a></li>
+                        <li><a href="/experiencias" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Experiencias</a></li>
                         <li><a href="/ia-chat" class="text-gray-200 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Asistente IA</a></li>
                     </ul>
                 </div>

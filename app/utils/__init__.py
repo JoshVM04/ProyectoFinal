@@ -7,6 +7,6 @@ def create_app():
     app.secret_key = "nomada_secret"
 
     # registrar rutas de autenticación
-    app.register_blueprint(auth, url_prefix="/auth")
+    app.register_blueprint(auth)
 
     return app
