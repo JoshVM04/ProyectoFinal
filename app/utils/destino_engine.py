@@ -19,14 +19,13 @@ class DestinoEngine:
         try:
             cursor = self.db.cursor(dictionary=True)
             
-            # Consulta simple sin JOIN para evitar errores
+            # Consulta simple para obtener el destino
             cursor.execute("SELECT * FROM destinos WHERE id = %s", (destino_id,))
             destino = cursor.fetchone()
-            cursor.close()
             
             if destino:
                 print(f"✅ Destino encontrado: {destino['titulo']}")
-                print(f"📸 Imagen: {destino.get('imagen')}")
+                print(f"📸 Imagen principal: {destino.get('imagen')}")
                 
                 # Agregar campo categoria_nombre manualmente
                 if destino['caterogoria_id'] == 1:
@@ -40,11 +39,20 @@ class DestinoEngine:
                 else:
                     destino['categoria_nombre'] = 'Otro'
                 
-                # Campo imagenes vacío para el template
-                destino['imagenes'] = []
-            else:
-                print(f"❌ No se encontró destino con ID {destino_id}")
+                # ===== NUEVO: Obtener imágenes de la galería =====
+                cursor.execute("""
+                    SELECT imagen, titulo, orden 
+                    FROM imagenes_destino 
+                    WHERE destino_id = %s 
+                    ORDER BY orden ASC
+                """, (destino_id,))
+                
+                imagenes = cursor.fetchall()
+                destino['imagenes'] = imagenes
+                print(f"🖼️ Imágenes de galería encontradas: {len(imagenes)}")
+                # =================================================
             
+            cursor.close()
             return destino
             
         except Exception as e:
