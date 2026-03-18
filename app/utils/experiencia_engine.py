@@ -37,7 +37,7 @@ class ExperienciaEngine:
         try:
             cursor = self.db.cursor(dictionary=True)
             cursor.execute("""
-                SELECT c.id, c.usuario_id, c.destino_id, c.comentario, c.fecha,
+                SELECT c.id, c.usuario_id, c.destino_id, c.comentario, c.rating, c.fecha,
                        u.nombre as usuario_nombre, d.titulo as destino_titulo
                 FROM comentarios c
                 JOIN usuarios u ON c.usuario_id = u.id
@@ -74,7 +74,7 @@ class ExperienciaEngine:
         try:
             cursor = self.db.cursor(dictionary=True)
             cursor.execute("""
-                SELECT c.id, c.usuario_id, c.destino_id, c.comentario, c.fecha,
+                SELECT c.id, c.usuario_id, c.destino_id, c.comentario, c.rating, c.fecha,
                        u.nombre as usuario_nombre
                 FROM comentarios c
                 JOIN usuarios u ON c.usuario_id = u.id
@@ -110,7 +110,7 @@ class ExperienciaEngine:
         try:
             cursor = self.db.cursor(dictionary=True)
             cursor.execute("""
-                SELECT c.id, c.usuario_id, c.destino_id, c.comentario, c.fecha,
+                SELECT c.id, c.usuario_id, c.destino_id, c.comentario, c.rating, c.fecha,
                        d.titulo as destino_titulo
                 FROM comentarios c
                 JOIN destinos d ON c.destino_id = d.id
@@ -129,7 +129,7 @@ class ExperienciaEngine:
             print(f"❌ Error en obtener_por_usuario: {e}")
             return []
     
-    def crear(self, usuario_id, destino_id, comentario_texto):
+    def crear(self, usuario_id, destino_id, comentario_texto, rating=None):
         """
         Crea un nuevo comentario
         
@@ -137,6 +137,7 @@ class ExperienciaEngine:
             usuario_id: ID del usuario que comenta
             destino_id: ID del destino comentado
             comentario_texto: Texto del comentario
+            rating: Calificación de 1 a 5 (opcional)
             
         Returns:
             dict: Resultado con éxito o error y el comentario creado
@@ -151,6 +152,15 @@ class ExperienciaEngine:
         if not destino_id:
             return {'exito': False, 'error': 'Destino no válido'}
         
+        # Validar rating si viene
+        if rating:
+            try:
+                rating = int(rating)
+                if rating < 1 or rating > 5:
+                    rating = None
+            except:
+                rating = None
+        
         if self.usar_datos_prueba:
             # ===== MODO PRUEBA (sin BD) =====
             comentarios = self._obtener_datos_prueba()
@@ -161,6 +171,7 @@ class ExperienciaEngine:
                 'usuario_id': usuario_id,
                 'destino_id': destino_id,
                 'comentario': comentario_texto,
+                'rating': rating,
                 'fecha': datetime.now().strftime('%d/%m/%Y'),
                 'usuario_nombre': f"Usuario {usuario_id}",
                 'destino_titulo': f"Destino {destino_id}"
@@ -178,20 +189,26 @@ class ExperienciaEngine:
         try:
             cursor = self.db.cursor()
             
-            # Insertar comentario
-            cursor.execute(
-                "INSERT INTO comentarios (usuario_id, destino_id, comentario, fecha) VALUES (%s, %s, %s, NOW())",
-                (usuario_id, destino_id, comentario_texto)
-            )
-            self.db.commit()
+            # Insertar comentario (con rating)
+            if rating:
+                cursor.execute(
+                    "INSERT INTO comentarios (usuario_id, destino_id, comentario, rating, fecha) VALUES (%s, %s, %s, %s, NOW())",
+                    (usuario_id, destino_id, comentario_texto, rating)
+                )
+            else:
+                cursor.execute(
+                    "INSERT INTO comentarios (usuario_id, destino_id, comentario, fecha) VALUES (%s, %s, %s, NOW())",
+                    (usuario_id, destino_id, comentario_texto)
+                )
             
+            self.db.commit()
             nuevo_id = cursor.lastrowid
             cursor.close()
             
             # Obtener el comentario recién creado con nombres
             cursor = self.db.cursor(dictionary=True)
             cursor.execute("""
-                SELECT c.id, c.usuario_id, c.destino_id, c.comentario, c.fecha,
+                SELECT c.id, c.usuario_id, c.destino_id, c.comentario, c.rating, c.fecha,
                        u.nombre as usuario_nombre, d.titulo as destino_titulo
                 FROM comentarios c
                 JOIN usuarios u ON c.usuario_id = u.id
@@ -299,6 +316,7 @@ class ExperienciaEngine:
                 'usuario_id': 1,
                 'destino_id': 1,
                 'comentario': "Playa Conchal superó todas mis expectativas. La atención al detalle y calidad del servicio son excepcionales.",
+                'rating': 5,
                 'fecha': (datetime.now() - timedelta(days=14)).strftime('%d/%m/%Y'),
                 'usuario_nombre': "Ana Martínez",
                 'destino_titulo': "Playa Conchal"
@@ -310,6 +328,7 @@ class ExperienciaEngine:
                 'usuario_id': 2,
                 'destino_id': 5,
                 'comentario': "La experiencia en el Parque Nacional Arenal fue increíble. Los guías son expertos y la organización impecable.",
+                'rating': 4,
                 'fecha': (datetime.now() - timedelta(days=30)).strftime('%d/%m/%Y'),
                 'usuario_nombre': "Carlos Rodríguez",
                 'destino_titulo': "Volcán Arenal"
@@ -321,6 +340,7 @@ class ExperienciaEngine:
                 'usuario_id': 3,
                 'destino_id': 12,
                 'comentario': "El rafting en el Río Pacuare fue la mejor aventura de mi vida. Seguridad, profesionalismo y pura adrenalina.",
+                'rating': 5,
                 'fecha': (datetime.now() - timedelta(days=3)).strftime('%d/%m/%Y'),
                 'usuario_nombre': "Sofía González",
                 'destino_titulo': "Río Pacuare"

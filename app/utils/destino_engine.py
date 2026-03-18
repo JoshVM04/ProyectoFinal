@@ -39,7 +39,7 @@ class DestinoEngine:
                 else:
                     destino['categoria_nombre'] = 'Otro'
                 
-                # ===== NUEVO: Obtener imágenes de la galería =====
+                # ===== Obtener imágenes de la galería =====
                 cursor.execute("""
                     SELECT imagen, titulo, orden 
                     FROM imagenes_destino 
@@ -50,6 +50,26 @@ class DestinoEngine:
                 imagenes = cursor.fetchall()
                 destino['imagenes'] = imagenes
                 print(f"🖼️ Imágenes de galería encontradas: {len(imagenes)}")
+                
+                # ===== NUEVO: Obtener comentarios del destino =====
+                cursor.execute("""
+                    SELECT c.id, c.usuario_id, c.comentario, c.rating, c.fecha,
+                           u.nombre as usuario_nombre
+                    FROM comentarios c
+                    JOIN usuarios u ON c.usuario_id = u.id
+                    WHERE c.destino_id = %s
+                    ORDER BY c.fecha DESC
+                """, (destino_id,))
+                
+                comentarios = cursor.fetchall()
+                
+                # Formatear fechas
+                for com in comentarios:
+                    if com['fecha']:
+                        com['fecha'] = com['fecha'].strftime('%d/%m/%Y')
+                
+                destino['comentarios'] = comentarios
+                print(f"💬 Comentarios encontrados: {len(comentarios)}")
                 # =================================================
             
             cursor.close()
