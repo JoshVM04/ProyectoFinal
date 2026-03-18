@@ -21,9 +21,6 @@ ________________________________
 ### For System Owner
 - Add new destinations
 - Edit destination information
-- Delete inappropriate comments
-- View all registered users
-
 ________________________________
 
 ## 🛠️ Tech Stack
@@ -134,54 +131,43 @@ Open your browser and go to: http://127.0.0.1:5000
 
 ________________________________
 
-Database Schema
+## Database Schema
+
 Users Table
-id (INT, PRIMARY KEY)
+id (INT, PRIMARY KEY, AUTO_INCREMENT)
+name (VARCHAR) - User's full name
+email (VARCHAR, UNIQUE) - User's email address
+password (VARCHAR, hashed) - User's password (bcrypt hash)
+role (VARCHAR: 'visitor', 'registered') - User role (default: 'registered')
+created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP) - Registration date
 
-name (VARCHAR)
-
-email (VARCHAR, UNIQUE)
-
-password (VARCHAR, hashed)
-
-role (VARCHAR: 'visitor', 'registered')
-
-created_at (TIMESTAMP)
+Categories Table
+id (INT, PRIMARY KEY, AUTO_INCREMENT)
+name (VARCHAR) - Category name (Playas, Parques, Aventura, Termales)
 
 Destinations Table
-id (INT, PRIMARY KEY)
+id (INT, PRIMARY KEY, AUTO_INCREMENT)
+name (VARCHAR) - Destination title/name
+description (TEXT) - Full description of the destination
+location (VARCHAR) - Province where located
+category_id (INT, FOREIGN KEY REFERENCES categories(id)) - Category ID
+daily_cost (DECIMAL) - Cost per person per day
+main_photo (VARCHAR) - Main image path
+photo2 (VARCHAR) - Second image path
+photo3 (VARCHAR) - Third image path
+restaurantes_links (TEXT) - Comma-separated links to restaurants
+actividades_links (TEXT) - Comma-separated links to activities
+hospedajes_links (TEXT) - Comma-separated links to accommodations
+rentacar_links (TEXT) - Comma-separated links to car rentals
+created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP) - Creation date
 
-name (VARCHAR)
-
-description (TEXT)
-
-location (VARCHAR)
-
-category (ENUM: 'beaches', 'parks', 'adventure', 'hot_springs')
-
-daily_cost (DECIMAL)
-
-main_photo (VARCHAR)
-
-photo2 (VARCHAR)
-
-photo3 (VARCHAR)
-
-created_at (TIMESTAMP)
-
-Comments Table
-id (INT, PRIMARY KEY)
-
-user_id (INT, FOREIGN KEY)
-
-destination_id (INT, FOREIGN KEY)
-
-text (TEXT)
-
-rating (INT, 1-5)
-
-created_at (TIMESTAMP)
-
+### Comments Table
+id (INT, PRIMARY KEY, AUTO_INCREMENT)
+user_id (INT, FOREIGN KEY REFERENCES users(id)) - User who commented
+destination_id (INT, FOREIGN KEY REFERENCES destinations(id)) - Destination being commented
+text (TEXT) - Comment content
+rating (INT, CHECK 1-5) - Rating from 1 to 5 stars
+created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP) - Comment date
 ________________________________
 
 AI Integration (DeepSeek)
