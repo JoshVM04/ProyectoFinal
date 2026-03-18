@@ -1,142 +1,263 @@
-<!-- Page where users share their travel experiences -->
-<!-- Shows all comments and ratings from travelers -->
+<!-- Experiences page - Professional version -->
+<!-- Users share their travel experiences with destination names -->
 {% extends "base.html" %}
 
-{% block title %}Experiencias - Nómada{% endblock %}
+{% block title %}Experiencias de Viajeros - Nómada{% endblock %}
 
 {% block content %}
-<!-- Light gray background for the whole page -->
 <div class="bg-gray-50 min-h-screen py-16">
-    <!-- Centered content container -->
     <div class="container mx-auto px-4">
-        <!-- Page header section - SPANISH -->
+        
+        <!-- ===== HEADER SECTION ===== -->
         <div class="text-center mb-12" data-aos="fade-up">
-            <h1 class="text-4xl md:text-5xl font-bold text-primary-500 mb-4">
-                Experiencias de Viajeros
+            <div class="inline-block mb-4">
+                <span class="inline-block w-16 h-1 bg-primary-500 rounded-full"></span>
+                <span class="inline-block w-8 h-1 bg-secondary-500 rounded-full ml-1"></span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                <span class="text-primary-500">Experiencias</span> de Viajeros
             </h1>
-            <p class="text-gray-600 max-w-2xl mx-auto">
+            <p class="text-gray-600 max-w-2xl mx-auto text-lg">
                 Descubre lo que otros viajeros han experimentado en Costa Rica. 
-                Comparte tu propia historia y ayuda a la comunidad.
+                <span class="block text-sm text-gray-500 mt-2">Comparte tu propia historia y ayuda a la comunidad.</span>
             </p>
         </div>
 
-        <!-- Mostrar mensajes flash -->
+        <!-- ===== FLASH MESSAGES ===== -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                <div class="mb-4 p-4 rounded-lg {% if category == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
-                    {{ message }}
+                <div class="max-w-2xl mx-auto mb-6 animate-slide-down">
+                    <div class="p-4 rounded-lg {% if category == 'success' %}bg-green-50 text-green-800 border-l-4 border-green-500{% else %}bg-red-50 text-red-800 border-l-4 border-red-500{% endif %} shadow-md">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                {% if category == 'success' %}
+                                <i class="fas fa-check-circle text-green-500"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-red-500"></i>
+                                {% endif %}
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">{{ message }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
 
-        <!-- Form for new experiences - only shown to logged in users -->
+        <!-- ===== FORM FOR NEW EXPERIENCES (LOGGED IN USERS ONLY) ===== -->
         {% if session.usuario_id %}
-        <div class="bg-white rounded-xl shadow-md p-6 mb-8" data-aos="slide-up">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                <i class="fas fa-pen-alt text-primary-500 mr-2"></i>Comparte tu experiencia
-            </h3>
-            
-            <form method="POST" action="{{ url_for('experiencias.crear') }}">
-                <!-- Dropdown to select which destination -->
-                <div class="mb-4">
-                    <select name="destino_id" required class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                        <option value="">Selecciona un destino</option>
-                        {% for destino in destinos %}
-                        <option value="{{ destino.id }}">{{ destino.titulo }}</option>
-                        {% endfor %}
-                    </select>
+        <div class="max-w-2xl mx-auto mb-12" data-aos="slide-up">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <!-- Form header with gradient -->
+                <div class="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-4">
+                    <h3 class="text-xl font-semibold text-white flex items-center">
+                        <i class="fas fa-pen-alt mr-3"></i>
+                        Comparte tu experiencia
+                    </h3>
+                    <p class="text-primary-100 text-sm mt-1">Tu opinión ayuda a otros viajeros a descubrir los mejores destinos</p>
                 </div>
                 
-                <!-- Text area for the comment -->
-                <div class="mb-4">
-                    <textarea name="comentario" rows="3" required 
-                              class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                              placeholder="Cuéntanos sobre tu experiencia..."></textarea>
+                <!-- Form body -->
+                <div class="p-6">
+                    <form method="POST" action="{{ url_for('experiencias.crear') }}">
+                        <!-- Destination selector with search-like styling -->
+                        <div class="mb-5">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-map-marker-alt text-primary-500 mr-1"></i>
+                                ¿Qué destino visitaste?
+                            </label>
+                            <select name="destino_id" required 
+                                    class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-300 appearance-none bg-white"
+                                    style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%234A7C59\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'6 9 12 15 18 9\'/></svg>'); background-repeat: no-repeat; background-position: right 1rem center;">
+                                <option value="" disabled selected>Selecciona un destino</option>
+                                {% for destino in destinos %}
+                                <option value="{{ destino.id }}" class="py-2">{{ destino.titulo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Comment textarea with character counter -->
+                        <div class="mb-5">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fas fa-comment text-secondary-500 mr-1"></i>
+                                Tu experiencia
+                            </label>
+                            <textarea name="comentario" rows="4" required 
+                                      class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-300 resize-none"
+                                      placeholder="Cuéntanos sobre tu experiencia... ¿Qué hiciste? ¿Qué recomiendas?"
+                                      maxlength="500"></textarea>
+                            <div class="text-right text-xs text-gray-400 mt-1">
+                                <span id="char-count">0</span>/500
+                            </div>
+                        </div>
+                        
+                        <!-- Rating stars section - Professional star picker -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                Tu calificación
+                            </label>
+                            <div class="flex items-center justify-center space-x-2 p-4 bg-gray-50 rounded-xl" id="star-rating-container">
+                                <div class="flex flex-row-reverse justify-center gap-2 text-4xl" id="star-rating">
+                                    {% for i in range(5,0,-1) %}
+                                    <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="hidden peer">
+                                    <label for="star{{ i }}" class="star-label cursor-pointer text-gray-300 hover:text-yellow-400 transition-all duration-150 peer-checked:text-yellow-400 transform hover:scale-110" data-rating="{{ i }}">
+                                        <i class="fas fa-star"></i>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                                <span class="text-sm text-gray-500 ml-2" id="rating-text">Selecciona una calificación</span>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-2 text-center">1 = Muy malo · 3 = Normal · 5 = Excelente</p>
+                        </div>
+                        
+                        <!-- Submit button -->
+                        <div class="flex justify-end">
+                            <button type="submit" 
+                                    class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center gap-2 group">
+                                <span>Publicar Experiencia</span>
+                                <i class="fas fa-paper-plane text-sm group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                
-                <!-- Rating stars section - CORREGIDO -->
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Tu calificación</label>
-                    <div class="flex flex-row-reverse justify-end gap-1 text-3xl" id="star-rating">
-                        {% for i in range(5,0,-1) %}
-                        <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="hidden">
-                        <label for="star{{ i }}" class="star-label cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors duration-150 ease-in-out" data-rating="{{ i }}">
-                            <i class="fas fa-star"></i>
-                        </label>
-                        {% endfor %}
-                    </div>
-                    <p class="text-xs text-gray-500 mt-1">Selecciona del 1 al 5 (1 = Muy malo, 5 = Excelente)</p>
+            </div>
+        </div>
+        {% else %}
+        <!-- Login prompt for non-logged users -->
+        <div class="max-w-2xl mx-auto mb-12 text-center" data-aos="fade-up">
+            <div class="bg-white rounded-2xl p-8 shadow-md border-2 border-dashed border-gray-200">
+                <i class="fas fa-lock text-4xl text-gray-300 mb-3"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">¿Quieres compartir tu experiencia?</h3>
+                <p class="text-gray-500 mb-4">Inicia sesión para publicar tus propias experiencias de viaje</p>
+                <div class="flex justify-center gap-3">
+                    <a href="{{ url_for('auth.login') }}" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-2 rounded-lg transition-all hover:scale-105">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Iniciar sesión
+                    </a>
+                    <a href="{{ url_for('auth.registro') }}" class="bg-white border-2 border-primary-500 text-primary-500 hover:bg-primary-50 px-6 py-2 rounded-lg transition-all hover:scale-105">
+                        <i class="fas fa-user-plus mr-2"></i>Registrarse
+                    </a>
                 </div>
-                
-                <!-- Submit button -->
-                <button type="submit" 
-                        class="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2 px-6 rounded-lg transition-all hover:scale-105">
-                    Publicar Experiencia
-                </button>
-            </form>
+            </div>
         </div>
         {% endif %}
 
-        <!-- Grid of experiences -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for experiencia in experiencias %}
-            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105"
-                 data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
-                <div class="p-6">
-                    <!-- User info and rating header -->
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                                <span class="text-primary-700 font-semibold">
+        <!-- ===== EXPERIENCES GRID ===== -->
+        <div class="relative mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-comments text-primary-500 mr-3"></i>
+                Experiencias recientes
+                <span class="ml-3 text-sm font-normal text-gray-500">({{ experiencias|length }} {{ 'experiencia' if experiencias|length == 1 else 'experiencias' }})</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for experiencia in experiencias %}
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                     data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}">
+                    
+                    <!-- Card header with gradient accent -->
+                    <div class="h-1 bg-gradient-to-r from-primary-500 to-secondary-500"></div>
+                    
+                    <div class="p-6">
+                        <!-- User info and rating -->
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <!-- User avatar with colored background based on user ID -->
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-md"
+                                     style="background-color: {% if experiencia.usuario_id == 1 %}#4A7C59{% else %}#1A3B4F{% endif %}">
                                     {{ experiencia.usuario_nombre[:2]|upper if experiencia.usuario_nombre else 'U' }}
-                                </span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">{{ experiencia.usuario_nombre or 'Usuario' }}</h4>
+                                    <p class="text-xs text-gray-500 flex items-center">
+                                        <i class="far fa-calendar-alt mr-1"></i>{{ experiencia.fecha }}
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">{{ experiencia.usuario_nombre or 'Usuario' }}</h4>
-                                <p class="text-xs text-gray-500">{{ experiencia.fecha }}</p>
+                            
+                            <!-- Rating stars -->
+                            {% if experiencia.rating %}
+                            <div class="flex items-center bg-yellow-50 px-2 py-1 rounded-full">
+                                <span class="text-xs font-bold text-gray-700 mr-1">{{ experiencia.rating }}</span>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star text-xs"></i>
+                                </div>
                             </div>
+                            {% endif %}
                         </div>
-                        <!-- Star rating display -->
-                        {% if experiencia.rating %}
-                        <div class="flex text-yellow-400">
-                            {% for i in range(experiencia.rating) %}
-                            <i class="fas fa-star text-xs"></i>
-                            {% endfor %}
+                        
+                        <!-- DESTINO - AHORA VISIBLE Y DESTACADO -->
+                        <div class="mb-4">
+                            <span class="inline-flex items-center px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium border border-primary-100">
+                                <i class="fas fa-map-marker-alt mr-2 text-primary-500"></i>
+                                {{ experiencia.destino_nombre or 'Destino no especificado' }}
+                            </span>
                         </div>
-                        {% endif %}
+                        
+                        <!-- Comment text with styling -->
+                        <div class="relative mb-4">
+                            <i class="fas fa-quote-left text-gray-200 absolute -top-2 -left-2 text-3xl"></i>
+                            <p class="text-gray-600 text-sm leading-relaxed pl-4 pt-2">
+                                "{{ experiencia.comentario }}"
+                            </p>
+                        </div>
+                        
+                        <!-- Card footer (optional) -->
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex justify-end">
+                            <span class="text-xs text-gray-400">{{ experiencia.fecha_humana if experiencia.fecha_humana else '' }}</span>
+                        </div>
                     </div>
-                    
-                    <!-- Destination badge -->
-                    <div class="mb-3">
-                        <span class="inline-block bg-primary-50 text-primary-700 text-xs px-3 py-1 rounded-full">
-                            <i class="fas fa-map-marker-alt mr-1"></i>{{ experiencia.destino_nombre or 'Destino' }}
-                        </span>
-                    </div>
-                    
-                    <!-- Comment text -->
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        {{ experiencia.comentario }}
-                    </p>
                 </div>
+                {% else %}
+                <!-- Empty state with illustration -->
+                <div class="col-span-full text-center py-16">
+                    <div class="inline-block p-8 bg-white rounded-full shadow-md mb-6">
+                        <i class="fas fa-comment-dots text-6xl text-gray-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-2">Aún no hay experiencias</h3>
+                    <p class="text-gray-500 mb-6 max-w-md mx-auto">Sé el primero en compartir tu aventura en Costa Rica y ayuda a otros viajeros.</p>
+                    {% if not session.usuario_id %}
+                    <a href="{{ url_for('auth.registro') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all hover:scale-105">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Regístrate para comenzar</span>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
-            {% else %}
-            <div class="col-span-full text-center py-12">
-                <i class="fas fa-comment-dots text-5xl text-gray-300 mb-4"></i>
-                <p class="text-gray-500">Aún no hay experiencias. ¡Sé el primero en compartir!</p>
-            </div>
-            {% endfor %}
         </div>
+        
+        <!-- Load more button (optional, if you have pagination) -->
+        {% if experiencias|length >= 9 %}
+        <div class="text-center mt-10">
+            <button class="px-8 py-3 bg-white border-2 border-primary-500 text-primary-600 rounded-lg hover:bg-primary-50 transition-all hover:scale-105 font-medium">
+                <i class="fas fa-sync-alt mr-2"></i>Cargar más experiencias
+            </button>
+        </div>
+        {% endif %}
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // ===== STAR RATING SYSTEM =====
     const stars = document.querySelectorAll('.star-label');
     const ratingInputs = document.querySelectorAll('input[name="rating"]');
+    const ratingText = document.getElementById('rating-text');
     
-    // Función para pintar estrellas según rating
+    // Rating descriptions
+    const ratingDescriptions = {
+        1: 'Muy malo',
+        2: 'Malo',
+        3: 'Normal',
+        4: 'Bueno',
+        5: 'Excelente'
+    };
+    
+    // Function to highlight stars
     function highlightStars(rating) {
         stars.forEach(star => {
             const starRating = parseInt(star.dataset.rating);
@@ -152,40 +273,129 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Función para resetear al rating seleccionado (o a gris si no hay)
+    // Reset stars to checked value or default
     function resetStars() {
         const selected = document.querySelector('input[name="rating"]:checked');
         if (selected) {
-            highlightStars(parseInt(selected.value));
+            const rating = parseInt(selected.value);
+            highlightStars(rating);
+            if (ratingText) {
+                ratingText.textContent = ratingDescriptions[rating] || `${rating} estrellas`;
+            }
         } else {
             stars.forEach(star => {
                 const icon = star.querySelector('i');
                 icon.classList.add('text-gray-300');
                 icon.classList.remove('text-yellow-400');
             });
+            if (ratingText) {
+                ratingText.textContent = 'Selecciona una calificación';
+            }
         }
     }
     
-    // Eventos hover
+    // Hover effects
     stars.forEach(star => {
         star.addEventListener('mouseenter', function() {
             const rating = parseInt(this.dataset.rating);
             highlightStars(rating);
+            if (ratingText) {
+                ratingText.textContent = ratingDescriptions[rating] || `${rating} estrellas`;
+            }
         });
         
         star.addEventListener('mouseleave', resetStars);
     });
     
-    // Evento change en los radio buttons
+    // Click on star (radio change)
     ratingInputs.forEach(radio => {
         radio.addEventListener('change', function() {
-            highlightStars(parseInt(this.value));
+            const rating = parseInt(this.value);
+            highlightStars(rating);
+            if (ratingText) {
+                ratingText.textContent = ratingDescriptions[rating] || `${rating} estrellas`;
+            }
         });
     });
     
-    // Inicializar estado
+    // Initial state
     resetStars();
+    
+    // ===== CHARACTER COUNTER =====
+    const textarea = document.querySelector('textarea[name="comentario"]');
+    const charCount = document.getElementById('char-count');
+    
+    if (textarea && charCount) {
+        textarea.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = count;
+            
+            // Change color when approaching limit
+            if (count > 450) {
+                charCount.classList.add('text-orange-500');
+                charCount.classList.remove('text-gray-400');
+            } else {
+                charCount.classList.remove('text-orange-500');
+                charCount.classList.add('text-gray-400');
+            }
+            
+            if (count >= 500) {
+                charCount.classList.add('text-red-500');
+                charCount.classList.remove('text-orange-500');
+            }
+        });
+    }
 });
 </script>
 
+<style>
+/* Estilos adicionales para las estrellas */
+#star-rating input:checked ~ label i {
+    color: #fbbf24;
+}
+
+.star-label.peer-checked i {
+    color: #fbbf24;
+}
+
+/* Animación para mensajes flash */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-down {
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Mejoras en la accesibilidad */
+select:focus, textarea:focus, input:focus {
+    outline: none;
+}
+
+/* Tooltip personalizado para calificaciones */
+.rating-tooltip {
+    position: relative;
+}
+
+.rating-tooltip:hover:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+</style>
 {% endblock %}
