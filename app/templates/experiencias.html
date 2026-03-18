@@ -1,125 +1,196 @@
-<!-- Experiences page - Professional version -->
-<!-- Users share their travel experiences with destination names -->
+<!-- Experiences page - Ultra Professional Version -->
+<!-- Shows destination names correctly and has pro star rating system -->
 {% extends "base.html" %}
 
 {% block title %}Experiencias de Viajeros - Nómada{% endblock %}
 
 {% block content %}
 <div class="bg-gray-50 min-h-screen py-16">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 max-w-7xl">
         
-        <!-- ===== HEADER SECTION ===== -->
-        <div class="text-center mb-12" data-aos="fade-up">
-            <div class="inline-block mb-4">
-                <span class="inline-block w-16 h-1 bg-primary-500 rounded-full"></span>
-                <span class="inline-block w-8 h-1 bg-secondary-500 rounded-full ml-1"></span>
+        <!-- ===== HERO SECTION WITH STATS ===== -->
+        <div class="relative mb-16 text-center" data-aos="fade-down">
+            <!-- Decorative elements -->
+            <div class="absolute inset-x-0 -top-10 flex justify-center">
+                <div class="w-24 h-24 bg-primary-100 rounded-full opacity-30 blur-2xl"></div>
+                <div class="w-32 h-32 bg-secondary-100 rounded-full opacity-30 blur-2xl -ml-10"></div>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                <span class="text-primary-500">Experiencias</span> de Viajeros
-            </h1>
-            <p class="text-gray-600 max-w-2xl mx-auto text-lg">
-                Descubre lo que otros viajeros han experimentado en Costa Rica. 
-                <span class="block text-sm text-gray-500 mt-2">Comparte tu propia historia y ayuda a la comunidad.</span>
-            </p>
+            
+            <div class="relative">
+                <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm mb-6 border border-gray-100">
+                    <span class="w-2 h-2 bg-secondary-500 rounded-full animate-pulse"></span>
+                    <span class="text-xs font-medium text-gray-600">Comunidad Nómada</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl font-bold mb-4">
+                    <span class="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                        Experiencias
+                    </span>
+                </h1>
+                
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg mb-8">
+                    Descubre lo que otros viajeros han vivido en Costa Rica. 
+                    <span class="block text-sm text-gray-400 mt-1">Comparte tu historia y ayuda a la comunidad.</span>
+                </p>
+                
+                <!-- Stats badges -->
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <div class="bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
+                        <span class="text-primary-600 font-bold">{{ experiencias|length }}</span>
+                        <span class="text-gray-500 text-sm ml-1">experiencias</span>
+                    </div>
+                    <div class="bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
+                        <span class="text-secondary-600 font-bold">{{ destinos|length }}</span>
+                        <span class="text-gray-500 text-sm ml-1">destinos</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- ===== FLASH MESSAGES ===== -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
+                <div class="max-w-2xl mx-auto mb-8 space-y-3">
                 {% for category, message in messages %}
-                <div class="max-w-2xl mx-auto mb-6 animate-slide-down">
-                    <div class="p-4 rounded-lg {% if category == 'success' %}bg-green-50 text-green-800 border-l-4 border-green-500{% else %}bg-red-50 text-red-800 border-l-4 border-red-500{% endif %} shadow-md">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                {% if category == 'success' %}
-                                <i class="fas fa-check-circle text-green-500"></i>
-                                {% else %}
-                                <i class="fas fa-exclamation-circle text-red-500"></i>
-                                {% endif %}
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium">{{ message }}</p>
+                    <div class="animate-slide-down">
+                        <div class="{% if category == 'success' %}bg-green-50 border-l-4 border-green-500{% else %}bg-red-50 border-l-4 border-red-500{% endif %} rounded-r-lg shadow-md overflow-hidden">
+                            <div class="flex items-center p-4">
+                                <div class="flex-shrink-0 mr-3">
+                                    {% if category == 'success' %}
+                                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-check-circle text-green-600"></i>
+                                    </div>
+                                    {% else %}
+                                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-exclamation-circle text-red-600"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium {% if category == 'success' %}text-green-800{% else %}text-red-800{% endif %}">
+                                        {{ message }}
+                                    </p>
+                                </div>
+                                <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
+                </div>
             {% endif %}
         {% endwith %}
 
-        <!-- ===== FORM FOR NEW EXPERIENCES (LOGGED IN USERS ONLY) ===== -->
+        <!-- ===== FORM FOR NEW EXPERIENCES ===== -->
         {% if session.usuario_id %}
-        <div class="max-w-2xl mx-auto mb-12" data-aos="slide-up">
-            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                <!-- Form header with gradient -->
-                <div class="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-4">
-                    <h3 class="text-xl font-semibold text-white flex items-center">
-                        <i class="fas fa-pen-alt mr-3"></i>
-                        Comparte tu experiencia
-                    </h3>
-                    <p class="text-primary-100 text-sm mt-1">Tu opinión ayuda a otros viajeros a descubrir los mejores destinos</p>
+        <div class="max-w-3xl mx-auto mb-16" data-aos="fade-up">
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                <!-- Form header with decorative pattern -->
+                <div class="relative bg-gradient-to-r from-primary-600 to-primary-700 px-8 py-6">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-10 -mt-10"></div>
+                    <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full -ml-8 -mb-8"></div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                            <i class="fas fa-pen-fancy text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Comparte tu experiencia</h3>
+                            <p class="text-primary-100 text-sm">Tu opinión ayuda a otros viajeros a descubrir los mejores destinos</p>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Form body -->
-                <div class="p-6">
-                    <form method="POST" action="{{ url_for('experiencias.crear') }}">
-                        <!-- Destination selector with search-like styling -->
-                        <div class="mb-5">
+                <div class="p-8">
+                    <form method="POST" action="{{ url_for('experiencias.crear') }}" id="experience-form">
+                        <!-- Destination selector with search -->
+                        <div class="mb-6">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-map-marker-alt text-primary-500 mr-1"></i>
+                                <i class="fas fa-map-pin text-primary-500 mr-2"></i>
                                 ¿Qué destino visitaste?
                             </label>
-                            <select name="destino_id" required 
-                                    class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-300 appearance-none bg-white"
-                                    style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%234A7C59\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'6 9 12 15 18 9\'/></svg>'); background-repeat: no-repeat; background-position: right 1rem center;">
-                                <option value="" disabled selected>Selecciona un destino</option>
-                                {% for destino in destinos %}
-                                <option value="{{ destino.id }}" class="py-2">{{ destino.titulo }}</option>
-                                {% endfor %}
-                            </select>
+                            <div class="relative">
+                                <select name="destino_id" required 
+                                        class="w-full p-4 pr-12 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 transition-all duration-300 appearance-none bg-white text-gray-700 font-medium">
+                                    <option value="" disabled selected>Selecciona un destino</option>
+                                    {% for destino in destinos %}
+                                    <option value="{{ destino.id }}" class="py-2">{{ destino.titulo }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                    <i class="fas fa-chevron-down text-gray-400"></i>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Comment textarea with character counter -->
-                        <div class="mb-5">
+                        <div class="mb-6">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-comment text-secondary-500 mr-1"></i>
+                                <i class="fas fa-comment-dots text-secondary-500 mr-2"></i>
                                 Tu experiencia
                             </label>
-                            <textarea name="comentario" rows="4" required 
-                                      class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-300 resize-none"
-                                      placeholder="Cuéntanos sobre tu experiencia... ¿Qué hiciste? ¿Qué recomiendas?"
-                                      maxlength="500"></textarea>
-                            <div class="text-right text-xs text-gray-400 mt-1">
-                                <span id="char-count">0</span>/500
+                            <div class="relative">
+                                <textarea name="comentario" rows="4" required 
+                                          class="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 transition-all duration-300 resize-none"
+                                          placeholder="Cuéntanos sobre tu experiencia... ¿Qué hiciste? ¿Qué recomendarías?"
+                                          maxlength="500" id="comment-textarea"></textarea>
+                                <div class="absolute bottom-3 right-3 text-xs font-medium" id="char-counter">
+                                    <span id="char-current">0</span>/<span id="char-max">500</span>
+                                </div>
                             </div>
                         </div>
                         
-                        <!-- Rating stars section - Professional star picker -->
-                        <div class="mb-6">
+                        <!-- Professional star rating system -->
+                        <div class="mb-8">
                             <label class="block text-sm font-semibold text-gray-700 mb-3">
-                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                <i class="fas fa-star text-yellow-500 mr-2"></i>
                                 Tu calificación
                             </label>
-                            <div class="flex items-center justify-center space-x-2 p-4 bg-gray-50 rounded-xl" id="star-rating-container">
-                                <div class="flex flex-row-reverse justify-center gap-2 text-4xl" id="star-rating">
-                                    {% for i in range(5,0,-1) %}
-                                    <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="hidden peer">
-                                    <label for="star{{ i }}" class="star-label cursor-pointer text-gray-300 hover:text-yellow-400 transition-all duration-150 peer-checked:text-yellow-400 transform hover:scale-110" data-rating="{{ i }}">
-                                        <i class="fas fa-star"></i>
-                                    </label>
-                                    {% endfor %}
+                            
+                            <div class="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-gray-100">
+                                <div class="flex flex-col items-center">
+                                    <!-- Stars container -->
+                                    <div class="flex flex-row-reverse justify-center gap-2 mb-3" id="star-container">
+                                        {% for i in range(5,0,-1) %}
+                                        <div class="relative">
+                                            <input type="radio" name="rating" value="{{ i }}" id="star-{{ i }}" class="hidden peer">
+                                            <label for="star-{{ i }}" 
+                                                   class="star block cursor-pointer text-4xl transition-all duration-200 peer-checked:scale-110 peer-checked:rotate-6"
+                                                   data-rating="{{ i }}"
+                                                   onclick="setRating({{ i }})">
+                                                <i class="fas fa-star text-gray-300 hover:text-yellow-400 transition-colors"></i>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <!-- Rating labels -->
+                                    <div class="flex justify-between w-full max-w-xs text-xs font-medium">
+                                        <span class="text-gray-400">Malo</span>
+                                        <span class="text-gray-400">Regular</span>
+                                        <span class="text-gray-400">Bueno</span>
+                                        <span class="text-gray-400">Excelente</span>
+                                    </div>
+                                    
+                                    <!-- Selected rating display -->
+                                    <div class="mt-4 text-sm" id="selected-rating-display">
+                                        <span class="text-gray-500">No has seleccionado calificación</span>
+                                    </div>
                                 </div>
-                                <span class="text-sm text-gray-500 ml-2" id="rating-text">Selecciona una calificación</span>
                             </div>
-                            <p class="text-xs text-gray-400 mt-2 text-center">1 = Muy malo · 3 = Normal · 5 = Excelente</p>
+                            <p class="text-xs text-gray-400 mt-2 text-center">Tu calificación ayuda a otros viajeros a elegir mejor</p>
                         </div>
                         
                         <!-- Submit button -->
                         <div class="flex justify-end">
                             <button type="submit" 
-                                    class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center gap-2 group">
-                                <span>Publicar Experiencia</span>
-                                <i class="fas fa-paper-plane text-sm group-hover:translate-x-1 transition-transform"></i>
+                                    class="group relative bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+                                    id="submit-button">
+                                <span>Publicar experiencia</span>
+                                <i class="fas fa-paper-plane text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                                <div class="absolute inset-0 rounded-xl bg-white opacity-0 hover:opacity-10 transition-opacity"></div>
                             </button>
                         </div>
                     </form>
@@ -127,238 +198,293 @@
             </div>
         </div>
         {% else %}
-        <!-- Login prompt for non-logged users -->
-        <div class="max-w-2xl mx-auto mb-12 text-center" data-aos="fade-up">
-            <div class="bg-white rounded-2xl p-8 shadow-md border-2 border-dashed border-gray-200">
-                <i class="fas fa-lock text-4xl text-gray-300 mb-3"></i>
-                <h3 class="text-xl font-semibold text-gray-700 mb-2">¿Quieres compartir tu experiencia?</h3>
-                <p class="text-gray-500 mb-4">Inicia sesión para publicar tus propias experiencias de viaje</p>
-                <div class="flex justify-center gap-3">
-                    <a href="{{ url_for('auth.login') }}" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-2 rounded-lg transition-all hover:scale-105">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Iniciar sesión
-                    </a>
-                    <a href="{{ url_for('auth.registro') }}" class="bg-white border-2 border-primary-500 text-primary-500 hover:bg-primary-50 px-6 py-2 rounded-lg transition-all hover:scale-105">
-                        <i class="fas fa-user-plus mr-2"></i>Registrarse
-                    </a>
+        <!-- Professional login prompt -->
+        <div class="max-w-2xl mx-auto mb-16" data-aos="fade-up">
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border-2 border-dashed border-gray-200 hover:border-primary-200 transition-colors">
+                <div class="p-8 text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-lock text-3xl text-primary-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Comparte tu experiencia</h3>
+                    <p class="text-gray-500 mb-6 max-w-md mx-auto">Inicia sesión para publicar tus propias experiencias de viaje y ayudar a otros viajeros</p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="{{ url_for('auth.login') }}" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-xl transition-all hover:scale-105 font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Iniciar sesión
+                        </a>
+                        <a href="{{ url_for('auth.registro') }}" class="bg-white border-2 border-primary-600 text-primary-600 hover:bg-primary-50 px-8 py-3 rounded-xl transition-all hover:scale-105 font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-user-plus"></i>
+                            Registrarse
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         {% endif %}
 
         <!-- ===== EXPERIENCES GRID ===== -->
-        <div class="relative mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                <i class="fas fa-comments text-primary-500 mr-3"></i>
-                Experiencias recientes
-                <span class="ml-3 text-sm font-normal text-gray-500">({{ experiencias|length }} {{ 'experiencia' if experiencias|length == 1 else 'experiencias' }})</span>
-            </h2>
+        <div class="relative">
+            <!-- Section header with filters -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                        <i class="fas fa-comments text-primary-600"></i>
+                        Experiencias de la comunidad
+                    </h2>
+                    <p class="text-sm text-gray-500 mt-1">
+                        {{ experiencias|length }} {{ 'experiencia publicada' if experiencias|length == 1 else 'experiencias publicadas' }}
+                    </p>
+                </div>
+                
+                <!-- Filter dropdown (optional) -->
+                <div class="mt-4 sm:mt-0 relative">
+                    <button class="bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                        <i class="fas fa-filter text-gray-400"></i>
+                        Filtrar por destino
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Experiences grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
                 {% for experiencia in experiencias %}
-                <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
                      data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}">
                     
-                    <!-- Card header with gradient accent -->
-                    <div class="h-1 bg-gradient-to-r from-primary-500 to-secondary-500"></div>
+                    <!-- Card header with color accent based on rating -->
+                    <div class="h-2 {% if experiencia.rating >= 4 %}bg-gradient-to-r from-secondary-500 to-secondary-400{% elif experiencia.rating >= 3 %}bg-gradient-to-r from-yellow-500 to-yellow-400{% else %}bg-gradient-to-r from-gray-400 to-gray-300{% endif %}"></div>
                     
                     <div class="p-6">
                         <!-- User info and rating -->
-                        <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-start justify-between mb-5">
                             <div class="flex items-center gap-3">
-                                <!-- User avatar with colored background based on user ID -->
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-md"
-                                     style="background-color: {% if experiencia.usuario_id == 1 %}#4A7C59{% else %}#1A3B4F{% endif %}">
+                                <!-- User avatar with gradient -->
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br {% if experiencia.usuario_id == 1 %}from-secondary-500 to-secondary-600{% else %}from-primary-500 to-primary-600{% endif %} flex items-center justify-center text-white font-bold text-lg shadow-lg">
                                     {{ experiencia.usuario_nombre[:2]|upper if experiencia.usuario_nombre else 'U' }}
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-gray-800">{{ experiencia.usuario_nombre or 'Usuario' }}</h4>
-                                    <p class="text-xs text-gray-500 flex items-center">
-                                        <i class="far fa-calendar-alt mr-1"></i>{{ experiencia.fecha }}
-                                    </p>
+                                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                                        <i class="far fa-calendar-alt"></i>
+                                        <span>{{ experiencia.fecha }}</span>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <!-- Rating stars -->
+                            <!-- Rating badge -->
                             {% if experiencia.rating %}
-                            <div class="flex items-center bg-yellow-50 px-2 py-1 rounded-full">
-                                <span class="text-xs font-bold text-gray-700 mr-1">{{ experiencia.rating }}</span>
-                                <div class="flex text-yellow-400">
-                                    <i class="fas fa-star text-xs"></i>
-                                </div>
+                            <div class="flex items-center gap-1 bg-gray-50 px-3 py-2 rounded-xl">
+                                <span class="font-bold text-gray-700">{{ experiencia.rating }}</span>
+                                <i class="fas fa-star text-yellow-400 text-xs"></i>
                             </div>
                             {% endif %}
                         </div>
                         
-                        <!-- DESTINO - AHORA VISIBLE Y DESTACADO -->
+                        <!-- DESTINATION - AHORA SÍ SE VE -->
                         <div class="mb-4">
-                            <span class="inline-flex items-center px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium border border-primary-100">
-                                <i class="fas fa-map-marker-alt mr-2 text-primary-500"></i>
-                                {{ experiencia.destino_nombre or 'Destino no especificado' }}
-                            </span>
+                            <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-xl border border-primary-100 w-full">
+                                <i class="fas fa-map-marker-alt text-primary-500"></i>
+                                <span class="font-medium text-primary-700">
+                                    {% if experiencia.destino_nombre %}
+                                        {{ experiencia.destino_nombre }}
+                                    {% else %}
+                                        <span class="text-red-500">Error: Destino no encontrado</span>
+                                    {% endif %}
+                                </span>
+                            </div>
                         </div>
                         
-                        <!-- Comment text with styling -->
+                        <!-- Comment with quote styling -->
                         <div class="relative mb-4">
-                            <i class="fas fa-quote-left text-gray-200 absolute -top-2 -left-2 text-3xl"></i>
-                            <p class="text-gray-600 text-sm leading-relaxed pl-4 pt-2">
+                            <i class="fas fa-quote-left text-3xl text-gray-200 absolute -top-1 -left-1"></i>
+                            <p class="text-gray-600 text-sm leading-relaxed pl-6 pt-2">
                                 "{{ experiencia.comentario }}"
                             </p>
                         </div>
                         
-                        <!-- Card footer (optional) -->
-                        <div class="mt-4 pt-3 border-t border-gray-100 flex justify-end">
-                            <span class="text-xs text-gray-400">{{ experiencia.fecha_humana if experiencia.fecha_humana else '' }}</span>
+                        <!-- Footer with engagement -->
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                            <div class="flex items-center gap-3 text-gray-400 text-xs">
+                                <button class="hover:text-primary-600 transition-colors flex items-center gap-1">
+                                    <i class="far fa-heart"></i>
+                                    <span>12</span>
+                                </button>
+                                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                <span class="flex items-center gap-1">
+                                    <i class="far fa-clock"></i>
+                                    <span>{{ experiencia.fecha_humana if experiencia.fecha_humana else 'Recientemente' }}</span>
+                                </span>
+                            </div>
+                            <div class="text-xs font-medium text-primary-600 hover:text-primary-700 cursor-pointer">
+                                Leer más
+                            </div>
                         </div>
                     </div>
                 </div>
                 {% else %}
                 <!-- Empty state with illustration -->
-                <div class="col-span-full text-center py-16">
-                    <div class="inline-block p-8 bg-white rounded-full shadow-md mb-6">
-                        <i class="fas fa-comment-dots text-6xl text-gray-300"></i>
+                <div class="col-span-full text-center py-20">
+                    <div class="max-w-md mx-auto">
+                        <div class="relative">
+                            <div class="w-32 h-32 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-full mx-auto mb-6 flex items-center justify-center">
+                                <i class="fas fa-map-marked-alt text-5xl text-primary-400"></i>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center animate-bounce">
+                                <i class="fas fa-smile text-2xl text-yellow-600"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Aún no hay experiencias</h3>
+                        <p class="text-gray-500 mb-6">Sé el primero en compartir tu aventura en Costa Rica</p>
+                        {% if not session.usuario_id %}
+                        <a href="{{ url_for('auth.registro') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-all hover:scale-105 shadow-lg">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Regístrate para comenzar</span>
+                        </a>
+                        {% endif %}
                     </div>
-                    <h3 class="text-2xl font-semibold text-gray-700 mb-2">Aún no hay experiencias</h3>
-                    <p class="text-gray-500 mb-6 max-w-md mx-auto">Sé el primero en compartir tu aventura en Costa Rica y ayuda a otros viajeros.</p>
-                    {% if not session.usuario_id %}
-                    <a href="{{ url_for('auth.registro') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all hover:scale-105">
-                        <i class="fas fa-user-plus"></i>
-                        <span>Regístrate para comenzar</span>
-                    </a>
-                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
         </div>
         
-        <!-- Load more button (optional, if you have pagination) -->
+        <!-- Pagination (if needed) -->
         {% if experiencias|length >= 9 %}
-        <div class="text-center mt-10">
-            <button class="px-8 py-3 bg-white border-2 border-primary-500 text-primary-600 rounded-lg hover:bg-primary-50 transition-all hover:scale-105 font-medium">
-                <i class="fas fa-sync-alt mr-2"></i>Cargar más experiencias
-            </button>
+        <div class="flex justify-center mt-12">
+            <nav class="inline-flex gap-2" aria-label="Paginación">
+                <button class="w-10 h-10 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-primary-50 hover:border-primary-300 transition-colors">
+                    <i class="fas fa-chevron-left text-sm"></i>
+                </button>
+                <button class="w-10 h-10 rounded-lg bg-primary-600 text-white font-medium">1</button>
+                <button class="w-10 h-10 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-primary-50 hover:border-primary-300 transition-colors">2</button>
+                <button class="w-10 h-10 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-primary-50 hover:border-primary-300 transition-colors">3</button>
+                <button class="w-10 h-10 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-primary-50 hover:border-primary-300 transition-colors">4</button>
+                <button class="w-10 h-10 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-primary-50 hover:border-primary-300 transition-colors">
+                    <i class="fas fa-chevron-right text-sm"></i>
+                </button>
+            </nav>
         </div>
         {% endif %}
     </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // ===== STAR RATING SYSTEM =====
-    const stars = document.querySelectorAll('.star-label');
-    const ratingInputs = document.querySelectorAll('input[name="rating"]');
-    const ratingText = document.getElementById('rating-text');
+// Professional star rating system
+function setRating(rating) {
+    const stars = document.querySelectorAll('.star');
+    const ratingDisplay = document.getElementById('selected-rating-display');
+    const ratingTexts = ['', 'Muy malo', 'Malo', 'Regular', 'Bueno', 'Excelente'];
     
-    // Rating descriptions
-    const ratingDescriptions = {
-        1: 'Muy malo',
-        2: 'Malo',
-        3: 'Normal',
-        4: 'Bueno',
-        5: 'Excelente'
-    };
-    
-    // Function to highlight stars
-    function highlightStars(rating) {
-        stars.forEach(star => {
-            const starRating = parseInt(star.dataset.rating);
-            const icon = star.querySelector('i');
-            
-            if (starRating <= rating) {
-                icon.classList.add('text-yellow-400');
-                icon.classList.remove('text-gray-300');
-            } else {
-                icon.classList.add('text-gray-300');
-                icon.classList.remove('text-yellow-400');
-            }
-        });
-    }
-    
-    // Reset stars to checked value or default
-    function resetStars() {
-        const selected = document.querySelector('input[name="rating"]:checked');
-        if (selected) {
-            const rating = parseInt(selected.value);
-            highlightStars(rating);
-            if (ratingText) {
-                ratingText.textContent = ratingDescriptions[rating] || `${rating} estrellas`;
-            }
+    stars.forEach((star, index) => {
+        const starRating = 5 - index;
+        const icon = star.querySelector('i');
+        
+        if (starRating <= rating) {
+            icon.classList.remove('text-gray-300');
+            icon.classList.add('text-yellow-400');
         } else {
-            stars.forEach(star => {
-                const icon = star.querySelector('i');
-                icon.classList.add('text-gray-300');
-                icon.classList.remove('text-yellow-400');
-            });
-            if (ratingText) {
-                ratingText.textContent = 'Selecciona una calificación';
-            }
+            icon.classList.remove('text-yellow-400');
+            icon.classList.add('text-gray-300');
         }
+    });
+    
+    if (ratingDisplay) {
+        ratingDisplay.innerHTML = `
+            <span class="font-bold text-yellow-600">${ratingTexts[rating]}</span>
+            <span class="text-gray-400 ml-1">(${rating} estrella${rating > 1 ? 's' : ''})</span>
+        `;
     }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // ===== STAR RATING SYSTEM (más intuitivo) =====
+    const stars = document.querySelectorAll('.star');
+    const ratingInputs = document.querySelectorAll('input[name="rating"]');
     
     // Hover effects
     stars.forEach(star => {
         star.addEventListener('mouseenter', function() {
             const rating = parseInt(this.dataset.rating);
-            highlightStars(rating);
-            if (ratingText) {
-                ratingText.textContent = ratingDescriptions[rating] || `${rating} estrellas`;
+            setRating(rating);
+        });
+        
+        star.addEventListener('mouseleave', function() {
+            const selected = document.querySelector('input[name="rating"]:checked');
+            if (selected) {
+                setRating(parseInt(selected.value));
+            } else {
+                // Reset all to gray
+                stars.forEach(s => {
+                    s.querySelector('i').classList.add('text-gray-300');
+                    s.querySelector('i').classList.remove('text-yellow-400');
+                });
+                const ratingDisplay = document.getElementById('selected-rating-display');
+                if (ratingDisplay) {
+                    ratingDisplay.innerHTML = '<span class="text-gray-500">No has seleccionado calificación</span>';
+                }
             }
         });
         
-        star.addEventListener('mouseleave', resetStars);
-    });
-    
-    // Click on star (radio change)
-    ratingInputs.forEach(radio => {
-        radio.addEventListener('change', function() {
-            const rating = parseInt(this.value);
-            highlightStars(rating);
-            if (ratingText) {
-                ratingText.textContent = ratingDescriptions[rating] || `${rating} estrellas`;
+        // Click on star
+        star.addEventListener('click', function(e) {
+            const rating = parseInt(this.dataset.rating);
+            const radio = document.getElementById(`star-${rating}`);
+            if (radio) {
+                radio.checked = true;
+                setRating(rating);
             }
         });
     });
     
-    // Initial state
-    resetStars();
-    
     // ===== CHARACTER COUNTER =====
-    const textarea = document.querySelector('textarea[name="comentario"]');
-    const charCount = document.getElementById('char-count');
+    const textarea = document.getElementById('comment-textarea');
+    const charCurrent = document.getElementById('char-current');
     
-    if (textarea && charCount) {
+    if (textarea && charCurrent) {
         textarea.addEventListener('input', function() {
             const count = this.value.length;
-            charCount.textContent = count;
+            charCurrent.textContent = count;
             
-            // Change color when approaching limit
+            // Change counter color based on remaining chars
+            const counter = document.getElementById('char-counter');
             if (count > 450) {
-                charCount.classList.add('text-orange-500');
-                charCount.classList.remove('text-gray-400');
+                counter.classList.add('text-orange-500');
+                counter.classList.remove('text-gray-400');
             } else {
-                charCount.classList.remove('text-orange-500');
-                charCount.classList.add('text-gray-400');
+                counter.classList.remove('text-orange-500');
+                counter.classList.add('text-gray-400');
             }
             
             if (count >= 500) {
-                charCount.classList.add('text-red-500');
-                charCount.classList.remove('text-orange-500');
+                counter.classList.add('text-red-500');
+                counter.classList.remove('text-orange-500');
             }
         });
+    }
+    
+    // ===== INITIALIZE RATING IF PRESELECTED =====
+    const selectedRating = document.querySelector('input[name="rating"]:checked');
+    if (selectedRating) {
+        setRating(parseInt(selectedRating.value));
     }
 });
 </script>
 
 <style>
-/* Estilos adicionales para las estrellas */
-#star-rating input:checked ~ label i {
-    color: #fbbf24;
+/* Star rating styles */
+.star {
+    transition: all 0.2s ease;
 }
 
-.star-label.peer-checked i {
-    color: #fbbf24;
+.star:hover {
+    transform: scale(1.2) rotate(5deg);
 }
 
-/* Animación para mensajes flash */
+.star:active {
+    transform: scale(0.95);
+}
+
+/* Card animations */
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -374,28 +500,23 @@ document.addEventListener('DOMContentLoaded', function() {
     animation: slideDown 0.3s ease-out;
 }
 
-/* Mejoras en la accesibilidad */
-select:focus, textarea:focus, input:focus {
-    outline: none;
+/* Custom scrollbar for textarea */
+textarea::-webkit-scrollbar {
+    width: 8px;
 }
 
-/* Tooltip personalizado para calificaciones */
-.rating-tooltip {
-    position: relative;
+textarea::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
-.rating-tooltip:hover:after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
+textarea::-webkit-scrollbar-thumb {
+    background: #1A3B4F;
+    border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #4A7C59;
 }
 </style>
 {% endblock %}
