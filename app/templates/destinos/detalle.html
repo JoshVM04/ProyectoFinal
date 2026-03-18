@@ -4,196 +4,169 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/destino.css') }}">
+<style>
+    .galeria-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1rem;
+    }
+    .foto-principal img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .fotos-secundarias {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .fotos-secundarias img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .fotos-secundarias img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    @media (max-width: 768px) {
+        .galeria-grid {
+            grid-template-columns: 1fr;
+        }
+        .fotos-secundarias {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="destino-detalle">
 
     <!-- TÍTULO GRANDE DEL LUGAR -->
-    <div class="destino-header">
-        <div class="container">
-            <h1 class="destino-titulo">{{ destino.titulo }}</h1>
-            <div class="destino-meta">
-                <span class="ubicacion">📍 {{ destino.provincia }}</span>
-                <span class="categoria">{{ destino.categoria_nombre }}</span>
+    <div class="destino-header py-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-primary-500 mb-2">{{ destino.titulo }}</h1>
+            <div class="flex items-center gap-4 text-gray-600">
+                <span class="flex items-center gap-1"><i class="fas fa-map-marker-alt text-primary-500"></i> {{ destino.provincia }}</span>
+                <span class="flex items-center gap-1"><i class="fas fa-tag text-secondary-500"></i> {{ destino.categoria_nombre }}</span>
             </div>
         </div>
     </div>
 
     <!-- GALERÍA DE FOTOS -->
-    <div class="galeria-container">
-        <div class="container">
+    <div class="galeria-container py-4">
+        <div class="container mx-auto px-4">
             <div class="galeria-grid">
+                
                 <!-- Foto principal -->
                 <div class="foto-principal">
-                    <img src="{{ destino.imagen_principal }}" alt="{{ destino.titulo }}">
+                    <img src="{{ destino.imagen }}" 
+                         alt="{{ destino.titulo }}" 
+                         id="imagen-principal">
                 </div>
-                <!-- Fotos secundarias (primeras 2 de la galería) -->
+                
+                <!-- Fotos secundarias -->
                 <div class="fotos-secundarias">
                     {% if destino.imagenes and destino.imagenes|length > 0 %}
                         {% for img in destino.imagenes[:2] %}
-                        <img src="{{ img }}" alt="{{ destino.titulo }}">
+                        <img src="{{ img.imagen }}" 
+                             alt="{{ img.titulo or destino.titulo }}"
+                             onclick="cambiarImagenPrincipal('{{ img.imagen }}')">
                         {% endfor %}
                     {% else %}
-                        <!-- Si no hay imágenes adicionales, duplicar la principal -->
-                        <img src="{{ destino.imagen_principal }}" alt="{{ destino.titulo }}">
-                        <img src="{{ destino.imagen_principal }}" alt="{{ destino.titulo }}">
+                        <img src="{{ destino.imagen }}" 
+                             alt="{{ destino.titulo }}"
+                             onclick="cambiarImagenPrincipal('{{ destino.imagen }}')">
+                        <img src="{{ destino.imagen }}" 
+                             alt="{{ destino.titulo }}"
+                             onclick="cambiarImagenPrincipal('{{ destino.imagen }}')">
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- DESCRIPCIÓN + COSTO POR DÍA -->
-    <div class="info-principal-section">
-        <div class="container">
-            <div class="info-grid">
-                <!-- Descripción larga -->
-                <div class="descripcion-card">
-                    <h2 class="section-title">Sobre {{ destino.titulo }}</h2>
-                    <p class="descripcion-texto">{{ destino.descripcion }}</p>
+    <!-- DESCRIPCIÓN -->
+    <div class="info-principal-section py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Sobre {{ destino.titulo }}</h2>
+                <p class="text-gray-600 leading-relaxed">{{ destino.descripcion }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMENTARIOS CON ESTRELLAS -->
+    {% if destino.comentarios and destino.comentarios|length > 0 %}
+    <div class="seccion-comentarios py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-8">Comentarios de viajeros</h2>
+            <div class="grid gap-4">
+                {% for comentario in destino.comentarios %}
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-primary-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
+                                <span class="text-primary-700 font-semibold text-sm">
+                                    {{ comentario.usuario_nombre[:2]|upper }}
+                                </span>
+                            </div>
+                            <span class="font-medium text-gray-800">{{ comentario.usuario_nombre }}</span>
+                        </div>
+                        
+                        <!-- ESTRELLAS DEL COMENTARIO -->
+                        {% if comentario.rating %}
+                        <div class="flex text-yellow-400">
+                            {% for i in range(comentario.rating) %}
+                            <i class="fas fa-star text-xs"></i>
+                            {% endfor %}
+                            {% for i in range(5 - comentario.rating) %}
+                            <i class="far fa-star text-xs text-gray-300"></i>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="flex text-gray-300">
+                            <i class="far fa-star text-xs"></i>
+                            <i class="far fa-star text-xs"></i>
+                            <i class="far fa-star text-xs"></i>
+                            <i class="far fa-star text-xs"></i>
+                            <i class="far fa-star text-xs"></i>
+                        </div>
+                        {% endif %}
+                        <!-- FIN ESTRELLAS -->
+                        
+                    </div>
+                    <p class="text-gray-600 italic mb-2">"{{ comentario.comentario }}"</p>
+                    <p class="text-right text-xs text-gray-500">{{ comentario.fecha }}</p>
                 </div>
-
-                <!-- Sidebar con el costo -->
-                <div class="costo-sidebar">
-                    <div class="costo-card">
-                        <h3>Costo por persona</h3>
-                        <div class="costo-precio">
-                            <span class="moneda">₡</span>
-                            <span class="valor">{{ "{:,.0f}".format(destino.costo_dia) }}</span>
-                            <span class="periodo">/día</span>
-                        </div>
-                        <p class="costo-incluye">✓ {{ destino.que_incluye }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ACTIVIDADES -->
-    {% if destino.actividades and destino.actividades|length > 0 %}
-    <div class="seccion-links">
-        <div class="container">
-            <h2 class="seccion-titulo">Actividades</h2>
-            <p class="seccion-subtitulo">Experiencias que puedes reservar</p>
-            
-            <div class="links-grid">
-                {% for actividad in destino.actividades %}
-                <a href="{{ actividad.link }}" target="_blank" class="link-item">
-                    <div class="link-content">
-                        {% if actividad.imagen %}
-                        <img src="{{ actividad.imagen }}" alt="{{ actividad.nombre }}" class="link-imagen">
-                        {% else %}
-                        <img src="{{ destino.imagen_principal }}" alt="{{ actividad.nombre }}" class="link-imagen">
-                        {% endif %}
-                        <div class="link-info">
-                            <h4 class="link-nombre">{{ actividad.nombre }}</h4>
-                            <p class="link-descripcion">{{ actividad.descripcion_corta }}</p>
-                        </div>
-                        <span class="link-flecha">→</span>
-                    </div>
-                </a>
                 {% endfor %}
             </div>
         </div>
     </div>
     {% endif %}
 
-    <!-- RESTAURANTES -->
-    {% if destino.restaurantes and destino.restaurantes|length > 0 %}
-    <div class="seccion-links fondo-gris">
-        <div class="container">
-            <h2 class="seccion-titulo">Dónde comer</h2>
-            <p class="seccion-subtitulo">Restaurantes recomendados</p>
-            
-            <div class="links-grid">
-                {% for restaurante in destino.restaurantes %}
-                <a href="{{ restaurante.link }}" target="_blank" class="link-item">
-                    <div class="link-content">
-                        {% if restaurante.imagen %}
-                        <img src="{{ restaurante.imagen }}" alt="{{ restaurante.nombre }}" class="link-imagen">
-                        {% else %}
-                        <img src="{{ destino.imagen_principal }}" alt="{{ restaurante.nombre }}" class="link-imagen">
-                        {% endif %}
-                        <div class="link-info">
-                            <h4 class="link-nombre">{{ restaurante.nombre }}</h4>
-                            <p class="link-descripcion">{{ restaurante.tipo_comida }}</p>
-                        </div>
-                        <span class="link-flecha">→</span>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- HOSPEDAJES -->
-    {% if destino.hospedajes and destino.hospedajes|length > 0 %}
-    <div class="seccion-links">
-        <div class="container">
-            <h2 class="seccion-titulo">Dónde dormir</h2>
-            <p class="seccion-subtitulo">Hospedajes cerca</p>
-            
-            <div class="links-grid">
-                {% for hospedaje in destino.hospedajes %}
-                <a href="{{ hospedaje.link }}" target="_blank" class="link-item">
-                    <div class="link-content">
-                        {% if hospedaje.imagen %}
-                        <img src="{{ hospedaje.imagen }}" alt="{{ hospedaje.nombre }}" class="link-imagen">
-                        {% else %}
-                        <img src="{{ destino.imagen_principal }}" alt="{{ hospedaje.nombre }}" class="link-imagen">
-                        {% endif %}
-                        <div class="link-info">
-                            <h4 class="link-nombre">{{ hospedaje.nombre }}</h4>
-                            <p class="link-descripcion">{{ hospedaje.tipo }} · ${{ hospedaje.precio_noche }}/noche</p>
-                        </div>
-                        <span class="link-flecha">→</span>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- RENTA DE CARROS -->
-    {% if destino.rentacar and destino.rentacar|length > 0 %}
-    <div class="seccion-links fondo-gris">
-        <div class="container">
-            <h2 class="seccion-titulo">Dónde rentar carro</h2>
-            <p class="seccion-subtitulo">Las mejores opciones para moverte</p>
-            
-            <div class="links-grid">
-                {% for rentacar in destino.rentacar %}
-                <a href="{{ rentacar.link }}" target="_blank" class="link-item">
-                    <div class="link-content">
-                        {% if rentacar.imagen %}
-                        <img src="{{ rentacar.imagen }}" alt="{{ rentacar.nombre }}" class="link-imagen">
-                        {% else %}
-                        <img src="{{ destino.imagen_principal }}" alt="{{ rentacar.nombre }}" class="link-imagen">
-                        {% endif %}
-                        <div class="link-info">
-                            <h4 class="link-nombre">{{ rentacar.nombre }}</h4>
-                            <p class="link-descripcion">{{ rentacar.ubicacion }} · ${{ rentacar.precio_dia }}/día</p>
-                        </div>
-                        <span class="link-flecha">→</span>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- MENSAJE SI NO HAY NINGUNA SECCIÓN -->
-    {% if not destino.actividades and not destino.restaurantes and not destino.hospedajes and not destino.rentacar %}
-    <div class="container text-center py-8">
-        <p class="text-gray-500">Próximamente más información sobre este destino.</p>
+    <!-- MENSAJE SI NO HAY COMENTARIOS -->
+    {% if not destino.comentarios %}
+    <div class="container mx-auto px-4 text-center py-12">
+        <p class="text-gray-500 text-lg">Sé el primero en comentar sobre este destino.</p>
     </div>
     {% endif %}
 
 </div>
+
+<script>
+function cambiarImagenPrincipal(nuevaImagen) {
+    document.getElementById('imagen-principal').src = nuevaImagen;
+}
+</script>
+
 {% endblock %}
 
 {% block extra_js %}

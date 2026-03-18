@@ -20,47 +20,57 @@
             </p>
         </div>
 
+        <!-- Mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="mb-4 p-4 rounded-lg {% if category == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <!-- Form for new experiences - only shown to logged in users -->
-        <!-- current_user.is_authenticated is a Flask-Login variable -->
-        {% if current_user.is_authenticated %}
+        {% if session.usuario_id %}
         <div class="bg-white rounded-xl shadow-md p-6 mb-8" data-aos="slide-up">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">
                 <i class="fas fa-pen-alt text-primary-500 mr-2"></i>Comparte tu experiencia
             </h3>
-            <!-- Form to create a new experience post -->
+            
             <form method="POST" action="{{ url_for('experiencias.crear') }}">
-                <!-- Dropdown to select which destination - SPANISH -->
+                <!-- Dropdown to select which destination -->
                 <div class="mb-4">
                     <select name="destino_id" required class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                         <option value="">Selecciona un destino</option>
-                        <!-- Loop through all destinations from database -->
                         {% for destino in destinos %}
-                        <option value="{{ destino.id }}">{{ destino.nombre }}</option>
+                        <option value="{{ destino.id }}">{{ destino.titulo }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <!-- Text area for the comment - SPANISH -->
+                
+                <!-- Text area for the comment -->
                 <div class="mb-4">
                     <textarea name="comentario" rows="3" required 
                               class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                               placeholder="Cuéntanos sobre tu experiencia..."></textarea>
                 </div>
-                <!-- Rating stars section - SPANISH -->
+                
+                <!-- Rating stars section - CORREGIDO -->
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tu calificación</label>
-                    <div class="flex gap-2 text-2xl">
-                        <!-- Loop to create 5 star rating options -->
-                        {% for i in range(1,6) %}
-                        <label class="cursor-pointer">
-                            <!-- Hidden radio button - peer is for styling -->
-                            <input type="radio" name="rating" value="{{ i }}" class="hidden peer">
-                            <!-- Star icon that changes color when checked -->
-                            <i class="fas fa-star text-gray-300 peer-checked:text-yellow-400 hover:text-yellow-400 transition-colors"></i>
+                    <div class="flex flex-row-reverse justify-end gap-1 text-3xl" id="star-rating">
+                        {% for i in range(5,0,-1) %}
+                        <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="hidden">
+                        <label for="star{{ i }}" class="star-label cursor-pointer text-gray-300 hover:text-yellow-400 transition-colors duration-150 ease-in-out" data-rating="{{ i }}">
+                            <i class="fas fa-star"></i>
                         </label>
                         {% endfor %}
                     </div>
+                    <p class="text-xs text-gray-500 mt-1">Selecciona del 1 al 5 (1 = Muy malo, 5 = Excelente)</p>
                 </div>
-                <!-- Submit button - SPANISH -->
+                
+                <!-- Submit button -->
                 <button type="submit" 
                         class="bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2 px-6 rounded-lg transition-all hover:scale-105">
                     Publicar Experiencia
@@ -71,42 +81,37 @@
 
         <!-- Grid of experiences -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Loop through all experiences from database -->
             {% for experiencia in experiencias %}
-            <!-- Each experience card -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105"
                  data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
                 <div class="p-6">
                     <!-- User info and rating header -->
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-3">
-                            <!-- User avatar circle with initials -->
                             <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                                <!-- Takes first 2 letters of username and makes uppercase -->
                                 <span class="text-primary-700 font-semibold">
-                                    {{ experiencia.usuario.nombre[:2]|upper }}
+                                    {{ experiencia.usuario_nombre[:2]|upper if experiencia.usuario_nombre else 'U' }}
                                 </span>
                             </div>
                             <div>
-                                <!-- User name -->
-                                <h4 class="font-semibold text-gray-800">{{ experiencia.usuario.nombre }}</h4>
-                                <!-- Date of experience -->
+                                <h4 class="font-semibold text-gray-800">{{ experiencia.usuario_nombre or 'Usuario' }}</h4>
                                 <p class="text-xs text-gray-500">{{ experiencia.fecha }}</p>
                             </div>
                         </div>
                         <!-- Star rating display -->
+                        {% if experiencia.rating %}
                         <div class="flex text-yellow-400">
-                            <!-- Loop to show stars based on rating number -->
                             {% for i in range(experiencia.rating) %}
                             <i class="fas fa-star text-xs"></i>
                             {% endfor %}
                         </div>
+                        {% endif %}
                     </div>
                     
                     <!-- Destination badge -->
                     <div class="mb-3">
                         <span class="inline-block bg-primary-50 text-primary-700 text-xs px-3 py-1 rounded-full">
-                            <i class="fas fa-map-marker-alt mr-1"></i>{{ experiencia.destino.nombre }}
+                            <i class="fas fa-map-marker-alt mr-1"></i>{{ experiencia.destino_nombre or 'Destino' }}
                         </span>
                     </div>
                     
@@ -114,19 +119,8 @@
                     <p class="text-gray-600 text-sm leading-relaxed">
                         {{ experiencia.comentario }}
                     </p>
-                    
-                    <!-- Admin actions - only shown to system owner - SPANISH -->
-                    {% if current_user.role == 'owner' %}
-                    <div class="mt-4 pt-3 border-t border-gray-100 flex justify-end">
-                        <!-- Delete button for owner - SPANISH -->
-                        <button class="text-red-500 hover:text-red-700 text-sm transition-colors">
-                            <i class="fas fa-trash mr-1"></i>Eliminar
-                        </button>
-                    </div>
-                    {% endif %}
                 </div>
             </div>
-            <!-- If no experiences exist, show empty state - SPANISH -->
             {% else %}
             <div class="col-span-full text-center py-12">
                 <i class="fas fa-comment-dots text-5xl text-gray-300 mb-4"></i>
@@ -136,4 +130,62 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star-label');
+    const ratingInputs = document.querySelectorAll('input[name="rating"]');
+    
+    // Función para pintar estrellas según rating
+    function highlightStars(rating) {
+        stars.forEach(star => {
+            const starRating = parseInt(star.dataset.rating);
+            const icon = star.querySelector('i');
+            
+            if (starRating <= rating) {
+                icon.classList.add('text-yellow-400');
+                icon.classList.remove('text-gray-300');
+            } else {
+                icon.classList.add('text-gray-300');
+                icon.classList.remove('text-yellow-400');
+            }
+        });
+    }
+    
+    // Función para resetear al rating seleccionado (o a gris si no hay)
+    function resetStars() {
+        const selected = document.querySelector('input[name="rating"]:checked');
+        if (selected) {
+            highlightStars(parseInt(selected.value));
+        } else {
+            stars.forEach(star => {
+                const icon = star.querySelector('i');
+                icon.classList.add('text-gray-300');
+                icon.classList.remove('text-yellow-400');
+            });
+        }
+    }
+    
+    // Eventos hover
+    stars.forEach(star => {
+        star.addEventListener('mouseenter', function() {
+            const rating = parseInt(this.dataset.rating);
+            highlightStars(rating);
+        });
+        
+        star.addEventListener('mouseleave', resetStars);
+    });
+    
+    // Evento change en los radio buttons
+    ratingInputs.forEach(radio => {
+        radio.addEventListener('change', function() {
+            highlightStars(parseInt(this.value));
+        });
+    });
+    
+    // Inicializar estado
+    resetStars();
+});
+</script>
+
 {% endblock %}
