@@ -6,14 +6,14 @@ Motor de Destinos - Versión para la base de datos SIMPLE
 class DestinoEngine:
     def __init__(self, db_connection=None):
         self.db = db_connection
-        print(f"🔄 DestinoEngine inicializado. db: {self.db}")
+        print(f" DestinoEngine inicializado. db: {self.db}")
     
     def obtener_por_id(self, destino_id):
         """Obtiene un destino específico por su ID"""
-        print(f"🔍 Buscando destino ID: {destino_id}")
+        print(f" Buscando destino ID: {destino_id}")
         
         if not self.db:
-            print("❌ No hay conexión a la base de datos")
+            print(" No hay conexión a la base de datos")
             return None
         
         try:
@@ -24,8 +24,8 @@ class DestinoEngine:
             destino = cursor.fetchone()
             
             if destino:
-                print(f"✅ Destino encontrado: {destino['titulo']}")
-                print(f"📸 Imagen principal: {destino.get('imagen')}")
+                print(f" Destino encontrado: {destino['titulo']}")
+                print(f" Imagen principal: {destino.get('imagen')}")
                 
                 # Agregar campo categoria_nombre manualmente
                 if destino['caterogoria_id'] == 1:
@@ -49,7 +49,7 @@ class DestinoEngine:
                 
                 imagenes = cursor.fetchall()
                 destino['imagenes'] = imagenes
-                print(f"🖼️ Imágenes de galería encontradas: {len(imagenes)}")
+                print(f" Imágenes de galería encontradas: {len(imagenes)}")
                 
                 # ===== NUEVO: Obtener comentarios del destino =====
                 cursor.execute("""
@@ -69,14 +69,14 @@ class DestinoEngine:
                         com['fecha'] = com['fecha'].strftime('%d/%m/%Y')
                 
                 destino['comentarios'] = comentarios
-                print(f"💬 Comentarios encontrados: {len(comentarios)}")
+                print(f" Comentarios encontrados: {len(comentarios)}")
                 # =================================================
             
             cursor.close()
             return destino
             
         except Exception as e:
-            print(f"❌ ERROR en obtener_por_id: {e}")
+            print(f"ERROR en obtener_por_id: {e}")
             return None
     
     def obtener_todos(self):
@@ -103,10 +103,10 @@ class DestinoEngine:
                 else:
                     d['categoria_nombre'] = 'Otro'
             
-            print(f"📋 Total destinos encontrados: {len(destinos)}")
+            print(f" Total destinos encontrados: {len(destinos)}")
             return destinos
         except Exception as e:
-            print(f"❌ ERROR en obtener_todos: {e}")
+            print(f" ERROR en obtener_todos: {e}")
             return []
     
     def obtener_por_categoria(self, categoria_id):
@@ -121,7 +121,7 @@ class DestinoEngine:
             cursor.close()
             return destinos
         except Exception as e:
-            print(f"❌ ERROR en obtener_por_categoria: {e}")
+            print(f" ERROR en obtener_por_categoria: {e}")
             return []
     
     def obtener_por_provincia(self, provincia):
@@ -136,7 +136,7 @@ class DestinoEngine:
             cursor.close()
             return destinos
         except Exception as e:
-            print(f"❌ ERROR en obtener_por_provincia: {e}")
+            print(f" ERROR en obtener_por_provincia: {e}")
             return []
     
     def buscar(self, termino):
@@ -153,5 +153,5 @@ class DestinoEngine:
             cursor.close()
             return destinos
         except Exception as e:
-            print(f"❌ ERROR en buscar: {e}")
+            print(f" ERROR en buscar: {e}")
             return []

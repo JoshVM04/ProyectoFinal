@@ -54,7 +54,7 @@ class ExperienciaEngine:
             
             return resultados
         except Exception as e:
-            print(f"❌ Error en obtener_todos: {e}")
+            print(f" Error en obtener_todos: {e}")
             return []
     
     def obtener_por_destino(self, destino_id):
@@ -90,7 +90,7 @@ class ExperienciaEngine:
             
             return resultados
         except Exception as e:
-            print(f"❌ Error en obtener_por_destino: {e}")
+            print(f" Error en obtener_por_destino: {e}")
             return []
     
     def obtener_por_usuario(self, usuario_id):
@@ -126,7 +126,7 @@ class ExperienciaEngine:
             
             return resultados
         except Exception as e:
-            print(f"❌ Error en obtener_por_usuario: {e}")
+            print(f" Error en obtener_por_usuario: {e}")
             return []
     
     def crear(self, usuario_id, destino_id, comentario_texto, rating=None):
@@ -232,7 +232,7 @@ class ExperienciaEngine:
             return {'exito': False, 'error': 'Error al recuperar comentario'}
             
         except Exception as e:
-            print(f"❌ Error al crear comentario: {e}")
+            print(f" Error al crear comentario: {e}")
             self.db.rollback()
             return {'exito': False, 'error': str(e)}
     
@@ -298,7 +298,7 @@ class ExperienciaEngine:
                 return {'exito': False, 'error': 'Comentario no encontrado'}
                 
         except Exception as e:
-            print(f"❌ Error al eliminar comentario: {e}")
+            print(f" Error al eliminar comentario: {e}")
             self.db.rollback()
             return {'exito': False, 'error': str(e)}
     

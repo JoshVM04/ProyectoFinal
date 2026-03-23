@@ -140,7 +140,7 @@ class IAChatAssistant {
         if (response.success) {
             this.addMessage(response.data.respuesta, 'bot');
         } else {
-            this.addMessage(`⚠️ ${response.error}`, 'bot');
+            this.addMessage(` ${response.error}`, 'bot');
         }
 
         // Re-enable input
