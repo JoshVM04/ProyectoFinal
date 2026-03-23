@@ -8,8 +8,8 @@ class KnowledgeLoader:
         # obtiene la carpeta app automáticamente
         base_dir = Path(__file__).resolve().parent.parent
 
-        # entra a app/data/kwowledge
-        self.ruta = base_dir / "data" / "kwowledge"
+        # ✅ CORREGIDO: "knowledge" en lugar de "kwowledge"
+        self.ruta = base_dir / "data" / "knowledge"
 
         print("RUTA USADA:", self.ruta)  # para verificar
 

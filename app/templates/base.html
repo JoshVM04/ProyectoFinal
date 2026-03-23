@@ -2,7 +2,8 @@
 <html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- viewport mejorado para móvil -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>{% block title %}Nómada | Experiencias Auténticas en Costa Rica{% endblock %}</title>
     
     <!-- SEO optimized meta tags -->
@@ -173,7 +174,7 @@
             </nav>
         </div>
 
-        <!-- Dropdown menu with animation - CORREGIDO COMPLETAMENTE -->
+        <!-- Dropdown menu with animation -->
         <div id="menu-desplegable" class="hidden absolute top-full right-4 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50 animate-slide-down">
             
             {% if session.usuario_id %}
@@ -184,7 +185,6 @@
                 </div>
                 <div class="border-t border-gray-100 my-1"></div>
                 
-                <!-- Enlace a Experiencias -->
                 <a href="/experiencias" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-all duration-300 hover:translate-x-1">
                     <i class="fas fa-compass text-primary-500 text-base w-6"></i>
                     <span class="text-gray-700 text-sm font-medium">Experiencias</span>
@@ -234,7 +234,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- PROFESSIONAL FOOTER - TRANSLATED TO SPANISH -->
+    <!-- PROFESSIONAL FOOTER -->
     <footer class="bg-primary-500 text-white">
         <div class="container mx-auto px-4 sm:px-6 py-12">
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -333,7 +333,6 @@
             const menuDesplegable = document.getElementById('menu-desplegable');
 
             if (menuBtn && menuDesplegable) {
-                // Toggle menu when clicking the hamburger button
                 menuBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     menuDesplegable.classList.toggle('hidden');
@@ -342,14 +341,12 @@
                     }
                 });
 
-                // Close menu when clicking outside
                 document.addEventListener('click', function(e) {
                     if (!menuBtn.contains(e.target) && !menuDesplegable.contains(e.target)) {
                         menuDesplegable.classList.add('hidden');
                     }
                 });
 
-                // Close menu with Escape key
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape' && !menuDesplegable.classList.contains('hidden')) {
                         menuDesplegable.classList.add('hidden');
@@ -361,7 +358,6 @@
             const backToTop = document.getElementById('back-to-top');
             if (backToTop) {
                 window.addEventListener('scroll', function() {
-                    // Show button when scrolled more than 500px
                     if (window.scrollY > 500) {
                         backToTop.classList.remove('hidden');
                         backToTop.classList.add('flex', 'animate-bounce');
@@ -384,6 +380,58 @@
             }, 1000);
         });
     </script>
+    
+    <!-- ===== SOLUCIÓN DEFINITIVA PARA SCROLL EN MÓVIL ===== -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Función para aplicar correcciones de scroll
+        function fixTouchScroll() {
+            // Seleccionar elementos que pueden bloquear el scroll
+            const elementsToFix = document.querySelectorAll('img, .foto-principal, .fotos-secundarias img, .galeria-grid, .foto-secundaria');
+            
+            elementsToFix.forEach(el => {
+                if (el) {
+                    // Permitir scroll vertical sobre estos elementos
+                    el.style.touchAction = 'pan-y pinch-zoom';
+                    el.style.userSelect = 'none';
+                    el.style.webkitUserSelect = 'none';
+                    
+                    // Remover event listeners que puedan bloquear
+                    el.addEventListener('touchstart', function(e) {
+                        // No prevenir el comportamiento por defecto
+                        return true;
+                    }, { passive: true });
+                    
+                    el.addEventListener('touchmove', function(e) {
+                        // Permitir scroll
+                        return true;
+                    }, { passive: true });
+                }
+            });
+            
+            // Asegurar que el body y main permitan scroll
+            document.body.style.overflowY = 'auto';
+            document.body.style.webkitOverflowScrolling = 'touch';
+            
+            const mainContent = document.querySelector('main');
+            if (mainContent) {
+                mainContent.style.overflowY = 'auto';
+                mainContent.style.webkitOverflowScrolling = 'touch';
+            }
+        }
+        
+        // Aplicar al cargar
+        fixTouchScroll();
+        
+        // También aplicar cuando se carguen nuevos elementos (por si hay cambios dinámicos)
+        const observer = new MutationObserver(function(mutations) {
+            fixTouchScroll();
+        });
+        
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+    </script>
+    <!-- ========================================================= -->
     
     {% block extra_js %}{% endblock %}
 </body>

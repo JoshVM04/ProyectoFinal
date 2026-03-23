@@ -814,55 +814,54 @@
 
 {% block extra_js %}
 <script>
-    // ===== DESTINATIONS DATA (16 destinations) =====
-    // This object contains all destination information organized by category and province
+    // ===== DESTINATIONS DATA (16 destinations) - PRECIOS ACTUALIZADOS =====
     window.destinosData = {
         playas: {
             guanacaste: [
-                { id: 1, nombre: "Playa Conchal", imagen: "static/images/destinos/thumbnails/playas/ReservaConchal.jpg", rating: 4.9, precio: 65000, descripcion: "Playa de arena blanca de conchas", provincia: "Guanacaste", categoria: "playas", slug: "playa-conchal", destacado: true },
-                { id: 2, nombre: "Playa Manuel Antonio", imagen: "static/images/destinos/thumbnails/playas/playamanuel.400x300.jpg", rating: 4.8, precio: 40000, descripcion: "Surf y vida nocturna", provincia: "Guanacaste", categoria: "playas", slug: "playa-tamarindo", destacado: false }
+                { id: 1, nombre: "Playa Conchal", imagen: "static/images/destinos/thumbnails/playas/ReservaConchal.jpg", rating: 4.9, precio: 32000, descripcion: "Playa de arena blanca de conchas", provincia: "Guanacaste", categoria: "playas", slug: "playa-conchal", destacado: true },
+                { id: 2, nombre: "Playa Manuel Antonio", imagen: "static/images/destinos/thumbnails/playas/playamanuel.400x300.jpg", rating: 4.8, precio: 28000, descripcion: "Surf y vida nocturna", provincia: "Guanacaste", categoria: "playas", slug: "playa-tamarindo", destacado: false }
             ],
             limon: [
-                { id: 3, nombre: "Playa Punta Uva", imagen: "static/images/destinos/thumbnails/playas/aerial-Punta-Uva-Manuel-Pinto-2.jpg", rating: 4.8, precio: 45000, descripcion: "Aguas cristalinas", provincia: "Limón", categoria: "playas", slug: "playa-punta-uva", destacado: true },
-                { id: 4, nombre: "Playa Cahuita", imagen: "static/images/destinos/thumbnails/playas/cahuita.400x300.jpg", rating: 4.7, precio: 35000, descripcion: "Arrecife de coral", provincia: "Limón", categoria: "playas", slug: "playa-cahuita", destacado: false }
+                { id: 3, nombre: "Playa Punta Uva", imagen: "static/images/destinos/thumbnails/playas/aerial-Punta-Uva-Manuel-Pinto-2.jpg", rating: 4.8, precio: 25000, descripcion: "Aguas cristalinas", provincia: "Limón", categoria: "playas", slug: "playa-punta-uva", destacado: true },
+                { id: 4, nombre: "Playa Cahuita", imagen: "static/images/destinos/thumbnails/playas/cahuita.400x300.jpg", rating: 4.7, precio: 22000, descripcion: "Arrecife de coral", provincia: "Limón", categoria: "playas", slug: "playa-cahuita", destacado: false }
             ]
         },
         parques: {
             alajuela: [
-                { id: 5, nombre: "Parque Nacional Volcán Arenal", imagen: "static/images/destinos/thumbnails/parques/ParqueVolcanArenal.jpg", rating: 4.7, precio: 32000, descripcion: "Volcán activo", provincia: "Alajuela", categoria: "parques", slug: "volcan-arenal", destacado: true }
+                { id: 5, nombre: "Parque Nacional Volcán Arenal", imagen: "static/images/destinos/thumbnails/parques/ParqueVolcanArenal.jpg", rating: 4.7, precio: 28000, descripcion: "Volcán activo", provincia: "Alajuela", categoria: "parques", slug: "volcan-arenal", destacado: true }
             ],
             guanacaste: [
-                { id: 6, nombre: "Parque Nacional Rincón de la Vieja", imagen: "static/images/destinos/thumbnails/parques/ParqueRincon.jpeg", rating: 4.6, precio: 28000, descripcion: "Volcanes y géiseres", provincia: "Guanacaste", categoria: "parques", slug: "rincon-vieja", destacado: false }
+                { id: 6, nombre: "Parque Nacional Rincón de la Vieja", imagen: "static/images/destinos/thumbnails/parques/ParqueRincon.jpeg", rating: 4.6, precio: 22000, descripcion: "Volcanes y géiseres", provincia: "Guanacaste", categoria: "parques", slug: "rincon-vieja", destacado: false }
             ],
             limon: [
-                { id: 7, nombre: "Parque Nacional Tortuguero", imagen: "static/images/destinos/thumbnails/parques/tortugueroparque.jpg", rating: 4.8, precio: 35000, descripcion: "Canales y tortugas", provincia: "Limón", categoria: "parques", slug: "tortuguero", destacado: true }
+                { id: 7, nombre: "Parque Nacional Tortuguero", imagen: "static/images/destinos/thumbnails/parques/tortugueroparque.jpg", rating: 4.8, precio: 28000, descripcion: "Canales y tortugas", provincia: "Limón", categoria: "parques", slug: "tortuguero", destacado: true }
             ],
             puntarenas: [
-                { id: 8, nombre: "Parque Nacional Corcovado", imagen: "static/images/destinos/thumbnails/parques/corcovadoparque.jpg", rating: 4.9, precio: 42000, descripcion: "Biodiversidad única", provincia: "Puntarenas", categoria: "parques", slug: "corcovado", destacado: true }
+                { id: 8, nombre: "Parque Nacional Corcovado", imagen: "static/images/destinos/thumbnails/parques/corcovadoparque.jpg", rating: 4.9, precio: 35000, descripcion: "Biodiversidad única", provincia: "Puntarenas", categoria: "parques", slug: "corcovado", destacado: true }
             ]
         },
         aventura: {
             alajuela: [
-                { id: 9, nombre: "La Fortuna", imagen: "static/images/destinos/thumbnails/aventura/saltofortuna.webp", rating: 4.8, precio: 55000, descripcion: "Canyoning", provincia: "Alajuela", categoria: "aventura", slug: "la-fortuna", destacado: true }
+                { id: 9, nombre: "La Fortuna", imagen: "static/images/destinos/thumbnails/aventura/saltofortuna.webp", rating: 4.8, precio: 38000, descripcion: "Canyoning", provincia: "Alajuela", categoria: "aventura", slug: "la-fortuna", destacado: true }
             ],
             puntarenas: [
-                { id: 10, nombre: "Monteverde", imagen: "static/images/destinos/thumbnails/aventura/canopymonteverde.jpeg", rating: 4.8, precio: 45000, descripcion: "Canopy", provincia: "Puntarenas", categoria: "aventura", slug: "monteverde", destacado: true },
-                { id: 11, nombre: "Jacó", imagen: "static/images/destinos/thumbnails/aventura/aventurasurftjaco.jpg", rating: 4.5, precio: 38000, descripcion: "Surf", provincia: "Puntarenas", categoria: "aventura", slug: "jaco", destacado: false }
+                { id: 10, nombre: "Monteverde", imagen: "static/images/destinos/thumbnails/aventura/canopymonteverde.jpeg", rating: 4.8, precio: 35000, descripcion: "Canopy", provincia: "Puntarenas", categoria: "aventura", slug: "monteverde", destacado: true },
+                { id: 11, nombre: "Jacó", imagen: "static/images/destinos/thumbnails/aventura/aventurasurftjaco.jpg", rating: 4.5, precio: 25000, descripcion: "Surf", provincia: "Puntarenas", categoria: "aventura", slug: "jaco", destacado: false }
             ],
             cartago: [
-                { id: 12, nombre: "Río Pacuare", imagen: "static/images/destinos/thumbnails/aventura/AventuraRiopacuare.jpg", rating: 4.9, precio: 65000, descripcion: "Rafting", provincia: "Cartago/Limón", categoria: "aventura", slug: "rio-pacuare", destacado: true }
+                { id: 12, nombre: "Río Pacuare", imagen: "static/images/destinos/thumbnails/aventura/AventuraRiopacuare.jpg", rating: 4.9, precio: 38000, descripcion: "Rafting", provincia: "Cartago/Limón", categoria: "aventura", slug: "rio-pacuare", destacado: true }
             ]
         },
         termales: {
             alajuela: [
-                { id: 13, nombre: "Tabacón Hot Springs", imagen: "static/images/destinos/thumbnails/termales/TermalesTabacon.jpeg", rating: 4.9, precio: 60000, descripcion: "Aguas termales de lujo", provincia: "Alajuela", categoria: "termales", slug: "tabacon", destacado: true },
-                { id: 14, nombre: "Baldi Hot Springs", imagen: "static/images/destinos/thumbnails/termales/AguasTermalesbaldi.jpg", rating: 4.6, precio: 35000, descripcion: "Experiencia local", provincia: "Alajuela", categoria: "termales", slug: "san-carlos", destacado: false }
+                { id: 13, nombre: "Tabacón Hot Springs", imagen: "static/images/destinos/thumbnails/termales/TermalesTabacon.jpeg", rating: 4.9, precio: 40000, descripcion: "Aguas termales de lujo", provincia: "Alajuela", categoria: "termales", slug: "tabacon", destacado: true },
+                { id: 14, nombre: "Baldi Hot Springs", imagen: "static/images/destinos/thumbnails/termales/AguasTermalesbaldi.jpg", rating: 4.6, precio: 28000, descripcion: "Experiencia local", provincia: "Alajuela", categoria: "termales", slug: "san-carlos", destacado: false }
             ],
             cartago: [
-                { id: 15, nombre: "Termales Hacienda Orosi", imagen: "static/images/destinos/thumbnails/termales/TermalesHaciendaOrosi.jpg", rating: 4.5, precio: 30000, descripcion: "Relajante", provincia: "Cartago", categoria: "termales", slug: "orosi", destacado: false }
+                { id: 15, nombre: "Termales Hacienda Orosi", imagen: "static/images/destinos/thumbnails/termales/TermalesHaciendaOrosi.jpg", rating: 4.5, precio: 20000, descripcion: "Relajante", provincia: "Cartago", categoria: "termales", slug: "orosi", destacado: false }
             ],
             guanacaste: [
-                { id: 16, nombre: "Termales de Río Negro", imagen: "static/images/destinos/thumbnails/termales/termalrionegro.jpg", rating: 4.4, precio: 28000, descripcion: "Naturales", provincia: "Guanacaste", categoria: "termales", slug: "rio-negro", destacado: false }
+                { id: 16, nombre: "Termales de Río Negro", imagen: "static/images/destinos/thumbnails/termales/termalrionegro.jpg", rating: 4.4, precio: 20000, descripcion: "Naturales", provincia: "Guanacaste", categoria: "termales", slug: "rio-negro", destacado: false }
             ]
         }
     };
