@@ -43,6 +43,27 @@
             grid-template-columns: 1fr 1fr;
         }
     }
+    .precio-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border: 2px solid #e9ecef;
+        transition: transform 0.3s ease;
+    }
+    .precio-card:hover {
+        transform: translateY(-5px);
+        border-color: #1A3B4F;
+    }
+    .servicio-card {
+        transition: all 0.3s ease;
+    }
+    .servicio-card:hover {
+        transform: translateY(-5px);
+    }
+    .servicio-link {
+        transition: all 0.2s ease;
+    }
+    .servicio-link:hover {
+        transform: translateX(5px);
+    }
 </style>
 {% endblock %}
 
@@ -93,19 +114,1119 @@
         </div>
     </div>
 
-    <!-- DESCRIPCIÓN -->
+    <!-- DESCRIPCIÓN + PRECIO -->
     <div class="info-principal-section py-12">
         <div class="container mx-auto px-4">
-            <div class="max-w-3xl">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Sobre {{ destino.titulo }}</h2>
-                <p class="text-gray-600 leading-relaxed">{{ destino.descripcion }}</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Descripción -->
+                <div class="lg:col-span-2">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Sobre {{ destino.titulo }}</h2>
+                    <p class="text-gray-600 leading-relaxed">{{ destino.descripcion }}</p>
+                </div>
+                
+                <!-- Precio (actualizado con precios entre 20k y 40k) -->
+                <div class="bg-primary-50 rounded-xl p-6 border border-primary-100 shadow-lg precio-card">
+                    <div class="text-center">
+                        <p class="text-sm text-primary-600 font-medium mb-2">Precio por persona</p>
+                        
+                        {% if destino.id == 1 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡32,000</div>  <!-- Playa Conchal -->
+                        {% elif destino.id == 2 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡28,000</div>  <!-- Playa Manuel Antonio -->
+                        {% elif destino.id == 3 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡25,000</div>  <!-- Playa Punta Uva -->
+                        {% elif destino.id == 4 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡22,000</div>  <!-- Playa Cahuita -->
+                        {% elif destino.id == 5 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡28,000</div>  <!-- Volcán Arenal -->
+                        {% elif destino.id == 6 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡22,000</div>  <!-- Rincón de la Vieja -->
+                        {% elif destino.id == 7 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡28,000</div>  <!-- Tortuguero -->
+                        {% elif destino.id == 8 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡35,000</div>  <!-- Corcovado -->
+                        {% elif destino.id == 9 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡38,000</div>  <!-- La Fortuna -->
+                        {% elif destino.id == 10 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡35,000</div>  <!-- Monteverde -->
+                        {% elif destino.id == 11 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡25,000</div>  <!-- Jacó -->
+                        {% elif destino.id == 12 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡38,000</div>  <!-- Río Pacuare -->
+                        {% elif destino.id == 13 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡40,000</div>  <!-- Tabacón -->
+                        {% elif destino.id == 14 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡28,000</div>  <!-- Baldi -->
+                        {% elif destino.id == 15 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡20,000</div>  <!-- Termales Orosi -->
+                        {% elif destino.id == 16 %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡20,000</div>  <!-- Río Negro -->
+                        {% else %}
+                            <div class="text-4xl font-bold text-primary-800 mb-1">₡0</div>
+                        {% endif %}
+                        
+                        <p class="text-xs text-gray-500">por persona</p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SERVICIOS CON ENLACES A GOOGLE MAPS ===== -->
+    <div class="servicios-section py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">Servicios cerca de {{ destino.titulo }}</h2>
+            <p class="text-center text-gray-500 mb-12">Hacé clic en cada opción para ver su ubicación en Google Maps</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- ===== PLAYA CONCHAL (ID 1) ===== -->
+                {% if destino.id == 1 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Hotel+Nany+Brasilito+Costa+Rica" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Nany</p>
+                                        <p class="text-xs text-gray-500">a 3 min de Playa Conchal • desde $85</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Villas+Jinesta+Brasilito+Costa+Rica" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Villas Jinesta</p>
+                                        <p class="text-xs text-gray-500">a 200m de Playa Brasilito • desde $95</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/La+Ramona+Charming+Hotel+Tamarindo" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">La Ramona Charming Hotel</p>
+                                        <p class="text-xs text-gray-500">a 16km • Tamarindo • desde $120</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/El+Pelícano+Playa+Conchal" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">El Pelícano</p>
+                                        <p class="text-xs text-gray-500">Mariscos • frente a la playa</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Coco+Loco+Playa+Conchal" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Coco Loco</p>
+                                        <p class="text-xs text-gray-500">Internacional • cócteles</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Soda+Típica+Conchal" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Soda Típica Conchal</p>
+                                        <p class="text-xs text-gray-500">Comida local • económica</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Alamo+Rent+a+Car+Liberia+Airport" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo</p>
+                                        <p class="text-xs text-gray-500">Aeropuerto Liberia • $45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Budget+Rent+a+Car+Santa+Cruz+Guanacaste" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Budget</p>
+                                        <p class="text-xs text-gray-500">Centro de Santa Cruz • $50/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Hertz+Tamarindo" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Hertz Tamarindo</p>
+                                        <p class="text-xs text-gray-500">a 20min • $55/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== PLAYA MANUEL ANTONIO (ID 2) ===== -->
+                {% if destino.id == 2 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Hotel+Parador+Manuel+Antonio" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Parador</p>
+                                        <p class="text-xs text-gray-500">Resort de lujo • vistas al mar</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Hotel+Coco+Beach+Manuel+Antonio" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Coco Beach</p>
+                                        <p class="text-xs text-gray-500">a 430m del parque • $95</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Hotel+Manuel+Antonio" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Manuel Antonio</p>
+                                        <p class="text-xs text-gray-500">a 300m del parque • $80</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Perezoso+Coffee+House+Manuel+Antonio" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Perezoso Coffee House</p>
+                                        <p class="text-xs text-gray-500">Açaí bowls • cafetería vegana</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/La+Posada+Pizza+House+Manuel+Antonio" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">La Posada Pizza House</p>
+                                        <p class="text-xs text-gray-500">Pizzas artesanales</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Baldi's+Fresh+Manuel+Antonio" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Baldi's Fresh</p>
+                                        <p class="text-xs text-gray-500">Comida caribeña • fresca</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Alamo+Rent+a+Car+Quepos" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo Quepos</p>
+                                        <p class="text-xs text-gray-500">cerca del aeropuerto • $45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Budget+Rent+a+Car+Quepos" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Budget</p>
+                                        <p class="text-xs text-gray-500">en Quepos centro • $48/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Adobe+Rent+a+Car+Quepos" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Adobe Rent a Car</p>
+                                        <p class="text-xs text-gray-500">oficina en Quepos • $50/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== VOLCÁN ARENAL / LA FORTUNA (ID 5 Y 9) ===== -->
+                {% if destino.id == 5 or destino.id == 9 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Nayara+Springs+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Nayara Springs</p>
+                                        <p class="text-xs text-gray-500">Resort de lujo • aguas termales</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Arenal+Inn+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Arenal Inn</p>
+                                        <p class="text-xs text-gray-500">Hotel familiar • vistas al volcán</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Hotel+Arenal+Springs+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Arenal Springs</p>
+                                        <p class="text-xs text-gray-500">Piscinas termales • $120</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Don+Rufino+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Don Rufino</p>
+                                        <p class="text-xs text-gray-500">Gourmet • cocina de autor</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Soda+Viquez+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Soda Viquez</p>
+                                        <p class="text-xs text-gray-500">Comida típica • casados gigantes</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Nene's+Restaurant+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Nene's Restaurant</p>
+                                        <p class="text-xs text-gray-500">Comida variada • familiar</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Toyota+Rent+a+Car+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Toyota Rent a Car</p>
+                                        <p class="text-xs text-gray-500">centro de La Fortuna • $40/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Economy+Rent+a+Car+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Economy Rent</p>
+                                        <p class="text-xs text-gray-500">cerca del parque • $35/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Alamo+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo</p>
+                                        <p class="text-xs text-gray-500">oficina en La Fortuna • $45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== MONTEVERDE (ID 10) ===== -->
+                {% if destino.id == 10 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Monteverde+House" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Monteverde House</p>
+                                        <p class="text-xs text-gray-500">puntuación 9.3 • vistas espectaculares</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Cassidini+House+Monteverde" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Cassidini House</p>
+                                        <p class="text-xs text-gray-500">desayuno excepcional • puntuación 9.1</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Hotel+Belmar+Monteverde" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Belmar</p>
+                                        <p class="text-xs text-gray-500">eco-hotel de lujo • vistas al golfo</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Tree+House+Restaurant+Monteverde" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Tree House Restaurant</p>
+                                        <p class="text-xs text-gray-500">comida internacional • ambiente único</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Soda+La+Amistad+Monteverde" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Soda La Amistad</p>
+                                        <p class="text-xs text-gray-500">comida típica • precios accesibles</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Taco+Taco+Monteverde" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Taco Taco</p>
+                                        <p class="text-xs text-gray-500">mexicano • rápida y rica</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Alamo+Monteverde" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo</p>
+                                        <p class="text-xs text-gray-500">aeropuerto • $45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Budget+Monteverde" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Budget</p>
+                                        <p class="text-xs text-gray-500">centro de Monteverde • $48/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Hertz+Monteverde" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Hertz</p>
+                                        <p class="text-xs text-gray-500">oficina en Santa Elena • $50/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== JACÓ (ID 11) ===== -->
+                {% if destino.id == 11 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Hotel+Club+del+Mar+Jacó" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Club del Mar</p>
+                                        <p class="text-xs text-gray-500">frente al mar • $120</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Crocs+Hotel+Jacó" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Crocs Hotel</p>
+                                        <p class="text-xs text-gray-500">a 2 cuadras de la playa • $85</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Hotel+Punto+Jacó" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Punto Jacó</p>
+                                        <p class="text-xs text-gray-500">céntrico • $70</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Graffiti+Restaurant+Jacó" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Graffiti</p>
+                                        <p class="text-xs text-gray-500">mexicano • margaritas</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/El+Hicaco+Jacó" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">El Hicaco</p>
+                                        <p class="text-xs text-gray-500">mariscos • vistas al mar</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Soda+Jenny+Jacó" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Soda Jenny</p>
+                                        <p class="text-xs text-gray-500">comida típica • económica</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Alamo+Jacó" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo</p>
+                                        <p class="text-xs text-gray-500">$45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Budget+Jacó" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Budget</p>
+                                        <p class="text-xs text-gray-500">$48/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Hertz+Jacó" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Hertz</p>
+                                        <p class="text-xs text-gray-500">$50/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== RÍO PACUARE (ID 12) ===== -->
+                {% if destino.id == 12 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Pacuare+Lodge" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Pacuare Lodge</p>
+                                        <p class="text-xs text-gray-500">en la selva • $200/noche</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                            <a href="https://www.google.com/maps/search/Hotel+Río+Pacuare" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Río Pacuare</p>
+                                        <p class="text-xs text-gray-500">cerca del río • $85</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Restaurante+Río+Pacuare" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Restaurante Río</p>
+                                        <p class="text-xs text-gray-500">comida típica</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Alamo+Siquirres" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo</p>
+                                        <p class="text-xs text-gray-500">$45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== TABACÓN (ID 13) ===== -->
+                {% if destino.id == 13 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Tabacón+Resort" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Tabacón Resort</p>
+                                        <p class="text-xs text-gray-500">aguas termales • $250/noche</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Tabacón+Restaurant" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Restaurante Tabacón</p>
+                                        <p class="text-xs text-gray-500">gourmet</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Alamo+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo</p>
+                                        <p class="text-xs text-gray-500">$45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== TERMALES BALDI (ID 14) ===== -->
+                {% if destino.id == 14 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Baldi+Hot+Springs+Hotel" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Baldi Hot Springs</p>
+                                        <p class="text-xs text-gray-500">hotel + termales • $150</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Baldi+Restaurant" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Restaurante Baldi</p>
+                                        <p class="text-xs text-gray-500">buffet</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Alamo+La+Fortuna" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo</p>
+                                        <p class="text-xs text-gray-500">$45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== TERMALES OROSI (ID 15) ===== -->
+                {% if destino.id == 15 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Hotel+Orosi+Lodge" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hotel Orosi Lodge</p>
+                                        <p class="text-xs text-gray-500">$75/noche</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Restaurante+Orosi" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Restaurante Orosi</p>
+                                        <p class="text-xs text-gray-500">comida típica</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Alamo+Cartago" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo</p>
+                                        <p class="text-xs text-gray-500">$45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== RÍO NEGRO (ID 16) ===== -->
+                {% if destino.id == 16 %}
+                <!-- Hospedaje -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Hacienda+Guachipelín" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hacienda Guachipelín</p>
+                                        <p class="text-xs text-gray-500">hotel cerca de termales • $90</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Restaurante+Río+Negro" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Restaurante Río Negro</p>
+                                        <p class="text-xs text-gray-500">comida típica</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Alamo+Liberia" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Alamo</p>
+                                        <p class="text-xs text-gray-500">aeropuerto Liberia • $45/día</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- ===== OTROS DESTINOS (IDs 3,4,6,7,8) ===== -->
+                {% if destino.id == 3 or destino.id == 4 or destino.id == 6 or destino.id == 7 or destino.id == 8 %}
+                <!-- Hospedaje genérico -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-bed text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Hospedaje</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Hoteles+cerca+de+{{ destino.titulo|replace(' ', '+') }}+Costa+Rica" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-blue-600">Hoteles cercanos</p>
+                                        <p class="text-xs text-gray-500">ver opciones en Google Maps</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurantes genéricos -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-green-600 to-green-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-utensils text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Restaurantes</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Restaurantes+cerca+de+{{ destino.titulo|replace(' ', '+') }}+Costa+Rica" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-green-600">Restaurantes cercanos</p>
+                                        <p class="text-xs text-gray-500">ver opciones en Google Maps</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Renta Car genérica -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden servicio-card">
+                    <div class="h-2 bg-gradient-to-r from-yellow-600 to-yellow-400"></div>
+                    <div class="p-6">
+                        <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-car text-2xl text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Renta de Carros</h3>
+                        <div class="space-y-3">
+                            <a href="https://www.google.com/maps/search/Rent+a+Car+cerca+de+{{ destino.titulo|replace(' ', '+') }}+Costa+Rica" target="_blank" class="block p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors servicio-link group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium text-gray-800 group-hover:text-yellow-600">Renta de autos</p>
+                                        <p class="text-xs text-gray-500">ver opciones en Google Maps</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-yellow-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
             </div>
         </div>
     </div>
 
     <!-- COMENTARIOS CON ESTRELLAS -->
     {% if destino.comentarios and destino.comentarios|length > 0 %}
-    <div class="seccion-comentarios py-12 bg-gray-50">
+    <div class="seccion-comentarios py-12">
         <div class="container mx-auto px-4">
             <h2 class="text-2xl font-semibold text-gray-800 mb-8">Comentarios de viajeros</h2>
             <div class="grid gap-4">
@@ -121,7 +1242,6 @@
                             <span class="font-medium text-gray-800">{{ comentario.usuario_nombre }}</span>
                         </div>
                         
-                        <!-- ESTRELLAS DEL COMENTARIO -->
                         {% if comentario.rating %}
                         <div class="flex text-yellow-400">
                             {% for i in range(comentario.rating) %}
@@ -140,7 +1260,6 @@
                             <i class="far fa-star text-xs"></i>
                         </div>
                         {% endif %}
-                        <!-- FIN ESTRELLAS -->
                         
                     </div>
                     <p class="text-gray-600 italic mb-2">"{{ comentario.comentario }}"</p>
@@ -152,7 +1271,6 @@
     </div>
     {% endif %}
 
-    <!-- MENSAJE SI NO HAY COMENTARIOS -->
     {% if not destino.comentarios %}
     <div class="container mx-auto px-4 text-center py-12">
         <p class="text-gray-500 text-lg">Sé el primero en comentar sobre este destino.</p>

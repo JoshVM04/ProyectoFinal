@@ -80,30 +80,37 @@ class AuthEngine:
             }
         
         # ===== MODO PRODUCCIÓN (con BD) =====
-        # TODO: Implementar consultas reales a la BD
-        cursor = self.db.cursor()
-        
-        # Verificar si el email ya existe
-        cursor.execute("SELECT id FROM usuarios WHERE email = %s", (email,))
-        if cursor.fetchone():
-            return {'exito': False, 'error': 'El email ya está registrado'}
-        
-        # Insertar nuevo usuario
-        contra_hash = self._hash_contra(contra)
-        cursor.execute(
-            "INSERT INTO usuarios (nombre, email, contra, fecha_registro) VALUES (%s, %s, %s, %s)",
-            (nombre, email, contra_hash, datetime.now())
-        )
-        self.db.commit()
-        
-        nuevo_id = cursor.lastrowid
-        nuevo_usuario = Usuario(nuevo_id, nombre, email, contra_hash, datetime.now())
-        
-        return {
-            'exito': True,
-            'usuario': nuevo_usuario.to_dict(),
-            'mensaje': 'Usuario registrado correctamente'
-        }
+        try:
+            cursor = self.db.cursor()
+            
+            # Verificar si el email ya existe
+            cursor.execute("SELECT id FROM usuarios WHERE email = %s", (email,))
+            if cursor.fetchone():
+                cursor.close()
+                return {'exito': False, 'error': 'El email ya está registrado'}
+            
+            # Insertar nuevo usuario
+            contra_hash = self._hash_contra(contra)
+            cursor.execute(
+                "INSERT INTO usuarios (nombre, email, contra, fecha_registro) VALUES (%s, %s, %s, %s)",
+                (nombre, email, contra_hash, datetime.now())
+            )
+            self.db.commit()
+            
+            nuevo_id = cursor.lastrowid
+            cursor.close()
+            
+            nuevo_usuario = Usuario(nuevo_id, nombre, email, contra_hash, datetime.now())
+            
+            return {
+                'exito': True,
+                'usuario': nuevo_usuario.to_dict(),
+                'mensaje': 'Usuario registrado correctamente'
+            }
+            
+        except Exception as e:
+            print(f"❌ Error en registro: {e}")
+            return {'exito': False, 'error': 'Error al registrar usuario'}
     
     def login(self, email, contra):
         """
@@ -133,7 +140,8 @@ class AuthEngine:
                 return {'exito': False, 'error': 'Email no registrado'}
             
             # Verificar contraseña
-            if usuario.verificar_contra(contra):
+            contra_hash = self._hash_contra(contra)
+            if usuario.contra == contra_hash:
                 return {
                     'exito': True,
                     'usuario': usuario.to_dict(),
@@ -143,28 +151,37 @@ class AuthEngine:
                 return {'exito': False, 'error': 'Contraseña incorrecta'}
         
         # ===== MODO PRODUCCIÓN (con BD) =====
-        # TODO: Implementar consultas reales a la BD
-        cursor = self.db.cursor()
-        
-        # Buscar usuario por email
-        cursor.execute("SELECT id, nombre, email, contra, fecha_registro FROM usuarios WHERE email = %s", (email,))
-        row = cursor.fetchone()
-        
-        if not row:
-            return {'exito': False, 'error': 'Email no registrado'}
-        
-        # Crear objeto usuario
-        usuario = Usuario(row[0], row[1], row[2], row[3], row[4])
-        
-        # Verificar contraseña
-        if usuario.verificar_contra(contra):
-            return {
-                'exito': True,
-                'usuario': usuario.to_dict(),
-                'mensaje': 'Login exitoso'
-            }
-        else:
-            return {'exito': False, 'error': 'Contraseña incorrecta'}
+        try:
+            cursor = self.db.cursor(dictionary=True)
+            
+            # Buscar usuario por email
+            cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
+            user = cursor.fetchone()
+            cursor.close()
+            
+            if not user:
+                return {'exito': False, 'error': 'Email no registrado'}
+            
+            # Verificar contraseña
+            contra_hash = self._hash_contra(contra)
+            
+            if user['contra'] == contra_hash:
+                # Login exitoso
+                return {
+                    'exito': True,
+                    'usuario': {
+                        'id': user['id'],
+                        'nombre': user['nombre'],
+                        'email': user['email'],
+                        'rol': user.get('rol', 'usuario')
+                    }
+                }
+            else:
+                return {'exito': False, 'error': 'Contraseña incorrecta'}
+                
+        except Exception as e:
+            print(f"❌ Error en login: {e}")
+            return {'exito': False, 'error': 'Error al iniciar sesión'}
     
     def obtener_por_id(self, usuario_id):
         """
@@ -182,14 +199,24 @@ class AuthEngine:
                     return u
             return None
         
-        # TODO: Consulta a BD
-        cursor = self.db.cursor()
-        cursor.execute("SELECT id, nombre, email, contra, fecha_registro FROM usuarios WHERE id = %s", (usuario_id,))
-        row = cursor.fetchone()
-        
-        if row:
-            return Usuario(row[0], row[1], row[2], row[3], row[4])
-        return None
+        try:
+            cursor = self.db.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM usuarios WHERE id = %s", (usuario_id,))
+            user = cursor.fetchone()
+            cursor.close()
+            
+            if user:
+                return {
+                    'id': user['id'],
+                    'nombre': user['nombre'],
+                    'email': user['email'],
+                    'rol': user.get('rol', 'usuario')
+                }
+            return None
+            
+        except Exception as e:
+            print(f"❌ Error al obtener usuario: {e}")
+            return None
     
     def _obtener_datos_prueba(self):
         """

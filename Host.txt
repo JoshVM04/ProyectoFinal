@@ -1,0 +1,6 @@
+Copiar token
+ngrok config add-authtoken 3BBErl04PADHjj6zEYqASBzujbi_7sS1ze3xjWpc6NR38h529
+pegar en cmd terminal
+correr python run.py
+pegar en otra terminal 
+ngrok http 5000

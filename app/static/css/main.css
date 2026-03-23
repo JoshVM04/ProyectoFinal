@@ -1,3 +1,5 @@
+
+
 /* ===== NÓMADA - ESTILOS PREMIUM CON ANIMACIONES ===== */
 
 /* Reset y base */
@@ -237,5 +239,71 @@ img:hover {
 @media (max-width: 640px) {
     .hero-section {
         min-height: 70vh;
+    }
+}
+
+/* ===== MEJORAS PARA SCROLL EN MÓVIL ===== */
+
+/* Scroll suave y táctil */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Solución para scroll en móvil - imágenes no bloquean scroll */
+img, .foto-principal, .fotos-secundarias img, .foto-secundaria {
+    touch-action: pan-y pinch-zoom !important;
+    pointer-events: auto !important;
+}
+
+/* Asegurar que los contenedores permitan scroll */
+.destino-detalle,
+.galeria-container,
+.info-principal-section,
+.seccion-servicios,
+.seccion-comentarios {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+}
+
+/* Mejorar experiencia táctil en elementos interactivos */
+button, a, .servicio-link {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevenir que imágenes bloqueen el scroll en móvil */
+.foto-principal img,
+.fotos-secundarias img {
+    pointer-events: auto;
+    touch-action: pan-y pinch-zoom;
+}
+
+/* Ajustes para móvil */
+@media (max-width: 768px) {
+    /* Reducir altura de imágenes para que no ocupen toda la pantalla */
+    .foto-principal img {
+        height: 300px !important;
+    }
+    .fotos-secundarias img {
+        height: 140px !important;
+    }
+    
+    /* Asegurar espacio para scroll */
+    .destino-detalle {
+        padding-bottom: 50px;
+    }
+    
+    /* Mejorar el área táctil */
+    button, .servicio-link {
+        min-height: 44px;
     }
 }

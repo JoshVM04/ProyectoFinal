@@ -54,8 +54,8 @@ class ExperienciasRoutes:
         
         return render_template(
             "experiencias.html",
-            experiencias=comentarios,  # ← SIN to_dict_list
-            destinos=destinos           # ← SIN to_dict_list
+            experiencias=comentarios,
+            destinos=destinos
         )
     
     def por_destino(self, destino_id):
@@ -70,7 +70,7 @@ class ExperienciasRoutes:
         
         return render_template(
             "experiencias.html",
-            experiencias=comentarios,  # ← SIN to_dict_list
+            experiencias=comentarios,
             filtro_destino=titulo_destino,
             destino_id=destino_id
         )
@@ -85,6 +85,7 @@ class ExperienciasRoutes:
         
         destino_id = request.form.get('destino_id')
         comentario_texto = request.form.get('comentario')
+        rating = request.form.get('rating')  # ← AGREGADO: recibir la calificación
         
         if not destino_id or not comentario_texto:
             return redirect(url_for('experiencias.listar_todos', error="Todos los campos son requeridos"))
@@ -92,7 +93,8 @@ class ExperienciasRoutes:
         resultado = self.engine.crear(
             usuario_id=session['usuario_id'],
             destino_id=int(destino_id),
-            comentario_texto=comentario_texto
+            comentario_texto=comentario_texto,
+            rating=rating  # ← AGREGADO: pasar la calificación al engine
         )
         
         if resultado['exito']:
@@ -124,4 +126,4 @@ class ExperienciasRoutes:
         Respuesta: JSON
         """
         comentarios = self.engine.obtener_todos()
-        return jsonify(comentarios)  # ← SIN to_dict_list
+        return jsonify(comentarios)
